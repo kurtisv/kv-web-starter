@@ -15,6 +15,7 @@ const envSchema = z.object({
   RESEND_FROM_EMAIL: z.string().email().optional(),
   UPSTASH_REDIS_REST_URL: z.string().url().optional(),
   UPSTASH_REDIS_REST_TOKEN: z.string().optional(),
+  API_DEMO_KEYS: z.string().optional(),
   FEATURE_BOOKING: z.coerce.boolean().default(true),
   FEATURE_API_PORTAL: z.coerce.boolean().default(true),
   FEATURE_CMS: z.coerce.boolean().default(false),

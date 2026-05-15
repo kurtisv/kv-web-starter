@@ -27,9 +27,15 @@ const demoServices = [
 ];
 
 const fallbackStaff = [{ id: undefined, name: "Any staff" }];
-const bookingDate = "2026-05-18";
+const fallbackBookingDate = "2026-05-18";
 
-async function getBookingData() {
+type BookingSearchParams = {
+  serviceId?: string;
+  staffId?: string;
+  date?: string;
+};
+
+async function getBookingData(bookingDate: string) {
   try {
     const [services, staff, rules, exceptions, bookings] = await Promise.all([
       prisma.service.findMany({
@@ -91,10 +97,22 @@ function formatPrice(priceCents: number | null) {
   return priceCents ? `$${(priceCents / 100).toFixed(2)}` : "Free";
 }
 
-export default async function BookingPage() {
-  const data = await getBookingData();
-  const selectedService = data.services[0] ?? demoServices[0];
-  const selectedStaff = data.staff[0] ?? fallbackStaff[0];
+function normalizeBookingDate(date?: string) {
+  return date && /^\d{4}-\d{2}-\d{2}$/.test(date) ? date : fallbackBookingDate;
+}
+
+export default async function BookingPage({
+  searchParams,
+}: {
+  searchParams?: Promise<BookingSearchParams>;
+}) {
+  const params = (await searchParams) ?? {};
+  const selectedDate = normalizeBookingDate(params.date);
+  const data = await getBookingData(selectedDate);
+  const selectedService =
+    data.services.find((service) => service.id === params.serviceId) ?? data.services[0] ?? demoServices[0];
+  const selectedStaff =
+    data.staff.find((staff) => staff.id === params.staffId) ?? data.staff[0] ?? fallbackStaff[0];
   const rules =
     data.rules.length > 0
       ? data.rules.filter((rule) => !selectedStaff.id || rule.staffId === selectedStaff.id)
@@ -106,7 +124,7 @@ export default async function BookingPage() {
           },
         ];
   const slots = generateBookingSlots({
-    date: bookingDate,
+    date: selectedDate,
     serviceDurationMin: selectedService.durationMin,
     rules,
     exceptions: data.exceptions,
@@ -143,14 +161,54 @@ export default async function BookingPage() {
           <div className="grid gap-4">
             <Card>
               <CardHeader>
-                <CardTitle>Services</CardTitle>
+                <CardTitle>Choix</CardTitle>
                 <CardDescription>
                   {data.usingFallback
                     ? "Donnees demo si la DB est vide ou indisponible."
                     : "Services actifs depuis Prisma."}
                 </CardDescription>
               </CardHeader>
-              <CardContent className="grid gap-3">
+              <CardContent className="grid gap-5">
+                <form className="grid gap-4" method="get">
+                  <div className="grid gap-2">
+                    <Label htmlFor="serviceId">Service</Label>
+                    <select
+                      id="serviceId"
+                      name="serviceId"
+                      className="h-10 border border-border bg-background px-3 text-sm"
+                      defaultValue={selectedService.id}
+                    >
+                      {data.services.map((service) => (
+                        <option key={service.id} value={service.id}>
+                          {service.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="staffId">Staff</Label>
+                    <select
+                      id="staffId"
+                      name="staffId"
+                      className="h-10 border border-border bg-background px-3 text-sm"
+                      defaultValue={selectedStaff.id}
+                    >
+                      {data.staff.map((staff) => (
+                        <option key={staff.id ?? "any"} value={staff.id}>
+                          {staff.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="date">Date</Label>
+                    <Input id="date" name="date" type="date" defaultValue={selectedDate} />
+                  </div>
+                  <Button type="submit" variant="secondary">
+                    Update availability
+                  </Button>
+                </form>
+
                 {data.services.map((service) => (
                   <div key={service.id} className="border p-4">
                     <div className="flex flex-wrap items-center justify-between gap-3">
@@ -172,7 +230,7 @@ export default async function BookingPage() {
             <Card>
               <CardHeader>
                 <CardTitle>Demande de reservation</CardTitle>
-                <CardDescription>Lundi 18 mai 2026, heure demo UTC.</CardDescription>
+                <CardDescription>{selectedDate}, heure UTC pour le scaffold.</CardDescription>
               </CardHeader>
               <CardContent className="grid gap-5">
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -186,7 +244,11 @@ export default async function BookingPage() {
                 <form action={createBookingRequest} className="grid gap-4 border-t pt-5">
                   <input name="serviceId" type="hidden" value={selectedService.id} />
                   {selectedStaff.id ? <input name="staffId" type="hidden" value={selectedStaff.id} /> : null}
-                  <input name="startAt" type="hidden" value={slots[0]?.startAt.toISOString() ?? "2026-05-18T09:00:00.000Z"} />
+                  <input
+                    name="startAt"
+                    type="hidden"
+                    value={slots[0]?.startAt.toISOString() ?? `${selectedDate}T09:00:00.000Z`}
+                  />
                   <div className="grid gap-2">
                     <Label htmlFor="customerName">Name</Label>
                     <Input id="customerName" name="customerName" placeholder="Client Example" required />

@@ -1,13 +1,14 @@
 import { MarketingPageShell } from "@/components/marketing/page-shell";
 import { Section } from "@/components/marketing/section";
+import { createCheckoutSession } from "@/app/actions/billing";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const plans = [
-  { name: "Starter", price: "$0", description: "Base vitrine et experimentation." },
-  { name: "Pro", price: "$49", description: "Booking, dashboard et emails." },
-  { name: "Business", price: "$149", description: "API portal, billing et usage." },
+  { name: "Starter", price: "$0", description: "Base vitrine et experimentation.", plan: null },
+  { name: "Pro", price: "$49", description: "Booking, dashboard et emails.", plan: "PRO" },
+  { name: "Business", price: "$149", description: "API portal, billing et usage.", plan: "BUSINESS" },
 ];
 
 export default function PricingPage() {
@@ -28,7 +29,18 @@ export default function PricingPage() {
               <CardContent>
                 <p className="text-3xl font-semibold">{plan.price}</p>
                 <p className="mt-3 min-h-12 text-sm text-muted-foreground">{plan.description}</p>
-                <Button className="mt-6 w-full">Choisir</Button>
+                {plan.plan ? (
+                  <form action={createCheckoutSession} className="mt-6">
+                    <input type="hidden" name="plan" value={plan.plan} />
+                    <Button className="w-full" type="submit">
+                      Choisir
+                    </Button>
+                  </form>
+                ) : (
+                  <Button className="mt-6 w-full" variant="secondary">
+                    Inclus
+                  </Button>
+                )}
               </CardContent>
             </Card>
           ))}

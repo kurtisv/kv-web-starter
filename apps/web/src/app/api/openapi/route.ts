@@ -42,6 +42,7 @@ export function GET() {
               },
             },
             "401": { description: "Missing or invalid API key" },
+            "402": { description: "Active paid plan required" },
             "403": { description: "Insufficient scope" },
           },
         },

@@ -17,3 +17,11 @@ export {
   mapStripeSubscription,
   type StripeSubscriptionLike,
 } from "./webhook";
+
+export {
+  hasMinimumPlan,
+  hasPlanEntitlement,
+  isSubscriptionUsable,
+  type BillablePlan,
+  type SubscriptionEntitlement,
+} from "./entitlements";

@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 
 import { env } from "@/lib/env";
 import { prisma } from "@/lib/db";
+import { hasPlanEntitlement } from "@/modules/billing";
 import {
   authenticateApiRequest,
   getApiRateLimitKey,
@@ -32,6 +33,20 @@ export async function GET(request: NextRequest) {
 
   if (!access.ok) {
     return NextResponse.json({ error: access.error }, { status: access.status });
+  }
+
+  if (access.source === "database" && access.userId) {
+    const subscriptions = await prisma.subscription.findMany({
+      where: { userId: access.userId },
+      select: { plan: true, status: true, currentPeriodEnd: true },
+    });
+
+    if (!hasPlanEntitlement({ subscriptions, minimumPlan: "PRO" })) {
+      return NextResponse.json(
+        { error: "An active Pro subscription is required for this endpoint" },
+        { status: 402 },
+      );
+    }
   }
 
   const rateLimit = await limitApiRequest(

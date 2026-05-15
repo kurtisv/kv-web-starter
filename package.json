@@ -16,6 +16,7 @@
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
     "db:seed": "tsx prisma/seed.ts",
+    "create:new": "powershell.exe -ExecutionPolicy Bypass -NoProfile -File ./scripts/create-new-project.ps1",
     "format": "prettier --write ."
   },
   "devDependencies": {

@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 
 import { BookingConfirmationEmail } from "@/emails/booking-confirmation";
 import { BookingStatus } from "@/generated/prisma";
+import { requireDashboardAccess } from "@/lib/dashboard-auth";
 import { sendTransactionalEmail } from "@/lib/email/resend";
 import { prisma } from "@/lib/db";
 import {
@@ -18,6 +19,8 @@ import {
 } from "@/modules/booking";
 
 export async function createService(formData: FormData) {
+  await requireDashboardAccess();
+
   const service = parseServiceFormData(formData);
 
   await prisma.service.create({
@@ -35,6 +38,8 @@ export async function createService(formData: FormData) {
 }
 
 export async function updateService(formData: FormData) {
+  await requireDashboardAccess();
+
   const serviceId = String(formData.get("serviceId") ?? "");
   const service = parseServiceFormData(formData);
 
@@ -57,6 +62,8 @@ export async function updateService(formData: FormData) {
 }
 
 export async function deactivateService(formData: FormData) {
+  await requireDashboardAccess();
+
   const serviceId = String(formData.get("serviceId") ?? "");
 
   if (!serviceId) {
@@ -72,6 +79,8 @@ export async function deactivateService(formData: FormData) {
 }
 
 export async function createStaffMember(formData: FormData) {
+  await requireDashboardAccess();
+
   const staff = parseStaffFormData(formData);
 
   await prisma.staff.create({
@@ -86,6 +95,8 @@ export async function createStaffMember(formData: FormData) {
 }
 
 export async function updateStaffMember(formData: FormData) {
+  await requireDashboardAccess();
+
   const staffId = String(formData.get("staffId") ?? "");
   const staff = parseStaffFormData(formData);
 
@@ -105,6 +116,8 @@ export async function updateStaffMember(formData: FormData) {
 }
 
 export async function deactivateStaffMember(formData: FormData) {
+  await requireDashboardAccess();
+
   const staffId = String(formData.get("staffId") ?? "");
 
   if (!staffId) {
@@ -120,6 +133,8 @@ export async function deactivateStaffMember(formData: FormData) {
 }
 
 export async function createAvailabilityRule(formData: FormData) {
+  await requireDashboardAccess();
+
   const rule = parseAvailabilityRuleFormData(formData);
 
   await prisma.availabilityRule.create({
@@ -137,6 +152,8 @@ export async function createAvailabilityRule(formData: FormData) {
 }
 
 export async function updateAvailabilityRule(formData: FormData) {
+  await requireDashboardAccess();
+
   const ruleId = String(formData.get("ruleId") ?? "");
   const rule = parseAvailabilityRuleFormData(formData);
 
@@ -159,6 +176,8 @@ export async function updateAvailabilityRule(formData: FormData) {
 }
 
 export async function deleteAvailabilityRule(formData: FormData) {
+  await requireDashboardAccess();
+
   const ruleId = String(formData.get("ruleId") ?? "");
 
   if (!ruleId) {
@@ -173,6 +192,8 @@ export async function deleteAvailabilityRule(formData: FormData) {
 }
 
 export async function createAvailabilityException(formData: FormData) {
+  await requireDashboardAccess();
+
   const exception = parseAvailabilityExceptionFormData(formData);
 
   await prisma.availabilityException.create({
@@ -190,6 +211,8 @@ export async function createAvailabilityException(formData: FormData) {
 }
 
 export async function updateAvailabilityException(formData: FormData) {
+  await requireDashboardAccess();
+
   const exceptionId = String(formData.get("exceptionId") ?? "");
   const exception = parseAvailabilityExceptionFormData(formData);
 
@@ -212,6 +235,8 @@ export async function updateAvailabilityException(formData: FormData) {
 }
 
 export async function deleteAvailabilityException(formData: FormData) {
+  await requireDashboardAccess();
+
   const exceptionId = String(formData.get("exceptionId") ?? "");
 
   if (!exceptionId) {

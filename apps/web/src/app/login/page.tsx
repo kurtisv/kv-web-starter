@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-import { signInWithCredentials } from "@/app/actions/auth";
+import { signInWithCredentials, signInWithGitHub } from "@/app/actions/auth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -33,23 +33,35 @@ export default async function LoginPage({
               Identifiants invalides.
             </p>
           ) : null}
-          <form action={signInWithCredentials} className="grid gap-4">
-            <Input
-              autoComplete="email"
-              defaultValue={env.AUTH_DEMO_EMAIL}
-              name="email"
-              placeholder="admin@example.com"
-              type="email"
-            />
-            <Input
-              autoComplete="current-password"
-              defaultValue={env.AUTH_DEMO_PASSWORD}
-              name="password"
-              placeholder="Mot de passe"
-              type="password"
-            />
-            <Button type="submit">Se connecter</Button>
-          </form>
+          <div className="grid gap-4">
+            {env.AUTH_GITHUB_ID && env.AUTH_GITHUB_SECRET ? (
+              <form action={signInWithGitHub}>
+                <Button className="w-full" type="submit">
+                  Se connecter avec GitHub
+                </Button>
+              </form>
+            ) : null}
+
+            {env.AUTH_ENABLE_DEMO_LOGIN ? (
+              <form action={signInWithCredentials} className="grid gap-4">
+                <Input
+                  autoComplete="email"
+                  defaultValue={env.AUTH_DEMO_EMAIL}
+                  name="email"
+                  placeholder="admin@example.com"
+                  type="email"
+                />
+                <Input
+                  autoComplete="current-password"
+                  defaultValue={env.AUTH_DEMO_PASSWORD}
+                  name="password"
+                  placeholder="Mot de passe"
+                  type="password"
+                />
+                <Button type="submit">Se connecter</Button>
+              </form>
+            ) : null}
+          </div>
         </CardContent>
       </Card>
     </main>

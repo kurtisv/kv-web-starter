@@ -29,6 +29,13 @@ pnpm db:migrate
 pnpm dev
 ```
 
+## Production checklist
+
+- Set `AUTH_SECRET`, disable `AUTH_ENABLE_DEMO_LOGIN`, and configure `AUTH_GITHUB_ID` / `AUTH_GITHUB_SECRET` or another Auth.js provider before launch.
+- Set `DASHBOARD_BOOTSTRAP_EMAILS` to the first owner email. Dashboard mutations require an `OWNER` or `ADMIN` membership.
+- Test Stripe webhooks with the Stripe CLI and real test-mode secrets before accepting billing traffic.
+- Use `pnpm create:new -- -Name my-client-app -Destination C:\code\my-client-app -AppName "My Client App"` to copy the boilerplate into a clean project folder.
+
 The project uses a pnpm workspace:
 
 ```txt
@@ -63,5 +70,5 @@ password123
 ```
 
 Override these with `AUTH_DEMO_EMAIL` and `AUTH_DEMO_PASSWORD` before sharing
-any deployed preview. Replace the demo provider with email or OAuth before
-production.
+any deployed preview. Set `AUTH_ENABLE_DEMO_LOGIN=false` and configure GitHub
+OAuth before production.

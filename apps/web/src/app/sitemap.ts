@@ -12,6 +12,7 @@ const routes = [
   "/booking",
   "/developers",
   "/docs",
+  "/docs/api",
   "/privacy",
   "/terms",
 ];

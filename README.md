@@ -22,7 +22,9 @@ Premium modular Next.js boilerplate for three reusable project types:
 ```bash
 pnpm install
 cp .env.example .env
+docker compose up -d
 pnpm db:generate
+pnpm db:migrate
 pnpm dev
 ```
 
@@ -49,3 +51,16 @@ tests
 pnpm supply-chain protection is enabled with `minimumReleaseAge: 1440`.
 If Prisma or native package generation is blocked locally, run the package
 approval workflow intentionally instead of disabling the protection globally.
+
+## Demo access
+
+The starter ships with a local credentials provider for development:
+
+```txt
+admin@example.com
+password123
+```
+
+Override these with `AUTH_DEMO_EMAIL` and `AUTH_DEMO_PASSWORD` before sharing
+any deployed preview. Replace the demo provider with email or OAuth before
+production.

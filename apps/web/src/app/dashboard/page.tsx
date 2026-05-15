@@ -7,7 +7,7 @@ const stats = [
 
 export default function DashboardPage() {
   return (
-    <main className="min-h-screen bg-background px-6 py-10 text-foreground">
+    <main className="px-6 py-10 text-foreground">
       <div className="mx-auto max-w-6xl">
         <div className="mb-8">
           <p className="text-sm font-medium uppercase tracking-[0.18em] text-muted-foreground">

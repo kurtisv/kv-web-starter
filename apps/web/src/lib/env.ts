@@ -6,6 +6,8 @@ const envSchema = z.object({
   DATABASE_URL: z.string().optional(),
   AUTH_SECRET: z.string().optional(),
   AUTH_URL: z.string().url().optional(),
+  AUTH_DEMO_EMAIL: z.string().email().default("admin@example.com"),
+  AUTH_DEMO_PASSWORD: z.string().min(8).default("password123"),
   STRIPE_SECRET_KEY: z.string().optional(),
   STRIPE_WEBHOOK_SECRET: z.string().optional(),
   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().optional(),

@@ -22,5 +22,6 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm db:generate
+      - run: pnpm db:validate
       - run: pnpm check
       - run: pnpm build

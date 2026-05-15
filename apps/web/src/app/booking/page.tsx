@@ -6,42 +6,113 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { prisma } from "@/lib/db";
 import { generateBookingSlots } from "@/modules/booking";
 
-const services = [
+const demoServices = [
   {
+    id: "replace-with-service-id",
     name: "Discovery call",
     durationMin: 30,
-    price: "Free",
+    priceCents: null,
     description: "Qualifier le besoin, le budget et la prochaine etape.",
   },
   {
+    id: "implementation-sprint",
     name: "Implementation sprint",
     durationMin: 60,
-    price: "$250",
+    priceCents: 25000,
     description: "Planifier une livraison courte avec livrables et criteres de test.",
   },
 ];
 
-const demoSlots = generateBookingSlots({
-  date: "2026-05-18",
-  serviceDurationMin: 30,
-  rules: [
-    {
-      weekday: 1,
-      startTime: "09:00",
-      endTime: "12:00",
-    },
-  ],
-  bookedIntervals: [
-    {
-      startAt: new Date("2026-05-18T10:00:00.000Z"),
-      endAt: new Date("2026-05-18T10:30:00.000Z"),
-    },
-  ],
-});
+const fallbackStaff = [{ id: undefined, name: "Any staff" }];
+const bookingDate = "2026-05-18";
 
-export default function BookingPage() {
+async function getBookingData() {
+  try {
+    const [services, staff, rules, exceptions, bookings] = await Promise.all([
+      prisma.service.findMany({
+        where: { isActive: true },
+        orderBy: { name: "asc" },
+        take: 20,
+      }),
+      prisma.staff.findMany({
+        where: { isActive: true },
+        orderBy: { name: "asc" },
+        take: 20,
+      }),
+      prisma.availabilityRule.findMany({
+        orderBy: [{ weekday: "asc" }, { startTime: "asc" }],
+      }),
+      prisma.availabilityException.findMany(),
+      prisma.booking.findMany({
+        where: {
+          startAt: {
+            gte: new Date(`${bookingDate}T00:00:00.000Z`),
+            lt: new Date(`${bookingDate}T23:59:59.999Z`),
+          },
+        },
+        select: { startAt: true, endAt: true },
+      }),
+    ]);
+
+    return {
+      services: services.length > 0 ? services : demoServices,
+      staff: staff.length > 0 ? staff : fallbackStaff,
+      rules,
+      exceptions: exceptions.map((exception) => ({
+        date: exception.date.toISOString().slice(0, 10),
+        startTime: exception.startTime,
+        endTime: exception.endTime,
+        isClosed: exception.isClosed,
+      })),
+      bookings,
+      usingFallback: services.length === 0 || staff.length === 0 || rules.length === 0,
+    };
+  } catch {
+    return {
+      services: demoServices,
+      staff: fallbackStaff,
+      rules: [],
+      exceptions: [],
+      bookings: [
+        {
+          startAt: new Date("2026-05-18T10:00:00.000Z"),
+          endAt: new Date("2026-05-18T10:30:00.000Z"),
+        },
+      ],
+      usingFallback: true,
+    };
+  }
+}
+
+function formatPrice(priceCents: number | null) {
+  return priceCents ? `$${(priceCents / 100).toFixed(2)}` : "Free";
+}
+
+export default async function BookingPage() {
+  const data = await getBookingData();
+  const selectedService = data.services[0] ?? demoServices[0];
+  const selectedStaff = data.staff[0] ?? fallbackStaff[0];
+  const rules =
+    data.rules.length > 0
+      ? data.rules.filter((rule) => !selectedStaff.id || rule.staffId === selectedStaff.id)
+      : [
+          {
+            weekday: 1,
+            startTime: "09:00",
+            endTime: "12:00",
+          },
+        ];
+  const slots = generateBookingSlots({
+    date: bookingDate,
+    serviceDurationMin: selectedService.durationMin,
+    rules,
+    exceptions: data.exceptions,
+    bookedIntervals: data.bookings,
+  });
+
   return (
     <MarketingPageShell>
       <main>
@@ -73,14 +144,18 @@ export default function BookingPage() {
             <Card>
               <CardHeader>
                 <CardTitle>Services</CardTitle>
-                <CardDescription>Selection visible par le client.</CardDescription>
+                <CardDescription>
+                  {data.usingFallback
+                    ? "Donnees demo si la DB est vide ou indisponible."
+                    : "Services actifs depuis Prisma."}
+                </CardDescription>
               </CardHeader>
               <CardContent className="grid gap-3">
-                {services.map((service) => (
-                  <div key={service.name} className="border p-4">
+                {data.services.map((service) => (
+                  <div key={service.id} className="border p-4">
                     <div className="flex flex-wrap items-center justify-between gap-3">
                       <h2 className="font-medium">{service.name}</h2>
-                      <span className="text-sm font-medium">{service.price}</span>
+                      <span className="text-sm font-medium">{formatPrice(service.priceCents)}</span>
                     </div>
                     <p className="mt-2 text-sm leading-6 text-muted-foreground">
                       {service.description}
@@ -101,7 +176,7 @@ export default function BookingPage() {
               </CardHeader>
               <CardContent className="grid gap-5">
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                  {demoSlots.map((slot) => (
+                  {slots.map((slot) => (
                     <Button key={slot.startTime} variant="secondary" size="sm">
                       <CalendarClock className="size-4" />
                       {slot.startTime}
@@ -109,8 +184,9 @@ export default function BookingPage() {
                   ))}
                 </div>
                 <form action={createBookingRequest} className="grid gap-4 border-t pt-5">
-                  <input name="serviceId" type="hidden" value="replace-with-service-id" />
-                  <input name="startAt" type="hidden" value="2026-05-18T09:00:00.000Z" />
+                  <input name="serviceId" type="hidden" value={selectedService.id} />
+                  {selectedStaff.id ? <input name="staffId" type="hidden" value={selectedStaff.id} /> : null}
+                  <input name="startAt" type="hidden" value={slots[0]?.startAt.toISOString() ?? "2026-05-18T09:00:00.000Z"} />
                   <div className="grid gap-2">
                     <Label htmlFor="customerName">Name</Label>
                     <Input id="customerName" name="customerName" placeholder="Client Example" required />

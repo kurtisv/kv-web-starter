@@ -2,6 +2,7 @@
 
 import { z } from "zod";
 
+import { ContactConfirmationEmail } from "@/emails/contact-confirmation";
 import { sendTransactionalEmail } from "@/lib/email/resend";
 
 const contactSchema = z.object({
@@ -24,11 +25,6 @@ export async function sendContactMessage(formData: FormData) {
   await sendTransactionalEmail({
     to: parsed.data.email,
     subject: "Votre message a ete recu",
-    react: (
-      <div>
-        <h1>Merci {parsed.data.name}</h1>
-        <p>Votre demande a ete recue. Nous allons vous repondre rapidement.</p>
-      </div>
-    ),
+    react: <ContactConfirmationEmail name={parsed.data.name} />,
   });
 }

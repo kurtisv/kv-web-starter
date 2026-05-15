@@ -3,7 +3,9 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
+import { BookingConfirmationEmail } from "@/emails/booking-confirmation";
 import { BookingStatus } from "@/generated/prisma";
+import { sendTransactionalEmail } from "@/lib/email/resend";
 import { prisma } from "@/lib/db";
 import {
   calculateBookingEndAt,
@@ -48,9 +50,9 @@ export async function createBookingRequest(formData: FormData) {
   const bookingRequest = parseBookingRequestFormData(formData);
 
   const result = await prisma.$transaction(async (tx) => {
-    const service = await tx.service.findUnique({
+    const service = await tx.service.findFirst({
       where: { id: bookingRequest.serviceId, isActive: true },
-      select: { id: true, durationMin: true },
+      select: { id: true, durationMin: true, name: true },
     });
 
     if (!service) {
@@ -79,7 +81,7 @@ export async function createBookingRequest(formData: FormData) {
       return { ok: false as const, reason: "slot-conflict" };
     }
 
-    await tx.booking.create({
+    const booking = await tx.booking.create({
       data: {
         serviceId: service.id,
         staffId: bookingRequest.staffId,
@@ -92,12 +94,32 @@ export async function createBookingRequest(formData: FormData) {
       },
     });
 
-    return { ok: true as const };
+    return {
+      ok: true as const,
+      booking: {
+        customerEmail: booking.customerEmail,
+        customerName: booking.customerName,
+        startAt: booking.startAt,
+        serviceName: service.name,
+      },
+    };
   });
 
   if (!result.ok) {
     redirect(`/booking?error=${result.reason}`);
   }
+
+  await sendTransactionalEmail({
+    to: result.booking.customerEmail,
+    subject: "Votre demande de reservation a ete recue",
+    react: (
+      <BookingConfirmationEmail
+        customerName={result.booking.customerName}
+        serviceName={result.booking.serviceName}
+        startAt={result.booking.startAt}
+      />
+    ),
+  });
 
   revalidatePath("/dashboard/bookings");
   redirect("/booking?success=1");

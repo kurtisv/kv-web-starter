@@ -15,6 +15,7 @@ Premium modular Next.js boilerplate for three reusable project types:
 - Stripe Checkout/Billing-ready structure
 - Resend and React Email-ready structure
 - API key hashing, API usage models, rate-limit dependencies
+- Local UI primitives for forms, cards, tables, dialogs, sheets, tabs, accordion, calendar
 - Vitest and CI foundation
 
 ## Local setup

@@ -1,5 +1,14 @@
 import Link from "next/link";
-import { CalendarDays, CreditCard, KeyRound, LayoutDashboard, Settings, Users } from "lucide-react";
+import {
+  BriefcaseBusiness,
+  CalendarDays,
+  CreditCard,
+  KeyRound,
+  LayoutDashboard,
+  Settings,
+  UserRoundCog,
+  Users,
+} from "lucide-react";
 
 import { signOutCurrentUser } from "@/app/actions/auth";
 import { Button } from "@/components/ui/button";
@@ -8,6 +17,8 @@ import { auth } from "@/lib/auth";
 const navItems = [
   { href: "/dashboard", label: "Overview", icon: LayoutDashboard },
   { href: "/dashboard/bookings", label: "Bookings", icon: CalendarDays },
+  { href: "/dashboard/services", label: "Services", icon: BriefcaseBusiness },
+  { href: "/dashboard/staff", label: "Staff", icon: UserRoundCog },
   { href: "/dashboard/customers", label: "Customers", icon: Users },
   { href: "/dashboard/api-keys", label: "API Keys", icon: KeyRound },
   { href: "/dashboard/billing", label: "Billing", icon: CreditCard },

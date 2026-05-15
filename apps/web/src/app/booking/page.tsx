@@ -233,22 +233,34 @@ export default async function BookingPage({
                 <CardDescription>{selectedDate}, heure UTC pour le scaffold.</CardDescription>
               </CardHeader>
               <CardContent className="grid gap-5">
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                  {slots.map((slot) => (
-                    <Button key={slot.startTime} variant="secondary" size="sm">
-                      <CalendarClock className="size-4" />
-                      {slot.startTime}
-                    </Button>
-                  ))}
-                </div>
                 <form action={createBookingRequest} className="grid gap-4 border-t pt-5">
                   <input name="serviceId" type="hidden" value={selectedService.id} />
                   {selectedStaff.id ? <input name="staffId" type="hidden" value={selectedStaff.id} /> : null}
-                  <input
-                    name="startAt"
-                    type="hidden"
-                    value={slots[0]?.startAt.toISOString() ?? `${selectedDate}T09:00:00.000Z`}
-                  />
+                  <div className="grid gap-2">
+                    <Label>Creneau</Label>
+                    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                      {slots.map((slot, index) => (
+                        <label
+                          key={slot.startTime}
+                          className="flex h-10 cursor-pointer items-center justify-center gap-2 border bg-secondary px-3 text-sm font-medium text-secondary-foreground has-[:checked]:border-primary has-[:checked]:bg-primary has-[:checked]:text-primary-foreground"
+                        >
+                          <input
+                            className="sr-only"
+                            name="startAt"
+                            type="radio"
+                            value={slot.startAt.toISOString()}
+                            defaultChecked={index === 0}
+                            required
+                          />
+                          <CalendarClock className="size-4" />
+                          {slot.startTime}
+                        </label>
+                      ))}
+                    </div>
+                    {slots.length === 0 ? (
+                      <p className="text-sm text-muted-foreground">Aucun creneau disponible pour cette selection.</p>
+                    ) : null}
+                  </div>
                   <div className="grid gap-2">
                     <Label htmlFor="customerName">Name</Label>
                     <Input id="customerName" name="customerName" placeholder="Client Example" required />
@@ -267,7 +279,7 @@ export default async function BookingPage({
                     <Label htmlFor="customerPhone">Phone</Label>
                     <Input id="customerPhone" name="customerPhone" placeholder="+1 555 555 5555" />
                   </div>
-                  <Button type="submit" variant="secondary">
+                  <Button type="submit" variant="secondary" disabled={slots.length === 0}>
                     Request demo booking
                   </Button>
                 </form>

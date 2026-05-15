@@ -19,3 +19,5 @@ export {
   type AuthenticatedApiAccess,
   type DatabaseApiCredential,
 } from "./db-access";
+
+export { getApiRateLimitKey, limitApiRequest } from "./rate-limit";

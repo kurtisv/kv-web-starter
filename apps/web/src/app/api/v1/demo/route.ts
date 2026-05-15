@@ -2,7 +2,12 @@ import { type NextRequest, NextResponse } from "next/server";
 
 import { env } from "@/lib/env";
 import { prisma } from "@/lib/db";
-import { authenticateApiRequest, parseApiCredentials } from "@/modules/api-portal";
+import {
+  authenticateApiRequest,
+  getApiRateLimitKey,
+  limitApiRequest,
+  parseApiCredentials,
+} from "@/modules/api-portal";
 
 export async function GET(request: NextRequest) {
   const startedAt = Date.now();
@@ -29,6 +34,24 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: access.error }, { status: access.status });
   }
 
+  const rateLimit = await limitApiRequest(
+    getApiRateLimitKey({
+      source: access.source,
+      key: access.key,
+      ip: request.headers.get("x-forwarded-for")?.split(",")[0]?.trim(),
+    }),
+  );
+
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { error: "Rate limit exceeded" },
+      {
+        status: 429,
+        headers: buildRateLimitHeaders(rateLimit),
+      },
+    );
+  }
+
   if (access.source === "database" && access.userId && access.apiKeyId) {
     await recordApiUsage({
       userId: access.userId,
@@ -48,6 +71,28 @@ export async function GET(request: NextRequest) {
       source: access.source,
     },
   });
+}
+
+function buildRateLimitHeaders(input: {
+  limit?: number;
+  remaining?: number;
+  reset?: number;
+}) {
+  const headers = new Headers();
+
+  if (input.limit !== undefined) {
+    headers.set("X-RateLimit-Limit", String(input.limit));
+  }
+
+  if (input.remaining !== undefined) {
+    headers.set("X-RateLimit-Remaining", String(input.remaining));
+  }
+
+  if (input.reset !== undefined) {
+    headers.set("X-RateLimit-Reset", String(input.reset));
+  }
+
+  return headers;
 }
 
 async function recordApiUsage(input: {

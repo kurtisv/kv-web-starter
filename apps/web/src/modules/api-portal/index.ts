@@ -13,3 +13,9 @@ export {
 } from "./access";
 
 export { apiKeyFormSchema, parseApiKeyFormData } from "./management";
+
+export {
+  authenticateApiRequest,
+  type AuthenticatedApiAccess,
+  type DatabaseApiCredential,
+} from "./db-access";

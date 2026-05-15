@@ -4,12 +4,18 @@ import Credentials from "next-auth/providers/credentials";
 import GitHub from "next-auth/providers/github";
 import { z } from "zod";
 
+import { shouldTrustAuthHost } from "@/lib/auth-host";
 import { prisma } from "@/lib/db";
 import { env } from "@/lib/env";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
   secret: env.AUTH_SECRET ?? "development-only-secret-change-before-production",
+  trustHost: shouldTrustAuthHost({
+    authTrustHost: env.AUTH_TRUST_HOST,
+    appUrl: env.NEXT_PUBLIC_APP_URL,
+    nodeEnv: process.env.NODE_ENV,
+  }),
   pages: {
     signIn: "/login",
   },

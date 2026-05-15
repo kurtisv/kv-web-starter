@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight, CalendarDays, KeyRound, ShieldCheck } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { MarketingPageShell } from "@/components/marketing/page-shell";
 
 const modules = [
   {
@@ -23,7 +24,8 @@ const modules = [
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-background text-foreground">
+    <MarketingPageShell>
+    <main>
       <section className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-6 py-16 sm:py-24">
         <div className="grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
           <div className="max-w-3xl">
@@ -70,5 +72,6 @@ export default function Home() {
         </div>
       </section>
     </main>
+    </MarketingPageShell>
   );
 }

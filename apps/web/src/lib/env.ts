@@ -8,7 +8,7 @@ const envSchema = z.object({
   AUTH_URL: z.string().url().optional(),
   AUTH_GITHUB_ID: z.string().optional(),
   AUTH_GITHUB_SECRET: z.string().optional(),
-  AUTH_TRUST_HOST: z.coerce.boolean().default(false),
+  AUTH_TRUST_HOST: z.coerce.boolean().default(true),
   AUTH_ENABLE_DEMO_LOGIN: z.coerce.boolean().default(process.env.NODE_ENV !== "production"),
   AUTH_DEMO_EMAIL: z.string().email().default("admin@example.com"),
   AUTH_DEMO_PASSWORD: z.string().min(8).default("password123"),

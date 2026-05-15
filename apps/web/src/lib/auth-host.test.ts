@@ -32,4 +32,14 @@ describe("Auth.js trusted host configuration", () => {
       }),
     ).toBe(false);
   });
+
+  it("matches the starter default through AUTH_TRUST_HOST", () => {
+    expect(
+      shouldTrustAuthHost({
+        authTrustHost: true,
+        appUrl: "https://client.example.com",
+        nodeEnv: "production",
+      }),
+    ).toBe(true);
+  });
 });

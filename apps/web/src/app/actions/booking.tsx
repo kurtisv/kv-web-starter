@@ -10,6 +10,8 @@ import { prisma } from "@/lib/db";
 import {
   calculateBookingEndAt,
   hasBookingConflict,
+  parseAvailabilityExceptionFormData,
+  parseAvailabilityRuleFormData,
   parseBookingRequestFormData,
   parseServiceFormData,
   parseStaffFormData,
@@ -44,6 +46,40 @@ export async function createStaffMember(formData: FormData) {
 
   revalidatePath("/dashboard/staff");
   redirect("/dashboard/staff");
+}
+
+export async function createAvailabilityRule(formData: FormData) {
+  const rule = parseAvailabilityRuleFormData(formData);
+
+  await prisma.availabilityRule.create({
+    data: {
+      staffId: rule.staffId,
+      weekday: rule.weekday,
+      startTime: rule.startTime,
+      endTime: rule.endTime,
+      timezone: rule.timezone,
+    },
+  });
+
+  revalidatePath("/dashboard/availability");
+  redirect("/dashboard/availability");
+}
+
+export async function createAvailabilityException(formData: FormData) {
+  const exception = parseAvailabilityExceptionFormData(formData);
+
+  await prisma.availabilityException.create({
+    data: {
+      staffId: exception.staffId,
+      date: exception.date,
+      startTime: exception.startTime,
+      endTime: exception.endTime,
+      isClosed: exception.isClosed,
+    },
+  });
+
+  revalidatePath("/dashboard/availability");
+  redirect("/dashboard/availability");
 }
 
 export async function createBookingRequest(formData: FormData) {

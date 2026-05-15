@@ -1,6 +1,12 @@
 import { describe, expect, it } from "vitest";
 
-import { parseServiceFormData, parseStaffFormData, slugifyServiceName } from "./management";
+import {
+  parseAvailabilityExceptionFormData,
+  parseAvailabilityRuleFormData,
+  parseServiceFormData,
+  parseStaffFormData,
+  slugifyServiceName,
+} from "./management";
 
 describe("booking management forms", () => {
   it("slugifies service names", () => {
@@ -29,6 +35,36 @@ describe("booking management forms", () => {
     expect(parseStaffFormData(formData)).toEqual({
       name: "Jane Operator",
       email: undefined,
+    });
+  });
+
+  it("parses weekly availability rules", () => {
+    const formData = new FormData();
+    formData.set("staffId", "staff_1");
+    formData.set("weekday", "1");
+    formData.set("startTime", "09:00");
+    formData.set("endTime", "17:00");
+
+    expect(parseAvailabilityRuleFormData(formData)).toEqual({
+      staffId: "staff_1",
+      weekday: 1,
+      startTime: "09:00",
+      endTime: "17:00",
+      timezone: "America/Toronto",
+    });
+  });
+
+  it("parses closed-day availability exceptions", () => {
+    const formData = new FormData();
+    formData.set("staffId", "staff_1");
+    formData.set("date", "2026-05-18");
+    formData.set("isClosed", "on");
+
+    expect(parseAvailabilityExceptionFormData(formData)).toMatchObject({
+      staffId: "staff_1",
+      isClosed: true,
+      startTime: undefined,
+      endTime: undefined,
     });
   });
 });

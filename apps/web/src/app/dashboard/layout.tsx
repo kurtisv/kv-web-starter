@@ -17,6 +17,7 @@ import { auth } from "@/lib/auth";
 const navItems = [
   { href: "/dashboard", label: "Overview", icon: LayoutDashboard },
   { href: "/dashboard/bookings", label: "Bookings", icon: CalendarDays },
+  { href: "/dashboard/availability", label: "Availability", icon: CalendarDays },
   { href: "/dashboard/services", label: "Services", icon: BriefcaseBusiness },
   { href: "/dashboard/staff", label: "Staff", icon: UserRoundCog },
   { href: "/dashboard/customers", label: "Customers", icon: Users },

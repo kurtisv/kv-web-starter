@@ -1,8 +1,11 @@
 import { CalendarClock, CheckCircle2, Clock3 } from "lucide-react";
 
+import { createBookingRequest } from "@/app/actions/booking";
 import { MarketingPageShell } from "@/components/marketing/page-shell";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { generateBookingSlots } from "@/modules/booking";
 
 const services = [
@@ -93,10 +96,10 @@ export default function BookingPage() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Creneaux disponibles</CardTitle>
+                <CardTitle>Demande de reservation</CardTitle>
                 <CardDescription>Lundi 18 mai 2026, heure demo UTC.</CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="grid gap-5">
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                   {demoSlots.map((slot) => (
                     <Button key={slot.startTime} variant="secondary" size="sm">
@@ -105,6 +108,31 @@ export default function BookingPage() {
                     </Button>
                   ))}
                 </div>
+                <form action={createBookingRequest} className="grid gap-4 border-t pt-5">
+                  <input name="serviceId" type="hidden" value="replace-with-service-id" />
+                  <input name="startAt" type="hidden" value="2026-05-18T09:00:00.000Z" />
+                  <div className="grid gap-2">
+                    <Label htmlFor="customerName">Name</Label>
+                    <Input id="customerName" name="customerName" placeholder="Client Example" required />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="customerEmail">Email</Label>
+                    <Input
+                      id="customerEmail"
+                      name="customerEmail"
+                      type="email"
+                      placeholder="client@example.com"
+                      required
+                    />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="customerPhone">Phone</Label>
+                    <Input id="customerPhone" name="customerPhone" placeholder="+1 555 555 5555" />
+                  </div>
+                  <Button type="submit" variant="secondary">
+                    Request demo booking
+                  </Button>
+                </form>
               </CardContent>
             </Card>
           </div>

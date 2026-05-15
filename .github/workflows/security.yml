@@ -1,15 +1,17 @@
-name: CI
+name: Security
 
 on:
   push:
     branches: [main]
   pull_request:
+  schedule:
+    - cron: "0 10 * * 1"
 
 permissions:
   contents: read
 
 jobs:
-  check:
+  audit:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -21,9 +23,4 @@ jobs:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm db:generate
-      - run: pnpm db:validate
-      - run: pnpm check
-      - run: pnpm build
-      - run: pnpm --filter @kv/web exec playwright install --with-deps chromium
-      - run: pnpm test:e2e
+      - run: pnpm audit --audit-level moderate

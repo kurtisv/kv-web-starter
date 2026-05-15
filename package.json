@@ -9,6 +9,7 @@
     "lint": "pnpm --filter @kv/web lint",
     "typecheck": "pnpm --filter @kv/web typecheck",
     "test": "pnpm --filter @kv/web test",
+    "test:e2e": "pnpm --filter @kv/web test:e2e",
     "check": "pnpm lint && pnpm typecheck && pnpm test",
     "db:generate": "prisma generate",
     "db:validate": "prisma validate",

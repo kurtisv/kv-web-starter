@@ -3,6 +3,7 @@ import {
   BriefcaseBusiness,
   CalendarDays,
   CreditCard,
+  Gauge,
   KeyRound,
   LayoutDashboard,
   Settings,
@@ -22,6 +23,7 @@ const navItems = [
   { href: "/dashboard/staff", label: "Staff", icon: UserRoundCog },
   { href: "/dashboard/customers", label: "Customers", icon: Users },
   { href: "/dashboard/api-keys", label: "API Keys", icon: KeyRound },
+  { href: "/dashboard/api-usage", label: "API Usage", icon: Gauge },
   { href: "/dashboard/billing", label: "Billing", icon: CreditCard },
   { href: "/dashboard/settings", label: "Settings", icon: Settings },
 ];

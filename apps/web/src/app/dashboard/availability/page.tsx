@@ -1,6 +1,13 @@
 import { CalendarOff, Clock3, PlusCircle } from "lucide-react";
 
-import { createAvailabilityException, createAvailabilityRule } from "@/app/actions/booking";
+import {
+  createAvailabilityException,
+  createAvailabilityRule,
+  deleteAvailabilityException,
+  deleteAvailabilityRule,
+  updateAvailabilityException,
+  updateAvailabilityRule,
+} from "@/app/actions/booking";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -40,10 +47,6 @@ async function getAvailabilityData() {
   } catch {
     return { staff: [], rules: [], exceptions: [] };
   }
-}
-
-function getStaffName(staff: { id: string; name: string }[], staffId: string) {
-  return staff.find((member) => member.id === staffId)?.name ?? staffId;
 }
 
 export default async function DashboardAvailabilityPage() {
@@ -195,12 +198,60 @@ export default async function DashboardAvailabilityPage() {
               <TableBody>
                 {rules.map((rule) => (
                   <TableRow key={rule.id}>
-                    <TableCell>{getStaffName(staff, rule.staffId)}</TableCell>
-                    <TableCell>{weekdays.find((day) => day.value === rule.weekday)?.label}</TableCell>
                     <TableCell>
-                      {rule.startTime} - {rule.endTime}
+                      <form id={`rule-${rule.id}`} action={updateAvailabilityRule}>
+                        <input type="hidden" name="ruleId" value={rule.id} />
+                        <select
+                          name="staffId"
+                          className="h-10 w-full border border-border bg-background px-3 text-sm"
+                          defaultValue={rule.staffId}
+                          required
+                        >
+                          {staff.map((member) => (
+                            <option key={member.id} value={member.id}>
+                              {member.name}
+                            </option>
+                          ))}
+                        </select>
+                      </form>
                     </TableCell>
-                    <TableCell>{rule.timezone}</TableCell>
+                    <TableCell>
+                      <select
+                        form={`rule-${rule.id}`}
+                        name="weekday"
+                        className="h-10 w-full border border-border bg-background px-3 text-sm"
+                        defaultValue={rule.weekday}
+                        required
+                      >
+                        {weekdays.map((day) => (
+                          <option key={day.value} value={day.value}>
+                            {day.label}
+                          </option>
+                        ))}
+                      </select>
+                    </TableCell>
+                    <TableCell>
+                      <div className="grid gap-2 sm:grid-cols-2">
+                        <Input form={`rule-${rule.id}`} name="startTime" type="time" defaultValue={rule.startTime} required />
+                        <Input form={`rule-${rule.id}`} name="endTime" type="time" defaultValue={rule.endTime} required />
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="grid gap-2">
+                        <Input form={`rule-${rule.id}`} name="timezone" defaultValue={rule.timezone} required />
+                        <div className="flex gap-2">
+                          <Button form={`rule-${rule.id}`} type="submit" size="sm" variant="secondary">
+                            Save
+                          </Button>
+                          <form action={deleteAvailabilityRule}>
+                            <input type="hidden" name="ruleId" value={rule.id} />
+                            <Button type="submit" size="sm" variant="ghost">
+                              Delete
+                            </Button>
+                          </form>
+                        </div>
+                      </div>
+                    </TableCell>
                   </TableRow>
                 ))}
                 {rules.length === 0 ? (
@@ -233,14 +284,72 @@ export default async function DashboardAvailabilityPage() {
               <TableBody>
                 {exceptions.map((exception) => (
                   <TableRow key={exception.id}>
-                    <TableCell>{getStaffName(staff, exception.staffId)}</TableCell>
-                    <TableCell>{exception.date.toISOString().slice(0, 10)}</TableCell>
                     <TableCell>
-                      {exception.startTime && exception.endTime
-                        ? `${exception.startTime} - ${exception.endTime}`
-                        : "-"}
+                      <form id={`exception-${exception.id}`} action={updateAvailabilityException}>
+                        <input type="hidden" name="exceptionId" value={exception.id} />
+                        <select
+                          name="staffId"
+                          className="h-10 w-full border border-border bg-background px-3 text-sm"
+                          defaultValue={exception.staffId}
+                          required
+                        >
+                          {staff.map((member) => (
+                            <option key={member.id} value={member.id}>
+                              {member.name}
+                            </option>
+                          ))}
+                        </select>
+                      </form>
                     </TableCell>
-                    <TableCell>{exception.isClosed ? "Closed" : "Blocked"}</TableCell>
+                    <TableCell>
+                      <Input
+                        form={`exception-${exception.id}`}
+                        name="date"
+                        type="date"
+                        defaultValue={exception.date.toISOString().slice(0, 10)}
+                        required
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <div className="grid gap-2 sm:grid-cols-2">
+                        <Input
+                          form={`exception-${exception.id}`}
+                          name="startTime"
+                          type="time"
+                          defaultValue={exception.startTime ?? ""}
+                        />
+                        <Input
+                          form={`exception-${exception.id}`}
+                          name="endTime"
+                          type="time"
+                          defaultValue={exception.endTime ?? ""}
+                        />
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="grid gap-2">
+                        <label className="flex items-center gap-2 text-sm">
+                          <input
+                            form={`exception-${exception.id}`}
+                            name="isClosed"
+                            type="checkbox"
+                            defaultChecked={exception.isClosed}
+                          />
+                          Closed
+                        </label>
+                        <div className="flex gap-2">
+                          <Button form={`exception-${exception.id}`} type="submit" size="sm" variant="secondary">
+                            Save
+                          </Button>
+                          <form action={deleteAvailabilityException}>
+                            <input type="hidden" name="exceptionId" value={exception.id} />
+                            <Button type="submit" size="sm" variant="ghost">
+                              Delete
+                            </Button>
+                          </form>
+                        </div>
+                      </div>
+                    </TableCell>
                   </TableRow>
                 ))}
                 {exceptions.length === 0 ? (

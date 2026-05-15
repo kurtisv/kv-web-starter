@@ -1,6 +1,6 @@
 import { PlusCircle } from "lucide-react";
 
-import { createService } from "@/app/actions/booking";
+import { createService, deactivateService, updateService } from "@/app/actions/booking";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -88,13 +88,47 @@ export default async function DashboardServicesPage() {
               <TableBody>
                 {services.map((service) => (
                   <TableRow key={service.id}>
-                    <TableCell>{service.name}</TableCell>
                     <TableCell>
-                      <code className="text-sm">{service.slug}</code>
+                      <form id={`service-${service.id}`} action={updateService} className="grid gap-2">
+                        <input type="hidden" name="serviceId" value={service.id} />
+                        <Input name="name" defaultValue={service.name} required />
+                        <Textarea name="description" defaultValue={service.description ?? ""} />
+                      </form>
                     </TableCell>
-                    <TableCell>{service.durationMin} min</TableCell>
                     <TableCell>
-                      {service.priceCents ? `$${(service.priceCents / 100).toFixed(2)}` : "Free"}
+                      <Input form={`service-${service.id}`} name="slug" defaultValue={service.slug} required />
+                    </TableCell>
+                    <TableCell>
+                      <Input
+                        form={`service-${service.id}`}
+                        name="durationMin"
+                        type="number"
+                        min={5}
+                        defaultValue={service.durationMin}
+                        required
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <div className="grid gap-2">
+                        <Input
+                          form={`service-${service.id}`}
+                          name="priceCents"
+                          type="number"
+                          min={0}
+                          defaultValue={service.priceCents ?? ""}
+                        />
+                        <div className="flex gap-2">
+                          <Button form={`service-${service.id}`} type="submit" size="sm" variant="secondary">
+                            Save
+                          </Button>
+                          <form action={deactivateService}>
+                            <input type="hidden" name="serviceId" value={service.id} />
+                            <Button type="submit" size="sm" variant="ghost">
+                              Disable
+                            </Button>
+                          </form>
+                        </div>
+                      </div>
                     </TableCell>
                   </TableRow>
                 ))}

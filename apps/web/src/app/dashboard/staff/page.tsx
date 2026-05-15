@@ -1,6 +1,6 @@
 import { PlusCircle } from "lucide-react";
 
-import { createStaffMember } from "@/app/actions/booking";
+import { createStaffMember, deactivateStaffMember, updateStaffMember } from "@/app/actions/booking";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -72,9 +72,31 @@ export default async function DashboardStaffPage() {
               <TableBody>
                 {staff.map((member) => (
                   <TableRow key={member.id}>
-                    <TableCell>{member.name}</TableCell>
-                    <TableCell>{member.email ?? "-"}</TableCell>
-                    <TableCell>{member.isActive ? "Active" : "Inactive"}</TableCell>
+                    <TableCell>
+                      <form id={`staff-${member.id}`} action={updateStaffMember}>
+                        <input type="hidden" name="staffId" value={member.id} />
+                        <Input name="name" defaultValue={member.name} required />
+                      </form>
+                    </TableCell>
+                    <TableCell>
+                      <Input form={`staff-${member.id}`} name="email" type="email" defaultValue={member.email ?? ""} />
+                    </TableCell>
+                    <TableCell>
+                      <div className="grid gap-2">
+                        <span>{member.isActive ? "Active" : "Inactive"}</span>
+                        <div className="flex gap-2">
+                          <Button form={`staff-${member.id}`} type="submit" size="sm" variant="secondary">
+                            Save
+                          </Button>
+                          <form action={deactivateStaffMember}>
+                            <input type="hidden" name="staffId" value={member.id} />
+                            <Button type="submit" size="sm" variant="ghost">
+                              Disable
+                            </Button>
+                          </form>
+                        </div>
+                      </div>
+                    </TableCell>
                   </TableRow>
                 ))}
                 {staff.length === 0 ? (

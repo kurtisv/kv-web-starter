@@ -1,6 +1,34 @@
 import Link from "next/link";
 
-import { siteConfig } from "@/config/site";
+const columns = [
+  {
+    title: "Produit",
+    links: [
+      { href: "/docs", label: "Guide complet" },
+      { href: "/overview", label: "Architecture" },
+      { href: "/services", label: "Ce qu'on obtient" },
+      { href: "/pricing", label: "Tarifs" },
+    ],
+  },
+  {
+    title: "Demo",
+    links: [
+      { href: "/booking", label: "Reservation" },
+      { href: "/developers", label: "Portail API" },
+      { href: "/dashboard", label: "Dashboard" },
+      { href: "/docs/api", label: "Reference API" },
+    ],
+  },
+  {
+    title: "Support",
+    links: [
+      { href: "/faq", label: "FAQ" },
+      { href: "/contact", label: "Contact" },
+      { href: "/privacy", label: "Confidentialite" },
+      { href: "/terms", label: "Conditions" },
+    ],
+  },
+];
 
 export function Footer() {
   return (
@@ -8,20 +36,24 @@ export function Footer() {
       <div className="mx-auto max-w-6xl px-6 py-12">
         <div className="grid gap-10 sm:grid-cols-[1.5fr_repeat(3,_1fr)]">
           <div>
-            <p className="font-semibold text-foreground">{siteConfig.name}</p>
+            <p className="font-semibold text-foreground">KV Web Starter</p>
             <p className="mt-2 max-w-xs text-sm leading-6 text-muted-foreground">
-              {siteConfig.tagline}
+              Base modulaire Next.js pour livrer des sites vitrines, des plateformes de
+              reservation et des portails API en jours.
             </p>
             <div className="mt-4 flex flex-wrap gap-2">
-              {siteConfig.footerTags.map((t) => (
-                <span key={t} className="border bg-muted/50 px-2 py-0.5 text-xs text-muted-foreground">
+              {["Next.js 16", "Stripe", "Auth.js", "Prisma"].map((t) => (
+                <span
+                  key={t}
+                  className="border bg-muted/50 px-2 py-0.5 text-xs text-muted-foreground"
+                >
                   {t}
                 </span>
               ))}
             </div>
           </div>
 
-          {siteConfig.footerColumns.map((col) => (
+          {columns.map((col) => (
             <div key={col.title}>
               <p className="text-xs font-semibold uppercase tracking-wide text-foreground">
                 {col.title}
@@ -29,7 +61,10 @@ export function Footer() {
               <ul className="mt-3 grid gap-2">
                 {col.links.map((link) => (
                   <li key={link.href}>
-                    <Link href={link.href} className="text-sm text-muted-foreground transition-colors hover:text-foreground">
+                    <Link
+                      href={link.href}
+                      className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                    >
                       {link.label}
                     </Link>
                   </li>
@@ -40,8 +75,10 @@ export function Footer() {
         </div>
 
         <div className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t pt-6 text-xs text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} {siteConfig.name}. Tous droits réservés.</p>
-          <p>Conçu et développé par Kurtis V. au {siteConfig.location}.</p>
+          <p>&copy; {new Date().getFullYear()} KV Web Starter. Tous droits reserves.</p>
+          <p>
+            Fait avec Next.js, Tailwind CSS et beaucoup de cafe.
+          </p>
         </div>
       </div>
     </footer>

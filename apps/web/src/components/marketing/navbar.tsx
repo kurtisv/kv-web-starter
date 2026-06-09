@@ -18,7 +18,7 @@ export function Navbar() {
           ))}
         </nav>
         <Button asChild size="sm">
-          <Link href="/booking">Prendre un appel</Link>
+          <Link href={siteConfig.ctaHref}>{siteConfig.cta}</Link>
         </Button>
       </div>
     </header>

@@ -1,221 +1,176 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import {
-  ArrowRight,
-  CalendarDays,
-  CheckCircle2,
-  CreditCard,
-  Globe,
-  KeyRound,
-  LayoutDashboard,
-  Mail,
-  ShieldCheck,
-} from "lucide-react";
+import { ArrowRight, Code2, Smartphone, Zap, Wrench, CheckCircle2 } from "lucide-react";
 
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { MarketingPageShell } from "@/components/marketing/page-shell";
+import { AnimatedSection } from "@/components/ui/animated-section";
 
 export const metadata: Metadata = {
-  title: "Services",
-  description:
-    "Ce que tu obtiens avec KV Web Starter : site vitrine, reservations, paiements, API et dashboard admin.",
+  title: "Services — KV Studio",
+  description: "Développement web, applications mobiles, intégrations API et maintenance.",
 };
 
-const services = [
+const SERVICES = [
   {
-    icon: Globe,
-    title: "Site vitrine",
-    description:
-      "Toutes les pages marketing dont un site professionnel a besoin, deja construites et optimisees pour Google.",
-    items: [
-      "Page d'accueil avec sections hero et modules",
-      "Page services avec descriptions et icones",
-      "Temoignages clients",
-      "Page FAQ avec accordeon",
-      "Formulaire de contact",
-      "Mentions legales et confidentialite",
-      "Sitemap.xml et robots.txt automatiques",
-      "Metadata Open Graph par page",
+    icon: Code2,
+    title: "Développement Web",
+    description: "Sites vitrine, SaaS, e-commerce — des produits qui convertissent et qui tiennent.",
+    features: [
+      "Next.js App Router + TypeScript",
+      "SEO technique et Core Web Vitals",
+      "Animations et transitions fluides",
+      "Authentification et espace client",
+      "Paiements Stripe intégrés",
+      "Déploiement Vercel ou VPS",
     ],
-    href: "/",
-    cta: "Voir l'accueil",
+    timeline: "2–4 semaines",
+    from: "À partir de 2 500 $",
   },
   {
-    icon: CalendarDays,
-    title: "Reservations en ligne",
-    description:
-      "Tes clients reservent et payent en autonomie. Tu geres tout depuis le dashboard sans jamais decrocher le telephone.",
-    items: [
-      "Page publique de reservation",
-      "Calendrier interactif avec creneaux disponibles",
-      "Gestion des services, durees et prix",
-      "Gestion du staff et de leurs horaires",
-      "Exceptions et jours feries",
-      "Paiement Stripe au moment de la reservation",
-      "Email de confirmation automatique",
-      "Vue agenda dans le dashboard",
+    icon: Smartphone,
+    title: "Applications Mobiles",
+    description: "iOS et Android depuis une seule base de code React Native. Vite sur les stores.",
+    features: [
+      "React Native + Expo",
+      "Publication App Store & Play Store",
+      "Notifications push",
+      "Mode hors-ligne et sync",
+      "Backend Supabase ou custom",
+      "EAS Build & Updates",
     ],
-    href: "/booking",
-    cta: "Tester la reservation",
+    timeline: "4–8 semaines",
+    from: "À partir de 5 000 $",
   },
   {
-    icon: CreditCard,
-    title: "Paiements et abonnements",
-    description:
-      "Le systeme de facturation complet : plans, checkout, webhooks, portail client. Rien a construire.",
-    items: [
-      "3 plans configurables (Starter, Pro, Business)",
-      "Page de tarification presentable au client",
-      "Checkout Stripe securise",
-      "Webhook synchronise en temps reel",
-      "Portail client pour modifier ou annuler",
-      "Periodes d'essai gererables",
-      "Historique des paiements",
-      "Facturation automatique mensuelle",
+    icon: Zap,
+    title: "Intégrations & IA",
+    description: "Stripe, OpenAI, webhooks — l'automatisation qui élimine le travail manuel.",
+    features: [
+      "Intégration OpenAI / LLMs",
+      "Automatisations Stripe et facturation",
+      "Webhooks et pipelines de données",
+      "Intégration CRM et outils tiers",
+      "Rate limiting et API sécurisée",
+      "Monitoring et alertes",
     ],
-    href: "/pricing",
-    cta: "Voir les plans",
+    timeline: "1–3 semaines",
+    from: "À partir de 1 500 $",
   },
   {
-    icon: KeyRound,
-    title: "Portail API et developpeurs",
-    description:
-      "Pour les services qui veulent vendre l'acces a leurs donnees ou fonctionnalites via une API.",
-    items: [
-      "Cles API generees et hashees",
-      "Scopes et permissions par cle",
-      "Limites d'appels par plan",
-      "Compteur d'utilisation en temps reel",
-      "Documentation interactive (testable en direct)",
-      "Page portail developpeur",
-      "Endpoint de demonstration inclus",
-      "Guide d'integration",
+    icon: Wrench,
+    title: "Maintenance & Support",
+    description: "Votre produit évolue. Je reste présent pour les mises à jour, correctifs et nouvelles fonctions.",
+    features: [
+      "Support prioritaire < 24h",
+      "Mises à jour de dépendances",
+      "Monitoring uptime",
+      "Ajout de fonctionnalités",
+      "Optimisation des performances",
+      "Revue de code mensuelle",
     ],
-    href: "/developers",
-    cta: "Explorer l'API",
+    timeline: "Engagement mensuel",
+    from: "À partir de 800 $/mois",
   },
-  {
-    icon: LayoutDashboard,
-    title: "Dashboard d'administration",
-    description:
-      "Interface complete pour gerer le site, les clients, les reservations et les statistiques.",
-    items: [
-      "Vue d'ensemble avec statistiques en temps reel",
-      "Gestion des reservations (accepter, annuler)",
-      "Liste des clients et abonnements",
-      "Gestion des cles API",
-      "Configuration des services et du staff",
-      "Suivi de l'utilisation de l'API",
-      "Journal d'audit des actions",
-      "Parametres du compte",
-    ],
-    href: "/dashboard",
-    cta: "Ouvrir le dashboard",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Securite et fiabilite",
-    description:
-      "Les protections essentielles sont activees par defaut. Ton site est securise sans configuration supplementaire.",
-    items: [
-      "Connexion securisee (email, GitHub OAuth)",
-      "Protection de toutes les pages privees",
-      "Entetes de securite sur chaque reponse",
-      "Cles API hashees (jamais stockees en clair)",
-      "Limite d'appels pour eviter les abus",
-      "Journal d'audit des actions sensibles",
-      "Validation des formulaires cote serveur",
-      "Variables d'environnement validees au demarrage",
-    ],
-    href: "/overview",
-    cta: "Voir l'architecture",
-  },
-  {
-    icon: Mail,
-    title: "Emails automatiques",
-    description:
-      "Tous les emails transactionnels sont preconfigures. Tes clients recoivent les bons messages au bon moment.",
-    items: [
-      "Confirmation de reservation",
-      "Rappel avant le rendez-vous",
-      "Email de bienvenue a l'inscription",
-      "Confirmation de paiement",
-      "Alerte en cas d'echec de paiement",
-      "Messages du formulaire de contact",
-      "Templates personnalisables",
-      "Envoi via Resend (sans serveur mail a configurer)",
-    ],
-    href: "/contact",
-    cta: "Tester le contact",
-  },
+];
+
+const PROCESS = [
+  { step: "01", title: "Découverte", desc: "Appel de 30 min gratuit. On définit le périmètre, la stack et les délais." },
+  { step: "02", title: "Proposition", desc: "Devis détaillé avec jalons, livrables et conditions de paiement." },
+  { step: "03", title: "Développement", desc: "Itérations rapides, accès au repo, démos hebdomadaires." },
+  { step: "04", title: "Livraison", desc: "Déploiement, documentation et passation. Support inclus 30 jours." },
 ];
 
 export default function ServicesPage() {
   return (
     <MarketingPageShell>
       <main>
-        <section className="border-b bg-foreground text-background">
+
+        {/* Hero */}
+        <section className="bg-foreground text-background">
+          <div className="mx-auto max-w-6xl px-6 py-20">
+            <AnimatedSection>
+              <p className="mb-3 text-sm font-medium uppercase tracking-widest opacity-40">Ce que je fais</p>
+              <h1 className="max-w-3xl text-5xl font-semibold tracking-tight sm:text-6xl">Services</h1>
+              <p className="mt-5 max-w-xl text-lg opacity-60">
+                Du développement web aux applications mobiles, en passant par les intégrations IA — je construis ce dont vous avez besoin.
+              </p>
+              <div className="mt-7">
+                <Button asChild className="bg-background text-foreground hover:bg-background/90">
+                  <Link href="/booking">
+                    Démarrer un projet <ArrowRight className="size-4" />
+                  </Link>
+                </Button>
+              </div>
+            </AnimatedSection>
+          </div>
+        </section>
+
+        {/* Services */}
+        <section className="mx-auto max-w-6xl px-6 py-16">
+          <div className="grid gap-8 lg:grid-cols-2">
+            {SERVICES.map((service, i) => (
+              <AnimatedSection key={service.title} delay={i * 0.1}>
+                <div className="group h-full border bg-background p-8 transition-colors hover:border-foreground">
+                  <div className="mb-6 flex items-start justify-between">
+                    <div className="flex size-12 items-center justify-center border bg-muted/30 transition-colors group-hover:bg-foreground group-hover:text-background">
+                      <service.icon className="size-5" />
+                    </div>
+                    <span className="text-xs text-muted-foreground">{service.timeline}</span>
+                  </div>
+                  <h2 className="text-xl font-semibold">{service.title}</h2>
+                  <p className="mt-2 text-muted-foreground">{service.description}</p>
+                  <ul className="mt-6 grid gap-2">
+                    {service.features.map((f) => (
+                      <li key={f} className="flex items-center gap-2.5 text-sm">
+                        <CheckCircle2 className="size-4 shrink-0 text-muted-foreground" />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="mt-6 border-t pt-4 text-sm font-medium">{service.from}</div>
+                </div>
+              </AnimatedSection>
+            ))}
+          </div>
+        </section>
+
+        {/* Process */}
+        <section className="border-t bg-muted/10">
           <div className="mx-auto max-w-6xl px-6 py-16">
-            <Badge className="mb-5 border-background/20 bg-background/10 text-background">Ce qu&apos;on obtient</Badge>
-            <h1 className="text-4xl font-semibold tracking-normal text-balance sm:text-5xl">
-              Tout ce qu&apos;un site professionnel doit avoir.<br className="hidden sm:block" />
-              Deja construit.
-            </h1>
-            <p className="mt-5 max-w-2xl text-lg leading-8 opacity-70">
-              Chaque module est independant. Active ce dont ton projet a besoin,
-              ignore le reste. Pas de code mort, pas de fonctionnalites inutiles.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Button asChild className="bg-background text-foreground hover:bg-background/90">
-                <Link href="/docs">
-                  Lire le guide complet <ArrowRight className="size-4" />
-                </Link>
-              </Button>
-              <Button asChild variant="outline" className="border-background/30 text-background hover:bg-background/10">
-                <Link href="/booking">Tester la reservation</Link>
-              </Button>
+            <AnimatedSection>
+              <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground">Comment je travaille</p>
+              <h2 className="mb-10 text-3xl font-semibold">Le processus</h2>
+            </AnimatedSection>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {PROCESS.map((step, i) => (
+                <AnimatedSection key={step.step} delay={i * 0.1}>
+                  <div className="h-full border bg-background p-6">
+                    <span className="text-4xl font-semibold text-muted-foreground/20">{step.step}</span>
+                    <h3 className="mt-3 font-semibold">{step.title}</h3>
+                    <p className="mt-1.5 text-sm text-muted-foreground">{step.desc}</p>
+                  </div>
+                </AnimatedSection>
+              ))}
             </div>
           </div>
         </section>
 
-        <section className="mx-auto max-w-6xl px-6 py-14">
-          <div className="grid gap-6 md:grid-cols-2">
-            {services.map((service) => (
-              <Card key={service.title} className="flex flex-col">
-                <CardHeader>
-                  <div className="flex items-center gap-3">
-                    <div className="flex size-9 shrink-0 items-center justify-center border bg-background">
-                      <service.icon className="size-4" />
-                    </div>
-                    <div>
-                      <CardTitle className="text-lg">{service.title}</CardTitle>
-                    </div>
-                  </div>
-                  <CardDescription className="mt-1">{service.description}</CardDescription>
-                </CardHeader>
-                <CardContent className="flex flex-1 flex-col gap-4">
-                  <ul className="grid gap-1.5 sm:grid-cols-2">
-                    {service.items.map((item) => (
-                      <li key={item} className="flex gap-2 text-sm text-muted-foreground">
-                        <CheckCircle2 className="mt-0.5 size-3.5 shrink-0 text-foreground/50" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="mt-auto">
-                    <Button asChild variant="secondary" size="sm">
-                      <Link href={service.href}>
-                        {service.cta} <ArrowRight className="size-3" />
-                      </Link>
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+        {/* CTA */}
+        <section className="bg-foreground text-background">
+          <div className="mx-auto max-w-6xl px-6 py-16 text-center">
+            <AnimatedSection>
+              <h2 className="text-3xl font-semibold">Prêt à démarrer ?</h2>
+              <p className="mt-3 opacity-60">Premier appel gratuit — 30 minutes pour évaluer votre projet.</p>
+              <div className="mt-7 flex justify-center gap-3">
+                <Button asChild className="bg-background text-foreground hover:bg-background/90">
+                  <Link href="/booking">Réserver un appel <ArrowRight className="size-4" /></Link>
+                </Button>
+              </div>
+            </AnimatedSection>
           </div>
         </section>
+
       </main>
     </MarketingPageShell>
   );

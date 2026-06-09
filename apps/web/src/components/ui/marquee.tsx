@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-export function Marquee({ items, className }: { items: string[]; className?: string }) {
+export function Marquee({ items, className }: { items: readonly string[]; className?: string }) {
   const doubled = [...items, ...items];
   return (
     <div className={cn("flex overflow-hidden select-none", className)}>

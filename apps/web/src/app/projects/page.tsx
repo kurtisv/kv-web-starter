@@ -4,58 +4,12 @@ import { ArrowUpRight } from "lucide-react";
 
 import { MarketingPageShell } from "@/components/marketing/page-shell";
 import { AnimatedSection } from "@/components/ui/animated-section";
+import { PROJECTS } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Projets — KV Studio",
   description: "Portfolio de projets web, mobile et SaaS construits par Kurtis V.",
 };
-
-const PROJECTS = [
-  {
-    id: "kv-starter",
-    name: "KV Web Starter",
-    year: "2025",
-    status: "Open source",
-    tags: ["Next.js", "Prisma", "Stripe", "NextAuth", "i18n"],
-    description: "Boilerplate complet pour sites avec réservations, paiements et portail API. Livrez en jours, pas en mois.",
-    longDescription: "Un point de départ professionnel avec authentification JWT, dashboard admin, système de réservation avec creneaux, paiements Stripe (one-time + abonnements), portail API avec rate limiting Upstash, et bilingue FR/EN natif. Conçu pour itérer vite sur des projets client réels.",
-    href: "https://github.com/kurtisv/kv-web-starter",
-    external: true,
-  },
-  {
-    id: "gasmobile",
-    name: "GasMobile",
-    year: "2025",
-    status: "En production",
-    tags: ["React Native", "Expo", "Supabase", "TypeScript", "EAS"],
-    description: "Application mobile de gestion complète pour stations-service. Inventaire, analytics, multi-site.",
-    longDescription: "Gestion opérationnelle complète d'une chaîne de stations-service : suivi des stocks de carburant en temps réel, rapports d'activité journaliers, gestion des équipes et tableau de bord multi-sites. Déployé sur iOS et Android via EAS Build.",
-    href: "#",
-    external: false,
-  },
-  {
-    id: "reserveflow",
-    name: "ReserveFlow",
-    year: "2024",
-    status: "En production",
-    tags: ["Next.js", "PostgreSQL", "Stripe", "Resend", "Prisma"],
-    description: "Système de réservation en ligne pour prestataires de services.",
-    longDescription: "Plateforme SaaS permettant aux professionnels indépendants de gérer leurs créneaux en ligne, d'encaisser les paiements au moment de la réservation et d'envoyer des confirmations automatiques par email. Tableau de bord complet pour les prestataires.",
-    href: "#",
-    external: false,
-  },
-  {
-    id: "pleinsens",
-    name: "PleinSens",
-    year: "2024",
-    status: "Beta",
-    tags: ["Python", "FastAPI", "React", "PostgreSQL", "NumPy"],
-    description: "Plateforme d'analyse et de backtesting de stratégies sur données historiques.",
-    longDescription: "Outil d'analyse quantitative permettant de tester et valider des stratégies sur données historiques. Métriques de performance détaillées, visualisation des courbes d'équité, export des résultats et monitoring continu de la précision des signaux.",
-    href: "#",
-    external: false,
-  },
-];
 
 const STATUS_CLASS: Record<string, string> = {
   "Open source": "border-blue-200 bg-blue-50 text-blue-700",

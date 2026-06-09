@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { MarketingPageShell } from "@/components/marketing/page-shell";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
+import { STATS } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "À propos — KV Studio",
@@ -17,13 +18,6 @@ const SKILLS = [
   { category: "Backend", items: ["Node.js", "Prisma", "PostgreSQL", "Supabase", "FastAPI"] },
   { category: "Mobile", items: ["React Native", "Expo", "EAS Build", "iOS", "Android"] },
   { category: "DevOps & Outils", items: ["Vercel", "Docker", "GitHub Actions", "Stripe", "Resend"] },
-];
-
-const STATS = [
-  { value: 8, suffix: "+", label: "Projets livrés" },
-  { value: 3, suffix: "+", label: "Années d'expérience" },
-  { value: 6, suffix: "+", label: "Clients servis" },
-  { value: 16, suffix: "+", label: "Technologies maîtrisées" },
 ];
 
 const VALUES = [

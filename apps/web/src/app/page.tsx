@@ -8,17 +8,13 @@ import { AnimatedSection } from "@/components/ui/animated-section";
 import { AnimatedHeroText } from "@/components/ui/animated-hero-text";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { Marquee } from "@/components/ui/marquee";
+import { PROJECTS, STACK, STATS } from "@/lib/data";
+import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
-  title: "KV Studio — Développeur Full-Stack",
-  description: "Je construis les produits que vous n'avez pas le temps de construire. Next.js, React Native, IA.",
+  title: `${siteConfig.name} — Développeur Full-Stack`,
+  description: siteConfig.tagline,
 };
-
-const PROJECTS = [
-  { id: "kv-starter", name: "KV Web Starter", year: "2025", tags: ["Next.js", "Prisma", "Stripe"], description: "Boilerplate complet pour sites avec réservations, paiements et portail API.", href: "/projects" },
-  { id: "gasmobile", name: "GasMobile", year: "2025", tags: ["React Native", "Expo", "Supabase"], description: "Application mobile de gestion pour stations-service. Multi-site, analytics, inventaire.", href: "/projects" },
-  { id: "reserveflow", name: "ReserveFlow", year: "2024", tags: ["Next.js", "PostgreSQL", "Stripe"], description: "Système de réservation SaaS pour prestataires de services indépendants.", href: "/projects" },
-];
 
 const SERVICES = [
   { icon: Code2, title: "Développement Web", desc: "Sites vitrine, SaaS, e-commerce — avec Next.js et TypeScript." },
@@ -27,14 +23,7 @@ const SERVICES = [
   { icon: Wrench, title: "Maintenance & Support", desc: "Suivi continu, optimisation et nouvelles fonctionnalités." },
 ];
 
-const STACK = ["Next.js", "React", "TypeScript", "Node.js", "Prisma", "PostgreSQL", "Stripe", "React Native", "Expo", "Tailwind CSS", "Framer Motion", "Vercel", "Supabase", "OpenAI", "FastAPI", "Python"];
-
-const STATS = [
-  { value: 8, suffix: "+", label: "Projets livrés" },
-  { value: 6, suffix: "+", label: "Clients satisfaits" },
-  { value: 3, suffix: "+", label: "Années d'expérience" },
-  { value: 16, suffix: "+", label: "Technologies" },
-];
+const HOME_PROJECTS = PROJECTS.slice(0, 3);
 
 export default function Home() {
   return (
@@ -120,10 +109,10 @@ export default function Home() {
             </AnimatedSection>
 
             <div className="grid gap-px border border-border bg-border sm:grid-cols-3">
-              {PROJECTS.map((project, i) => (
+              {HOME_PROJECTS.map((project, i) => (
                 <AnimatedSection key={project.id} delay={i * 0.1}>
                   <Link
-                    href={project.href}
+                    href="/projects"
                     className="group flex h-full flex-col bg-background p-6 transition-colors hover:bg-muted/30"
                   >
                     <div className="mb-4 flex items-center justify-between">

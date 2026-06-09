@@ -55,3 +55,13 @@ body {
 .animate-marquee {
   animation: marquee 30s linear infinite;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
+  }
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

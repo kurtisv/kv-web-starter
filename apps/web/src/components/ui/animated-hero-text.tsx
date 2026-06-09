@@ -1,8 +1,13 @@
 "use client";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 
 export function AnimatedHeroText({ text, className }: { text: string; className?: string }) {
   const words = text.split(" ");
+  const reduced = useReducedMotion();
+
+  if (reduced) {
+    return <span className={className}>{text}</span>;
+  }
 
   return (
     <span className={className} aria-label={text}>
@@ -11,11 +16,7 @@ export function AnimatedHeroText({ text, className }: { text: string; className?
           key={i}
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{
-            duration: 0.5,
-            delay: 0.3 + i * 0.07,
-            ease: [0.22, 1, 0.36, 1],
-          }}
+          transition={{ duration: 0.5, delay: 0.3 + i * 0.07, ease: [0.22, 1, 0.36, 1] }}
           style={{ display: "inline-block", marginRight: "0.3em" }}
         >
           {word}

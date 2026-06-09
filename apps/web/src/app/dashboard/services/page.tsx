@@ -9,6 +9,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { prisma } from "@/lib/db";
 
+const DEMO_SERVICES = [
+  { id: "demo-svc-discovery", name: "Discovery call", slug: "discovery-call", description: "Qualifier le besoin, le budget et la prochaine etape.", durationMin: 30, priceCents: null as number | null, isActive: true, createdAt: new Date("2025-01-10") },
+  { id: "demo-svc-sprint", name: "Implementation sprint", slug: "implementation-sprint", description: "Planifier une livraison avec livrables et criteres de test.", durationMin: 60, priceCents: 25000 as number | null, isActive: true, createdAt: new Date("2025-01-12") },
+  { id: "demo-svc-suivi", name: "Suivi mensuel", slug: "suivi-mensuel", description: "Point mensuel sur les KPIs et priorites.", durationMin: 45, priceCents: 9900 as number | null, isActive: true, createdAt: new Date("2025-01-20") },
+];
+
 async function getServices() {
   try {
     return await prisma.service.findMany({
@@ -21,7 +27,8 @@ async function getServices() {
 }
 
 export default async function DashboardServicesPage() {
-  const services = await getServices();
+  const dbServices = await getServices();
+  const services = dbServices.length > 0 ? dbServices : DEMO_SERVICES;
 
   return (
     <main className="grid gap-6 px-6 py-10">

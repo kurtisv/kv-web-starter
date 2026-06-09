@@ -11,19 +11,63 @@ permissions:
 jobs:
   check:
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: kv_web_starter_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/kv_web_starter_test
+      AUTH_SECRET: ci-test-secret-not-for-production-use
+      AUTH_ENABLE_DEMO_LOGIN: "true"
+      AUTH_DEMO_EMAIL: admin@example.com
+      AUTH_DEMO_PASSWORD: password-ci-only
+      NEXT_PUBLIC_APP_URL: http://localhost:3000
+      NODE_ENV: test
+
     steps:
       - uses: actions/checkout@v5
+
       - uses: pnpm/action-setup@v4
         with:
           version: 10.26.2
+
       - uses: actions/setup-node@v6
         with:
           node-version: 24
           cache: pnpm
+
       - run: pnpm install --frozen-lockfile
+
       - run: pnpm db:generate
+
       - run: pnpm db:validate
+
+      - name: Apply migrations
+        run: pnpm exec prisma migrate deploy
+        working-directory: .
+
       - run: pnpm check
+
       - run: pnpm build
+        env:
+          NODE_ENV: production
+          AUTH_SECRET: ci-build-secret-not-for-production
+
       - run: pnpm --filter @kv/web exec playwright install --with-deps chromium
+
       - run: pnpm test:e2e
+        env:
+          NODE_ENV: test
+          PLAYWRIGHT_BASE_URL: http://localhost:3000

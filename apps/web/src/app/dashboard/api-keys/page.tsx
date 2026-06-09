@@ -10,6 +10,12 @@ import { prisma } from "@/lib/db";
 
 import { ApiKeyForm } from "./api-key-form";
 
+const DEMO_API_KEYS = [
+  { id: "demo-key-prod", name: "Production", prefix: "kv_prod_a1b2", scopes: ["read", "write"], lastUsedAt: new Date("2025-06-07") as Date | null, revokedAt: null as Date | null },
+  { id: "demo-key-mobile", name: "Mobile App", prefix: "kv_prod_c3d4", scopes: ["read"], lastUsedAt: new Date("2025-06-06") as Date | null, revokedAt: null as Date | null },
+  { id: "demo-key-test", name: "Test env", prefix: "kv_test_e5f6", scopes: ["read", "write", "admin"], lastUsedAt: null as Date | null, revokedAt: new Date("2025-05-01") as Date | null },
+];
+
 async function getApiKeys() {
   const session = await auth();
 
@@ -43,7 +49,8 @@ async function getApiKeys() {
 }
 
 export default async function DashboardApiKeysPage() {
-  const apiKeys = await getApiKeys();
+  const dbApiKeys = await getApiKeys();
+  const apiKeys = dbApiKeys.length > 0 ? dbApiKeys : DEMO_API_KEYS;
   const activeKeys = apiKeys.filter((apiKey) => !apiKey.revokedAt);
   const scopeCount = new Set(apiKeys.flatMap((apiKey) => apiKey.scopes)).size;
 

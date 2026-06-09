@@ -25,6 +25,21 @@ const weekdays = [
   { value: 6, label: "Saturday" },
 ];
 
+const DEMO_STAFF_AVAIL = [
+  { id: "demo-staff-marie", name: "Marie Tremblay" },
+  { id: "demo-staff-alex", name: "Alex Gagnon" },
+];
+
+const DEMO_RULES = [
+  { id: "demo-rule-mon", staffId: "demo-staff-marie", weekday: 1, startTime: "09:00", endTime: "17:00", timezone: "America/Toronto", createdAt: new Date("2025-01-15") },
+  { id: "demo-rule-wed", staffId: "demo-staff-marie", weekday: 3, startTime: "09:00", endTime: "17:00", timezone: "America/Toronto", createdAt: new Date("2025-01-15") },
+  { id: "demo-rule-fri", staffId: "demo-staff-alex", weekday: 5, startTime: "10:00", endTime: "16:00", timezone: "America/Toronto", createdAt: new Date("2025-02-01") },
+];
+
+const DEMO_EXCEPTIONS = [
+  { id: "demo-exc-noel", staffId: "demo-staff-marie", date: new Date("2025-12-25"), startTime: null as string | null, endTime: null as string | null, isClosed: true, createdAt: new Date("2025-01-15") },
+];
+
 async function getAvailabilityData() {
   try {
     const [staff, rules, exceptions] = await Promise.all([
@@ -43,9 +58,12 @@ async function getAvailabilityData() {
       }),
     ]);
 
-    return { staff, rules, exceptions };
+    if (staff.length > 0 || rules.length > 0 || exceptions.length > 0) {
+      return { staff, rules, exceptions };
+    }
+    return { staff: DEMO_STAFF_AVAIL, rules: DEMO_RULES, exceptions: DEMO_EXCEPTIONS };
   } catch {
-    return { staff: [], rules: [], exceptions: [] };
+    return { staff: DEMO_STAFF_AVAIL, rules: DEMO_RULES, exceptions: DEMO_EXCEPTIONS };
   }
 }
 

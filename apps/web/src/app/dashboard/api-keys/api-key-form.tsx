@@ -1,49 +1,84 @@
 "use client";
 
-import { useActionState } from "react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
+import { z } from "zod";
 
 import { createDashboardApiKey, type CreateApiKeyState } from "@/app/actions/api-keys";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Form, FormField, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+const apiKeySchema = z.object({
+  name: z.string().min(1, "Le nom est requis").max(64, "Nom trop long"),
+  scopes: z.string().min(0),
+});
+
+type ApiKeyFormData = z.infer<typeof apiKeySchema>;
+
 export function ApiKeyForm() {
-  const [state, action, isPending] = useActionState<CreateApiKeyState, FormData>(
-    createDashboardApiKey,
-    null,
-  );
+  const [createdKey, setCreatedKey] = useState<CreateApiKeyState>(null);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<ApiKeyFormData>({
+    resolver: zodResolver(apiKeySchema),
+    defaultValues: { name: "", scopes: "demo:read" },
+  });
+
+  const onSubmit = async (data: ApiKeyFormData) => {
+    const formData = new FormData();
+    formData.set("name", data.name);
+    formData.set("scopes", data.scopes);
+
+    const result = await createDashboardApiKey(null, formData);
+
+    if (result?.ok) {
+      setCreatedKey(result);
+      reset();
+      toast.success("Cle API creee. Copiez-la maintenant — elle ne sera plus visible.");
+    } else {
+      toast.error(result?.error ?? "Erreur lors de la creation.");
+    }
+  };
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Create key</CardTitle>
+        <CardTitle>Creer une cle</CardTitle>
         <CardDescription>La cle complete apparait une seule fois apres creation.</CardDescription>
       </CardHeader>
       <CardContent>
-        <form action={action} className="grid gap-4">
-          <div className="grid gap-2">
-            <Label htmlFor="name">Name</Label>
-            <Input id="name" name="name" placeholder="Production" required />
-          </div>
-          <div className="grid gap-2">
+        <Form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
+          <FormField>
+            <Label htmlFor="name">Nom</Label>
+            <Input id="name" placeholder="Production" {...register("name")} />
+            {errors.name && <FormMessage>{errors.name.message}</FormMessage>}
+          </FormField>
+
+          <FormField>
             <Label htmlFor="scopes">Scopes</Label>
-            <Input id="scopes" name="scopes" defaultValue="demo:read" />
-          </div>
-          <Button type="submit" disabled={isPending}>
-            {isPending ? "Creating..." : "Create API key"}
+            <Input id="scopes" {...register("scopes")} />
+            {errors.scopes && <FormMessage>{errors.scopes.message}</FormMessage>}
+          </FormField>
+
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Creation..." : "Creer la cle API"}
           </Button>
-        </form>
+        </Form>
 
-        {state?.ok ? (
+        {createdKey?.ok ? (
           <div className="mt-5 border bg-secondary p-4">
-            <p className="text-sm font-medium">Copy this key now</p>
-            <code className="mt-2 block break-all text-sm">{state.plainTextKey}</code>
+            <p className="text-sm font-medium">Copiez cette cle maintenant</p>
+            <code className="mt-2 block break-all text-sm">{createdKey.plainTextKey}</code>
           </div>
-        ) : null}
-
-        {state && !state.ok ? (
-          <p className="mt-4 text-sm text-destructive">{state.error}</p>
         ) : null}
       </CardContent>
     </Card>

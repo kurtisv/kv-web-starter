@@ -4,21 +4,27 @@ import Credentials from "next-auth/providers/credentials";
 import GitHub from "next-auth/providers/github";
 import { z } from "zod";
 
+import { authConfig } from "@/lib/auth.config";
 import { shouldTrustAuthHost } from "@/lib/auth-host";
 import { prisma } from "@/lib/db";
 import { env } from "@/lib/env";
 
+if (env.NODE_ENV === "development" && !process.env.AUTH_SECRET) {
+  console.warn(
+    "[auth] AUTH_SECRET is not set. NextAuth will use an insecure fallback in development. " +
+      "Add AUTH_SECRET to your .env file to silence this warning.",
+  );
+}
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  ...authConfig,
   adapter: PrismaAdapter(prisma),
-  secret: env.AUTH_SECRET ?? "development-only-secret-change-before-production",
+  secret: env.AUTH_SECRET,
   trustHost: shouldTrustAuthHost({
     authTrustHost: env.AUTH_TRUST_HOST,
     appUrl: env.NEXT_PUBLIC_APP_URL,
     nodeEnv: process.env.NODE_ENV,
   }),
-  pages: {
-    signIn: "/login",
-  },
   session: { strategy: "jwt" },
   providers: [
     ...(env.AUTH_GITHUB_ID && env.AUTH_GITHUB_SECRET
@@ -45,17 +51,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 })
                 .safeParse(credentials);
 
-              if (!parsed.success) {
-                return null;
-              }
+              if (!parsed.success) return null;
 
               const isDemoUser =
                 parsed.data.email === env.AUTH_DEMO_EMAIL &&
                 parsed.data.password === env.AUTH_DEMO_PASSWORD;
 
-              if (!isDemoUser) {
-                return null;
-              }
+              if (!isDemoUser) return null;
 
               return {
                 id: "demo-admin",
@@ -67,9 +69,4 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         ]
       : []),
   ],
-  callbacks: {
-    authorized({ auth }) {
-      return Boolean(auth?.user);
-    },
-  },
 });

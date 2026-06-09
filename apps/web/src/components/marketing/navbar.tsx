@@ -3,12 +3,12 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 const navItems = [
+  { href: "/docs", label: "Guide" },
   { href: "/services", label: "Services" },
   { href: "/pricing", label: "Pricing" },
-  { href: "/booking", label: "Booking" },
+  { href: "/booking", label: "Reservation" },
   { href: "/developers", label: "API" },
-  { href: "/docs", label: "Docs" },
-  { href: "/contact", label: "Contact" },
+  { href: "/faq", label: "FAQ" },
 ];
 
 export function Navbar() {

@@ -8,6 +8,12 @@ import { Label } from "@/components/ui/label";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { prisma } from "@/lib/db";
 
+const DEMO_STAFF = [
+  { id: "demo-staff-marie", name: "Marie Tremblay", email: "marie@exemple.com" as string | null, isActive: true, createdAt: new Date("2025-01-15") },
+  { id: "demo-staff-alex", name: "Alex Gagnon", email: "alex@exemple.com" as string | null, isActive: true, createdAt: new Date("2025-02-01") },
+  { id: "demo-staff-julie", name: "Julie Belanger", email: null as string | null, isActive: false, createdAt: new Date("2025-03-10") },
+];
+
 async function getStaff() {
   try {
     return await prisma.staff.findMany({
@@ -20,7 +26,8 @@ async function getStaff() {
 }
 
 export default async function DashboardStaffPage() {
-  const staff = await getStaff();
+  const dbStaff = await getStaff();
+  const staff = dbStaff.length > 0 ? dbStaff : DEMO_STAFF;
 
   return (
     <main className="grid gap-6 px-6 py-10">

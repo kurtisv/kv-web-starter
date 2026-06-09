@@ -6,11 +6,20 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { summarizeApiUsage } from "@/modules/api-portal";
 
+const DEMO_API_USAGE = [
+  { id: "demo-u1", endpoint: "/api/v1/bookings", method: "GET", statusCode: 200, latencyMs: 48 as number | null, units: 1, createdAt: new Date("2025-06-08T09:12:00"), apiKey: { prefix: "kv_prod_a1b2", name: "Production" } as { prefix: string; name: string } | null },
+  { id: "demo-u2", endpoint: "/api/v1/bookings", method: "POST", statusCode: 201, latencyMs: 112 as number | null, units: 1, createdAt: new Date("2025-06-08T08:44:00"), apiKey: { prefix: "kv_prod_a1b2", name: "Production" } as { prefix: string; name: string } | null },
+  { id: "demo-u3", endpoint: "/api/v1/services", method: "GET", statusCode: 200, latencyMs: 31 as number | null, units: 1, createdAt: new Date("2025-06-08T08:30:00"), apiKey: { prefix: "kv_prod_c3d4", name: "Mobile App" } as { prefix: string; name: string } | null },
+  { id: "demo-u4", endpoint: "/api/v1/bookings/abc", method: "DELETE", statusCode: 404, latencyMs: 22 as number | null, units: 0, createdAt: new Date("2025-06-07T17:15:00"), apiKey: { prefix: "kv_prod_a1b2", name: "Production" } as { prefix: string; name: string } | null },
+  { id: "demo-u5", endpoint: "/api/v1/availability", method: "GET", statusCode: 200, latencyMs: 55 as number | null, units: 1, createdAt: new Date("2025-06-07T16:00:00"), apiKey: { prefix: "kv_prod_c3d4", name: "Mobile App" } as { prefix: string; name: string } | null },
+  { id: "demo-u6", endpoint: "/api/v1/customers", method: "GET", statusCode: 200, latencyMs: 71 as number | null, units: 2, createdAt: new Date("2025-06-07T14:22:00"), apiKey: { prefix: "kv_prod_a1b2", name: "Production" } as { prefix: string; name: string } | null },
+];
+
 async function getApiUsageData() {
   const session = await auth();
 
   if (!session?.user?.email) {
-    return { rows: [], summary: summarizeApiUsage([]) };
+    return { rows: DEMO_API_USAGE, summary: summarizeApiUsage(DEMO_API_USAGE) };
   }
 
   try {
@@ -40,13 +49,16 @@ async function getApiUsageData() {
     });
 
     const rows = user?.apiUsage ?? [];
+    if (rows.length === 0) {
+      return { rows: DEMO_API_USAGE, summary: summarizeApiUsage(DEMO_API_USAGE) };
+    }
 
     return {
       rows,
       summary: summarizeApiUsage(rows),
     };
   } catch {
-    return { rows: [], summary: summarizeApiUsage([]) };
+    return { rows: DEMO_API_USAGE, summary: summarizeApiUsage(DEMO_API_USAGE) };
   }
 }
 

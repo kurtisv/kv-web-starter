@@ -1,22 +1,84 @@
 import Link from "next/link";
 
+const columns = [
+  {
+    title: "Produit",
+    links: [
+      { href: "/docs", label: "Guide complet" },
+      { href: "/overview", label: "Architecture" },
+      { href: "/services", label: "Ce qu'on obtient" },
+      { href: "/pricing", label: "Tarifs" },
+    ],
+  },
+  {
+    title: "Demo",
+    links: [
+      { href: "/booking", label: "Reservation" },
+      { href: "/developers", label: "Portail API" },
+      { href: "/dashboard", label: "Dashboard" },
+      { href: "/docs/api", label: "Reference API" },
+    ],
+  },
+  {
+    title: "Support",
+    links: [
+      { href: "/faq", label: "FAQ" },
+      { href: "/contact", label: "Contact" },
+      { href: "/privacy", label: "Confidentialite" },
+      { href: "/terms", label: "Conditions" },
+    ],
+  },
+];
+
 export function Footer() {
   return (
     <footer className="border-t bg-background">
-      <div className="mx-auto grid max-w-6xl gap-6 px-6 py-10 text-sm text-muted-foreground sm:grid-cols-3">
-        <div>
-          <p className="font-medium text-foreground">KV Web Starter</p>
-          <p className="mt-2">Base modulaire pour sites vitrines, booking et API payantes.</p>
+      <div className="mx-auto max-w-6xl px-6 py-12">
+        <div className="grid gap-10 sm:grid-cols-[1.5fr_repeat(3,_1fr)]">
+          <div>
+            <p className="font-semibold text-foreground">KV Web Starter</p>
+            <p className="mt-2 max-w-xs text-sm leading-6 text-muted-foreground">
+              Base modulaire Next.js pour livrer des sites vitrines, des plateformes de
+              reservation et des portails API en jours.
+            </p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {["Next.js 16", "Stripe", "Auth.js", "Prisma"].map((t) => (
+                <span
+                  key={t}
+                  className="border bg-muted/50 px-2 py-0.5 text-xs text-muted-foreground"
+                >
+                  {t}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {columns.map((col) => (
+            <div key={col.title}>
+              <p className="text-xs font-semibold uppercase tracking-wide text-foreground">
+                {col.title}
+              </p>
+              <ul className="mt-3 grid gap-2">
+                {col.links.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
-        <div className="grid gap-2">
-          <Link href="/services">Services</Link>
-          <Link href="/pricing">Pricing</Link>
-          <Link href="/faq">FAQ</Link>
-        </div>
-        <div className="grid gap-2">
-          <Link href="/privacy">Confidentialite</Link>
-          <Link href="/terms">Conditions</Link>
-          <Link href="/contact">Contact</Link>
+
+        <div className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t pt-6 text-xs text-muted-foreground">
+          <p>&copy; {new Date().getFullYear()} KV Web Starter. Tous droits reserves.</p>
+          <p>
+            Fait avec Next.js, Tailwind CSS et beaucoup de cafe.
+          </p>
         </div>
       </div>
     </footer>

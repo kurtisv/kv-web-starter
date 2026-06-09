@@ -52,6 +52,21 @@ export async function createCheckoutSession(formData: FormData) {
     metadata: buildCheckoutMetadata({ plan: parsedPlan.data, userId: user?.id }),
   });
 
+  if (user?.id) {
+    try {
+      await prisma.auditLog.create({
+        data: {
+          actorId: user.id,
+          action: "billing.checkout.created",
+          target: "stripe_session",
+          metadata: { plan: parsedPlan.data, sessionId: checkout.id },
+        },
+      });
+    } catch {
+      // Audit logging must not block checkout.
+    }
+  }
+
   if (!checkout.url) {
     redirect("/pricing?error=checkout-url");
   }
@@ -72,7 +87,7 @@ export async function createBillingPortalSession() {
 
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
-    select: { stripeCustomerId: true },
+    select: { id: true, stripeCustomerId: true },
   });
 
   if (!user?.stripeCustomerId) {
@@ -83,6 +98,19 @@ export async function createBillingPortalSession() {
     customer: user.stripeCustomerId,
     return_url: `${env.NEXT_PUBLIC_APP_URL}/dashboard/billing`,
   });
+
+  try {
+    await prisma.auditLog.create({
+      data: {
+        actorId: user.id,
+        action: "billing.portal.opened",
+        target: "stripe_portal",
+        metadata: {},
+      },
+    });
+  } catch {
+    // Audit logging must not block portal access.
+  }
 
   redirect(portal.url);
 }

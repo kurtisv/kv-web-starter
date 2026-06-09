@@ -2,29 +2,26 @@ import Link from "next/link";
 
 const columns = [
   {
-    title: "Produit",
+    title: "Studio",
     links: [
-      { href: "/docs", label: "Guide complet" },
-      { href: "/overview", label: "Architecture" },
-      { href: "/services", label: "Ce qu'on obtient" },
+      { href: "/projects", label: "Projets" },
+      { href: "/services", label: "Services" },
       { href: "/pricing", label: "Tarifs" },
+      { href: "/overview", label: "À propos" },
     ],
   },
   {
-    title: "Demo",
+    title: "Travaillons ensemble",
     links: [
-      { href: "/booking", label: "Reservation" },
-      { href: "/developers", label: "Portail API" },
-      { href: "/dashboard", label: "Dashboard" },
-      { href: "/docs/api", label: "Reference API" },
-    ],
-  },
-  {
-    title: "Support",
-    links: [
+      { href: "/booking", label: "Réserver un appel" },
+      { href: "/contact", label: "Me contacter" },
       { href: "/faq", label: "FAQ" },
-      { href: "/contact", label: "Contact" },
-      { href: "/privacy", label: "Confidentialite" },
+    ],
+  },
+  {
+    title: "Légal",
+    links: [
+      { href: "/privacy", label: "Confidentialité" },
       { href: "/terms", label: "Conditions" },
     ],
   },
@@ -36,13 +33,13 @@ export function Footer() {
       <div className="mx-auto max-w-6xl px-6 py-12">
         <div className="grid gap-10 sm:grid-cols-[1.5fr_repeat(3,_1fr)]">
           <div>
-            <p className="font-semibold text-foreground">KV Web Starter</p>
+            <p className="font-semibold text-foreground">KV Studio</p>
             <p className="mt-2 max-w-xs text-sm leading-6 text-muted-foreground">
-              Base modulaire Next.js pour livrer des sites vitrines, des plateformes de
-              reservation et des portails API en jours.
+              Je construis les produits que vous n&apos;avez pas le temps de construire.
+              Développeur full-stack — Next.js, React Native, IA.
             </p>
             <div className="mt-4 flex flex-wrap gap-2">
-              {["Next.js 16", "Stripe", "Auth.js", "Prisma"].map((t) => (
+              {["Next.js", "React Native", "TypeScript", "IA"].map((t) => (
                 <span
                   key={t}
                   className="border bg-muted/50 px-2 py-0.5 text-xs text-muted-foreground"
@@ -75,9 +72,9 @@ export function Footer() {
         </div>
 
         <div className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t pt-6 text-xs text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} KV Web Starter. Tous droits reserves.</p>
+          <p>&copy; {new Date().getFullYear()} KV Studio. Tous droits réservés.</p>
           <p>
-            Fait avec Next.js, Tailwind CSS et beaucoup de cafe.
+            Conçu et développé par Kurtis V. au Canada.
           </p>
         </div>
       </div>

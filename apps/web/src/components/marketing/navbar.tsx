@@ -3,11 +3,11 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 const navItems = [
-  { href: "/docs", label: "Guide" },
+  { href: "/projects", label: "Projets" },
   { href: "/services", label: "Services" },
-  { href: "/pricing", label: "Pricing" },
-  { href: "/booking", label: "Reservation" },
-  { href: "/developers", label: "API" },
+  { href: "/pricing", label: "Tarifs" },
+  { href: "/overview", label: "À propos" },
+  { href: "/booking", label: "Réservation" },
   { href: "/faq", label: "FAQ" },
 ];
 
@@ -16,7 +16,7 @@ export function Navbar() {
     <header className="border-b bg-background">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
         <Link href="/" className="text-base font-semibold">
-          KV Web Starter
+          KV Studio
         </Link>
         <nav className="hidden items-center gap-6 md:flex">
           {navItems.map((item) => (
@@ -26,7 +26,7 @@ export function Navbar() {
           ))}
         </nav>
         <Button asChild size="sm">
-          <Link href="/login">Dashboard</Link>
+          <Link href="/booking">Prendre un appel</Link>
         </Button>
       </div>
     </header>

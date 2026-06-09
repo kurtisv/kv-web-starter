@@ -9,58 +9,34 @@ import { Section } from "@/components/marketing/section";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export const metadata: Metadata = {
-  title: "FAQ",
-  description: "Questions frequentes sur le boilerplate, ses fonctionnalites, ses couts et son utilisation.",
+  title: "FAQ — KV Studio",
+  description: "Questions fréquentes sur le déroulement d'un projet, les délais, les paiements et le support.",
 };
 
 const faqs = [
   {
-    q: "C'est quoi un boilerplate ?",
-    a: "C'est un point de depart preconfigure. Au lieu de construire un site de zero — connexion, paiements, emails, securite — tout ca est deja fait. Tu arrives avec ton projet client, tu personalises, et tu livres en jours.",
+    q: "Comment se passe un projet ?",
+    a: "Tout commence par un appel gratuit de 30 minutes pour comprendre votre besoin. Ensuite je vous envoie une proposition détaillée avec le périmètre, les jalons et le prix. Une fois validée, je développe par itérations rapides avec des démos régulières et un accès au repo. À la fin : déploiement, documentation et passation.",
   },
   {
-    q: "Je ne sais pas coder. Est-ce fait pour moi ?",
-    a: "Ce projet est destine aux developpeurs ou aux agences qui creent des sites pour leurs clients. Si tu n'es pas developpeur, trouve quelqu'un qui l'est — il ou elle gagnera plusieurs semaines de travail grace a cette base.",
+    q: "Quel est ton délai de livraison ?",
+    a: "Un site vitrine : 1 à 2 semaines. Un site avec réservations et paiements : 2 à 4 semaines. Une application mobile : 4 à 8 semaines. Je livre vite parce que je m'appuie sur mes propres outils et boilerplates — comme KV Web Starter — qui éliminent des semaines de mise en place.",
   },
   {
-    q: "Combien de temps pour livrer un site avec ce boilerplate ?",
-    a: "Un site vitrine : 1-2 jours. Un site avec reservations et paiements : 3-5 jours. Un portail API complet : 5-10 jours. Sans boilerplate, les memes fonctionnalites prendraient 4 a 12 semaines.",
+    q: "Tu travailles seul ou avec une équipe ?",
+    a: "Je travaille principalement en solo, ce qui veut dire un seul interlocuteur, une communication directe et zéro friction. Pour les projets plus gros, je m'entoure de collaborateurs de confiance (design, contenu) tout en restant votre point de contact unique.",
   },
   {
-    q: "Peut-on l'utiliser pour plusieurs projets clients ?",
-    a: "Oui. C'est exactement pour ca qu'il est concu. A chaque nouveau client, tu copies la base, tu actives les modules dont il a besoin, et tu personalises les textes, les couleurs et le contenu.",
+    q: "Peut-on reprendre un projet existant ?",
+    a: "Oui. Je peux reprendre un projet déjà commencé, corriger une base existante ou ajouter des fonctionnalités à un produit en production. Je commence toujours par un audit du code pour évaluer l'état des lieux et vous dire honnêtement ce qui vaut la peine d'être gardé.",
   },
   {
-    q: "Qu'est-ce que ca coute en dehors du developpement ?",
-    a: "Le boilerplate est gratuit. Pour mettre le site en ligne, tu as besoin : d'un hebergement (Vercel, gratuit ou environ 20$/mois), d'une base de donnees (Supabase, gratuit ou environ 25$/mois). Selon les modules actives : Stripe prend une commission sur les ventes, Resend est gratuit jusqu'a 3000 emails/mois, Sentry est gratuit jusqu'a 5000 erreurs/mois.",
+    q: "Quels sont tes modes de paiement ?",
+    a: "Pour un projet à forfait : 50% au démarrage, 50% à la livraison. Pour un engagement mensuel : facturation au début de chaque mois. J'accepte les virements et les paiements par carte. Tous les montants sont en dollars (CAD/USD selon votre localisation).",
   },
   {
-    q: "Peut-on cacher un module qu'on n'utilise pas ?",
-    a: "Oui. Chaque module (reservations, paiements, API, CMS) est controle par une variable d'environnement. Si tu n'actives pas FEATURE_BOOKING, la page de reservation et toutes les fonctions associees restent invisibles. Aucun code mort n'est expose.",
-  },
-  {
-    q: "Le site fonctionne-t-il sur telephone ?",
-    a: "Oui. Toutes les pages sont concues en mobile-first : elles s'adaptent automatiquement aux ecrans de toutes tailles. Le dashboard a aussi une navigation mobile avec menu hamburger.",
-  },
-  {
-    q: "Comment personaliser les couleurs et la marque du client ?",
-    a: "Les couleurs, polices et espacements sont definis dans un fichier de variables CSS. Changer la couleur principale du site se fait en modifiant une ligne. Les composants utilisent automatiquement ces variables — pas besoin de chercher partout dans le code.",
-  },
-  {
-    q: "Est-ce que le site est optimise pour Google ?",
-    a: "Oui. Chaque page a ses propres titre, description et balises Open Graph. Le sitemap.xml et le robots.txt sont generes automatiquement. Les pages se chargent rapidement grace au rendu cote serveur (Server Components).",
-  },
-  {
-    q: "Sanity CMS est-il necessaire ?",
-    a: "Non. Sanity est une option pour les clients qui veulent modifier eux-memes les textes et images du site sans toucher au code. Si ton client n'en a pas besoin, tu n'actives pas cette fonctionnalite.",
-  },
-  {
-    q: "Est-ce que les paiements Stripe fonctionnent vraiment ?",
-    a: "Oui, le module billing est complet : checkout securise, webhooks pour mettre a jour les acces en temps reel, portail client pour gerer l'abonnement, et support des periodes d'essai. Il faut ton propre compte Stripe — les cles sont renseignees dans le fichier de configuration.",
-  },
-  {
-    q: "Comment tester le site avant de le livrer ?",
-    a: "Le boilerplate inclut une suite de tests automatises (tests unitaires et tests end-to-end dans un vrai navigateur). Une checklist de 60 points couvre la securite, le SEO, les paiements, les emails et les parcours critiques. Un compte demo est disponible pour tester le dashboard sans base de donnees configuree.",
+    q: "Que se passe-t-il après la livraison ?",
+    a: "Chaque projet inclut 30 jours de support post-livraison pour corriger tout bug éventuel sans frais. Au-delà, je propose un forfait de maintenance mensuel : mises à jour, monitoring, ajout de fonctionnalités et support prioritaire. Vous n'êtes jamais laissé seul avec votre produit.",
   },
 ];
 

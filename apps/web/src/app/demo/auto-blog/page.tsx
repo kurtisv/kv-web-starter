@@ -11,7 +11,7 @@ const cars = [
   { make: "Porsche", model: "911 GT3",        year: 2025, power: "510 ch", acceleration: "3.4s", price: "168 900 €", category: "Sport",        score: 9.4, photo: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&q=80&auto=format&fit=crop" },
   { make: "BMW",     model: "M3 Competition", year: 2024, power: "510 ch", acceleration: "3.9s", price: "98 700 €",  category: "Berline sport", score: 9.1, photo: "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&q=80&auto=format&fit=crop" },
   { make: "Ferrari", model: "296 GTB",        year: 2024, power: "830 ch", acceleration: "2.9s", price: "286 000 €", category: "Supercar",      score: 9.7, photo: "https://images.unsplash.com/photo-1592198084033-aade902d1aae?w=800&q=80&auto=format&fit=crop" },
-  { make: "Audi",    model: "RS6 Avant",      year: 2025, power: "630 ch", acceleration: "3.4s", price: "134 000 €", category: "Break sport",   score: 8.9, photo: "https://images.unsplash.com/photo-1606664515524-ed2f786a705d?w=800&q=80&auto=format&fit=crop" },
+  { make: "Audi",    model: "RS6 Avant",      year: 2025, power: "630 ch", acceleration: "3.4s", price: "134 000 €", category: "Break sport",   score: 8.9, photo: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=800&q=80&auto=format&fit=crop" },
 ];
 
 const articles = [

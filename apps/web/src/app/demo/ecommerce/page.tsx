@@ -10,9 +10,9 @@ import { Card, CardContent } from "@/components/ui/card";
 const products = [
   { name: "Sac cuir premium",    price: "149€", originalPrice: "199€", rating: 4.8, reviews: 124, inStock: true,  badge: "-25%",    photo: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&q=80&auto=format&fit=crop" },
   { name: "Montre minimaliste",  price: "289€", originalPrice: null,   rating: 4.9, reviews: 87,  inStock: true,  badge: "Nouveau", photo: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&q=80&auto=format&fit=crop" },
-  { name: "Portefeuille slim",   price: "79€",  originalPrice: "99€",  rating: 4.7, reviews: 203, inStock: false, badge: "-20%",    photo: "https://images.unsplash.com/photo-1627123424574-724758594785?w=600&q=80&auto=format&fit=crop" },
+  { name: "Portefeuille slim",   price: "79€",  originalPrice: "99€",  rating: 4.7, reviews: 203, inStock: false, badge: "-20%",    photo: "https://images.unsplash.com/photo-1614267861476-0d129972a0f4?w=600&q=80&auto=format&fit=crop" },
   { name: "Carnet cuir A5",      price: "45€",  originalPrice: null,   rating: 4.6, reviews: 56,  inStock: true,  badge: null,      photo: "https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=600&q=80&auto=format&fit=crop" },
-  { name: "Porte-cles gravable", price: "29€",  originalPrice: "39€",  rating: 4.5, reviews: 341, inStock: true,  badge: "-26%",    photo: "https://images.unsplash.com/photo-1484704849700-f032ad7ddef6?w=600&q=80&auto=format&fit=crop" },
+  { name: "Porte-cles gravable", price: "29€",  originalPrice: "39€",  rating: 4.5, reviews: 341, inStock: true,  badge: "-26%",    photo: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80&auto=format&fit=crop" },
   { name: "Etui passeport",      price: "55€",  originalPrice: null,   rating: 4.8, reviews: 92,  inStock: true,  badge: null,      photo: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&q=80&auto=format&fit=crop" },
 ];
 

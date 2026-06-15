@@ -7,46 +7,10 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 
 const cars = [
-  {
-    make: "Porsche",
-    model: "911 GT3",
-    year: 2025,
-    power: "510 ch",
-    acceleration: "3.4s",
-    price: "168 900 €",
-    category: "Sport",
-    score: 9.4,
-  },
-  {
-    make: "BMW",
-    model: "M3 Competition",
-    year: 2024,
-    power: "510 ch",
-    acceleration: "3.9s",
-    price: "98 700 €",
-    category: "Berline sport",
-    score: 9.1,
-  },
-  {
-    make: "Ferrari",
-    model: "296 GTB",
-    year: 2024,
-    power: "830 ch",
-    acceleration: "2.9s",
-    price: "286 000 €",
-    category: "Supercar",
-    score: 9.7,
-  },
-  {
-    make: "Audi",
-    model: "RS6 Avant",
-    year: 2025,
-    power: "630 ch",
-    acceleration: "3.4s",
-    price: "134 000 €",
-    category: "Break sport",
-    score: 8.9,
-  },
+  { make: "Porsche", model: "911 GT3",        year: 2025, power: "510 ch", acceleration: "3.4s", price: "168 900 €", category: "Sport",        score: 9.4, accentColor: "#ef4444", bgFrom: "#1c1917", bgTo: "#292524" },
+  { make: "BMW",     model: "M3 Competition", year: 2024, power: "510 ch", acceleration: "3.9s", price: "98 700 €",  category: "Berline sport", score: 9.1, accentColor: "#3b82f6", bgFrom: "#0f172a", bgTo: "#1e293b" },
+  { make: "Ferrari", model: "296 GTB",        year: 2024, power: "830 ch", acceleration: "2.9s", price: "286 000 €", category: "Supercar",      score: 9.7, accentColor: "#ef4444", bgFrom: "#1a0a0a", bgTo: "#2d1212" },
+  { make: "Audi",    model: "RS6 Avant",      year: 2025, power: "630 ch", acceleration: "3.4s", price: "134 000 €", category: "Break sport",   score: 8.9, accentColor: "#a1a1aa", bgFrom: "#18181b", bgTo: "#27272a" },
 ];
 
 const articles = [
@@ -97,7 +61,21 @@ export default function DemoAutoBlogPage() {
           <div className="grid gap-4 sm:grid-cols-2">
             {cars.map((car) => (
               <Card key={car.make + car.model} className="overflow-hidden">
-                <div className="h-44 bg-muted border-b flex items-end p-4">
+                <div
+                  className="relative h-44 border-b flex items-end p-4 overflow-hidden"
+                  style={{ background: `linear-gradient(135deg, ${car.bgFrom}, ${car.bgTo})` }}
+                >
+                  {/* Top accent line */}
+                  <div className="absolute top-0 left-0 right-0 h-0.5" style={{ background: car.accentColor }} />
+                  {/* Make name watermark */}
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 select-none text-6xl font-black leading-none" style={{ color: "rgba(255,255,255,0.04)" }}>
+                    {car.make}
+                  </span>
+                  {/* Gauge circle */}
+                  <div className="absolute right-4 top-4 h-14 w-14 rounded-full border-2 flex flex-col items-center justify-center" style={{ borderColor: car.accentColor + "60" }}>
+                    <Gauge className="h-5 w-5" style={{ color: car.accentColor }} />
+                    <span className="text-[10px] font-bold mt-0.5" style={{ color: "rgba(255,255,255,0.6)" }}>{car.acceleration}</span>
+                  </div>
                   <Badge variant="soft" size="sm">{car.category}</Badge>
                 </div>
                 <CardContent className="p-5">

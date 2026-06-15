@@ -1,4 +1,5 @@
-import { ArrowRight, ShoppingCart, Star, Truck, Shield, RotateCcw, Tag } from "lucide-react";
+import { ArrowRight, ShoppingCart, Star, Truck, Shield, RotateCcw, Tag, ShoppingBag, Clock, Wallet, BookOpen, KeyRound, CreditCard } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { HeroSection } from "@/components/sections/hero-section";
 import { FeatureGrid } from "@/components/sections/feature-grid";
 import { CTASection } from "@/components/sections/cta-section";
@@ -6,13 +7,17 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 
-const products = [
-  { name: "Sac cuir premium", price: "149€", originalPrice: "199€", rating: 4.8, reviews: 124, inStock: true, badge: "-25%" },
-  { name: "Montre minimaliste", price: "289€", originalPrice: null, rating: 4.9, reviews: 87, inStock: true, badge: "Nouveau" },
-  { name: "Portefeuille slim", price: "79€", originalPrice: "99€", rating: 4.7, reviews: 203, inStock: false, badge: "-20%" },
-  { name: "Carnet cuir A5", price: "45€", originalPrice: null, rating: 4.6, reviews: 56, inStock: true, badge: null },
-  { name: "Porte-cles gravable", price: "29€", originalPrice: "39€", rating: 4.5, reviews: 341, inStock: true, badge: "-26%" },
-  { name: "Etui passeport", price: "55€", originalPrice: null, rating: 4.8, reviews: 92, inStock: true, badge: null },
+const products: {
+  name: string; price: string; originalPrice: string | null;
+  rating: number; reviews: number; inStock: boolean; badge: string | null;
+  Icon: LucideIcon; bg: string; iconColor: string;
+}[] = [
+  { name: "Sac cuir premium",    price: "149€", originalPrice: "199€", rating: 4.8, reviews: 124, inStock: true,  badge: "-25%",    Icon: ShoppingBag, bg: "linear-gradient(135deg,#fef3c7,#fde68a)", iconColor: "#d97706" },
+  { name: "Montre minimaliste",  price: "289€", originalPrice: null,   rating: 4.9, reviews: 87,  inStock: true,  badge: "Nouveau", Icon: Clock,       bg: "linear-gradient(135deg,#f1f5f9,#e2e8f0)", iconColor: "#64748b" },
+  { name: "Portefeuille slim",   price: "79€",  originalPrice: "99€",  rating: 4.7, reviews: 203, inStock: false, badge: "-20%",    Icon: Wallet,      bg: "linear-gradient(135deg,#fef9c3,#fde68a)", iconColor: "#a16207" },
+  { name: "Carnet cuir A5",      price: "45€",  originalPrice: null,   rating: 4.6, reviews: 56,  inStock: true,  badge: null,      Icon: BookOpen,    bg: "linear-gradient(135deg,#f0fdf4,#dcfce7)", iconColor: "#16a34a" },
+  { name: "Porte-cles gravable", price: "29€",  originalPrice: "39€",  rating: 4.5, reviews: 341, inStock: true,  badge: "-26%",    Icon: KeyRound,    bg: "linear-gradient(135deg,#fff7ed,#fed7aa)", iconColor: "#ea580c" },
+  { name: "Etui passeport",      price: "55€",  originalPrice: null,   rating: 4.8, reviews: 92,  inStock: true,  badge: null,      Icon: CreditCard,  bg: "linear-gradient(135deg,#eff6ff,#bfdbfe)", iconColor: "#2563eb" },
 ];
 
 const trust = [
@@ -62,8 +67,8 @@ export default function DemoEcommercePage() {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {products.map((p) => (
               <Card key={p.name} className="overflow-hidden group">
-                <div className="relative aspect-square bg-muted border-b flex items-center justify-center">
-                  <div className="h-20 w-20 rounded-full bg-muted-foreground/10" />
+                <div className="relative aspect-square border-b flex items-center justify-center" style={{ background: p.bg }}>
+                  <p.Icon className="h-20 w-20 opacity-80" style={{ color: p.iconColor }} strokeWidth={1.25} />
                   {p.badge && (
                     <Badge variant="destructive" size="sm" className="absolute top-3 left-3">
                       {p.badge}

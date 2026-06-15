@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, ExternalLink, Globe, Mail } from "lucide-react";
+import { ArrowRight, ExternalLink, Globe, Mail, ShoppingCart, BarChart2, MapPin, CalendarDays } from "lucide-react";
 import { HeroSection } from "@/components/sections/hero-section";
 import { ProjectShowcase } from "@/components/sections/project-showcase";
 import { StatsSection } from "@/components/sections/stats-section";
@@ -13,24 +13,44 @@ const projects = [
     description: "Boutique Next.js avec paiement Stripe et gestion des stocks en temps reel.",
     tags: ["Next.js", "Stripe", "PostgreSQL"],
     href: "#",
+    image: (
+      <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-orange-50 to-amber-100">
+        <ShoppingCart className="h-16 w-16 text-orange-400 opacity-80" strokeWidth={1.25} />
+      </div>
+    ),
   },
   {
     title: "SaaS Dashboard",
     description: "Tableau de bord analytique avec graphiques temps reel et export CSV.",
     tags: ["React", "Recharts", "API REST"],
     href: "#",
+    image: (
+      <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-violet-50 to-purple-100">
+        <BarChart2 className="h-16 w-16 text-violet-400 opacity-80" strokeWidth={1.25} />
+      </div>
+    ),
   },
   {
     title: "API de geocodage",
     description: "API REST haute performance — 50k requetes/jour, latence sous 80ms.",
     tags: ["Node.js", "Redis", "Docker"],
     href: "#",
+    image: (
+      <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-slate-800 to-slate-900">
+        <MapPin className="h-16 w-16 text-cyan-400 opacity-80" strokeWidth={1.25} />
+      </div>
+    ),
   },
   {
     title: "App de reservations",
     description: "Systeme de prise de rendez-vous avec confirmation email et calendrier.",
     tags: ["Next.js", "Prisma", "Resend"],
     href: "#",
+    image: (
+      <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-green-50 to-emerald-100">
+        <CalendarDays className="h-16 w-16 text-emerald-500 opacity-80" strokeWidth={1.25} />
+      </div>
+    ),
   },
 ];
 

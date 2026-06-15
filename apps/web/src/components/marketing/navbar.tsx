@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
+import { ThemeSwitcher } from "@/components/ui/theme-switcher";
 import { siteConfig } from "@/config/site";
 
 export function Navbar() {
@@ -17,9 +18,12 @@ export function Navbar() {
             </Link>
           ))}
         </nav>
-        <Button asChild size="sm">
-          <Link href={siteConfig.ctaHref}>{siteConfig.cta}</Link>
-        </Button>
+        <div className="flex items-center gap-2">
+          <ThemeSwitcher />
+          <Button asChild size="sm">
+            <Link href={siteConfig.ctaHref}>{siteConfig.cta}</Link>
+          </Button>
+        </div>
       </div>
     </header>
   );

@@ -65,6 +65,9 @@ jobs:
           NODE_ENV: production
           AUTH_SECRET: ci-build-secret-not-for-production
 
+      - name: Build Storybook
+        run: pnpm build-storybook
+
       - run: pnpm --filter @kv/web exec playwright install --with-deps chromium
 
       - run: pnpm test:e2e

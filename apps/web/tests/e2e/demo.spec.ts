@@ -1,0 +1,45 @@
+import { expect, test } from "@playwright/test";
+
+const DEMO_PAGES = [
+  { slug: "portfolio",      theme: "corporate-classic", heading: /portfolio|projets|developpeur/i },
+  { slug: "saas",           theme: "premium-saas",      heading: /workflow|plateforme/i },
+  { slug: "booking",        theme: "local-business",    heading: /bien.tre|relaxation|soin|prenez/i },
+  { slug: "api",            theme: "dark-tech-api",     heading: /api|developer|portal/i },
+  { slug: "real-estate",    theme: "real-estate",       heading: /immobilier|investissez/i },
+  { slug: "local-business", theme: "local-business",    heading: /service|local|artisan/i },
+  { slug: "auto-blog",      theme: "luxury-auto",       heading: /automobile|auto|passion/i },
+  { slug: "ecommerce",      theme: "ecommerce-clean",   heading: /boutique|artisan|cuir|collection/i },
+  { slug: "dashboard",      theme: "premium-saas",      heading: /dashboard|tableau|apercu/i },
+] as const;
+
+test("demo index page lists all 9 project types", async ({ page }) => {
+  await page.goto("/demo");
+  await expect(page.getByRole("heading", { name: /9 styles/i })).toBeVisible();
+  for (const { slug } of DEMO_PAGES) {
+    await expect(page.locator(`a[href="/demo/${slug}"]`)).toBeVisible();
+  }
+});
+
+for (const { slug, theme, heading } of DEMO_PAGES) {
+  test(`/demo/${slug} — loads with data-theme="${theme}"`, async ({ page }) => {
+    await page.goto(`/demo/${slug}`);
+
+    // No error page
+    await expect(page).not.toHaveURL(/error|404/);
+
+    // Theme attribute present on the top-level wrapper
+    const themeWrapper = page.locator(`[data-theme="${theme}"]`).first();
+    await expect(themeWrapper).toBeVisible();
+
+    // Main heading visible
+    await expect(page.getByRole("heading").first()).toBeVisible();
+  });
+}
+
+test("all demo pages return 200", async ({ request }) => {
+  const paths = ["/demo", ...DEMO_PAGES.map((d) => `/demo/${d.slug}`)];
+  for (const path of paths) {
+    const res = await request.get(path);
+    expect(res.status(), `${path} should return 200`).toBe(200);
+  }
+});

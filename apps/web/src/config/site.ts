@@ -1,7 +1,7 @@
 export const siteConfig = {
   name: "KV Web Starter",
   tagline: "Le boilerplate Next.js pour lancer vite.",
-  description: "Next.js 15, Auth.js, Prisma, Stripe, reservations, API portal — tout en place. Clone, configure, deploie.",
+  description: "Next.js 16, Auth.js, Prisma, Stripe, reservations, API portal — tout en place. Clone, configure, deploie.",
   cta: "Dashboard",
   ctaHref: "/login",
   footerTags: ["Next.js", "Prisma", "Stripe", "Auth.js"],

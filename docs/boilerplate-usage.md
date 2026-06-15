@@ -21,7 +21,7 @@ NEXT_PUBLIC_PROJECT_TYPE=saas
 
 4. Set environment variables (see `.env.example`):
    - `DATABASE_URL` — PostgreSQL connection string
-   - `NEXTAUTH_SECRET` — random 32-char string
+   - `AUTH_SECRET` — random 32-char string
    - `STRIPE_SECRET_KEY` + `STRIPE_WEBHOOK_SECRET`
    - `RESEND_API_KEY`
 

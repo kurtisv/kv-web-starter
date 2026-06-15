@@ -15,7 +15,7 @@ kv-web-starter/
     app/                   — Pages Next.js (thin — logique dans modules/ et lib/)
       api/                 — Routes API (auth, webhooks, v1/*)
       dashboard/           — Pages protegees (OWNER/ADMIN uniquement)
-      actions/             — Server Actions (auth.ts, billing.ts, booking.ts, api-keys.ts)
+      actions/             — Server Actions (auth.ts, billing.ts, booking.tsx, api-keys.ts, contact.tsx)
     components/
       ui/                  — Primitives (button 12v/6s, card variants, badge variants, EmptyState, LoadingState, ThemePreviewCard...)
       sections/            — Blocs de page reutilisables (HeroSection, FeatureGrid, PricingSection, TestimonialSection...)
@@ -43,7 +43,7 @@ kv-web-starter/
       cms/                 — Schemas Sanity (actif si FEATURE_CMS=true)
     i18n/                  — next-intl : config, messages EN/FR, request.ts
     emails/                — Templates React Email (booking-confirmation, contact)
-    middleware.ts          — Security headers + protection /dashboard/* (edge)
+    middleware.ts          — Auth guard, protection /dashboard/* (edge, uses auth.config.ts)
   prisma/
     schema.prisma          — Schema PostgreSQL (User, Booking, ApiKey, Subscription...)
   packages/

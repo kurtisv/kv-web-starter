@@ -5,19 +5,19 @@ const columns = [
   {
     title: "Produit",
     links: [
+      { href: "/demo", label: "Galerie 9 demos" },
       { href: "/docs", label: "Guide complet" },
-      { href: "/overview", label: "Architecture" },
       { href: "/services", label: "Ce qu'on obtient" },
       { href: "/pricing", label: "Tarifs" },
     ],
   },
   {
-    title: "Demo",
+    title: "Explorer",
     links: [
-      { href: "/booking", label: "Reservation" },
+      { href: "/booking", label: "Demo reservation" },
       { href: "/developers", label: "Portail API" },
       { href: "/dashboard", label: "Dashboard" },
-      { href: "/docs/api", label: "Reference API" },
+      { href: "/overview", label: "Architecture" },
     ],
   },
   {

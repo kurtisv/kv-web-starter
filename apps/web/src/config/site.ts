@@ -6,6 +6,7 @@ export const siteConfig = {
   ctaHref: "/login",
   footerTags: ["Next.js", "Prisma", "Stripe", "Auth.js"],
   nav: [
+    { href: "/demo", label: "Demo" },
     { href: "/docs", label: "Guide" },
     { href: "/services", label: "Services" },
     { href: "/pricing", label: "Pricing" },

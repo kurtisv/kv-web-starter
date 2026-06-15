@@ -4,6 +4,11 @@ import createNextIntlPlugin from "next-intl/plugin";
 
 const nextConfig: NextConfig = {
   allowedDevOrigins: ["127.0.0.1"],
+  images: {
+    remotePatterns: [
+      { protocol: "https", hostname: "images.unsplash.com" },
+    ],
+  },
 };
 
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");

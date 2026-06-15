@@ -1,5 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, ExternalLink, Globe, Mail, ShoppingCart, BarChart2, MapPin, CalendarDays } from "lucide-react";
+import { ArrowRight, ExternalLink, Globe, Mail } from "lucide-react";
 import { HeroSection } from "@/components/sections/hero-section";
 import { ProjectShowcase } from "@/components/sections/project-showcase";
 import { StatsSection } from "@/components/sections/stats-section";
@@ -14,8 +15,8 @@ const projects = [
     tags: ["Next.js", "Stripe", "PostgreSQL"],
     href: "#",
     image: (
-      <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-orange-50 to-amber-100">
-        <ShoppingCart className="h-16 w-16 text-orange-400 opacity-80" strokeWidth={1.25} />
+      <div className="relative h-full w-full">
+        <Image src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&q=80&auto=format&fit=crop" alt="E-commerce platform" fill className="object-cover" sizes="(max-width: 640px) 100vw, 50vw" />
       </div>
     ),
   },
@@ -25,8 +26,8 @@ const projects = [
     tags: ["React", "Recharts", "API REST"],
     href: "#",
     image: (
-      <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-violet-50 to-purple-100">
-        <BarChart2 className="h-16 w-16 text-violet-400 opacity-80" strokeWidth={1.25} />
+      <div className="relative h-full w-full">
+        <Image src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80&auto=format&fit=crop" alt="SaaS dashboard" fill className="object-cover" sizes="(max-width: 640px) 100vw, 50vw" />
       </div>
     ),
   },
@@ -36,8 +37,8 @@ const projects = [
     tags: ["Node.js", "Redis", "Docker"],
     href: "#",
     image: (
-      <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-slate-800 to-slate-900">
-        <MapPin className="h-16 w-16 text-cyan-400 opacity-80" strokeWidth={1.25} />
+      <div className="relative h-full w-full">
+        <Image src="https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=800&q=80&auto=format&fit=crop" alt="Geocoding API" fill className="object-cover" sizes="(max-width: 640px) 100vw, 50vw" />
       </div>
     ),
   },
@@ -47,8 +48,8 @@ const projects = [
     tags: ["Next.js", "Prisma", "Resend"],
     href: "#",
     image: (
-      <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-green-50 to-emerald-100">
-        <CalendarDays className="h-16 w-16 text-emerald-500 opacity-80" strokeWidth={1.25} />
+      <div className="relative h-full w-full">
+        <Image src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80&auto=format&fit=crop" alt="Booking app" fill className="object-cover" sizes="(max-width: 640px) 100vw, 50vw" />
       </div>
     ),
   },

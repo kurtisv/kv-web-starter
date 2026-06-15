@@ -1,21 +1,17 @@
+import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, MapPin, TrendingUp, Home, Search, Star, Building2, LayoutDashboard, Columns2 } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
+import { ArrowRight, MapPin, TrendingUp, Search, Star } from "lucide-react";
 import { HeroSection } from "@/components/sections/hero-section";
 import { CTASection } from "@/components/sections/cta-section";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 
-const properties: {
-  type: string; location: string; price: string; size: string;
-  rooms: string; score: number; yield: string; status: string;
-  Icon: LucideIcon; bg: string; iconColor: string;
-}[] = [
-  { type: "Appartement", location: "Paris 11e",            price: "425 000 €", size: "65 m²",  rooms: "3 pieces", score: 8.4, yield: "4.2%", status: "Disponible",     Icon: Building2,       bg: "linear-gradient(135deg,#eff6ff,#dbeafe)", iconColor: "#1d4ed8" },
-  { type: "Maison",      location: "Boulogne-Billancourt", price: "890 000 €", size: "140 m²", rooms: "5 pieces", score: 9.1, yield: "3.8%", status: "Sous compromis", Icon: Home,            bg: "linear-gradient(135deg,#f0fdf4,#dcfce7)", iconColor: "#15803d" },
-  { type: "Studio",      location: "Paris 5e",             price: "215 000 €", size: "28 m²",  rooms: "1 piece",  score: 7.9, yield: "5.1%", status: "Disponible",     Icon: LayoutDashboard, bg: "linear-gradient(135deg,#faf5ff,#ede9fe)", iconColor: "#7c3aed" },
-  { type: "Loft",        location: "Montreuil",            price: "380 000 €", size: "90 m²",  rooms: "3 pieces", score: 8.7, yield: "4.6%", status: "Disponible",     Icon: Columns2,        bg: "linear-gradient(135deg,#fff7ed,#fed7aa)", iconColor: "#c2410c" },
+const properties = [
+  { type: "Appartement", location: "Paris 11e",            price: "425 000 €", size: "65 m²",  rooms: "3 pieces", score: 8.4, yield: "4.2%", status: "Disponible",     photo: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&q=80&auto=format&fit=crop" },
+  { type: "Maison",      location: "Boulogne-Billancourt", price: "890 000 €", size: "140 m²", rooms: "5 pieces", score: 9.1, yield: "3.8%", status: "Sous compromis", photo: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80&auto=format&fit=crop" },
+  { type: "Studio",      location: "Paris 5e",             price: "215 000 €", size: "28 m²",  rooms: "1 piece",  score: 7.9, yield: "5.1%", status: "Disponible",     photo: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&q=80&auto=format&fit=crop" },
+  { type: "Loft",        location: "Montreuil",            price: "380 000 €", size: "90 m²",  rooms: "3 pieces", score: 8.7, yield: "4.6%", status: "Disponible",     photo: "https://images.unsplash.com/photo-1536376072261-38c75010e6c9?w=800&q=80&auto=format&fit=crop" },
 ];
 
 const stats = [
@@ -72,9 +68,16 @@ export default function DemoRealEstatePage() {
           <div className="grid gap-4 sm:grid-cols-2">
             {properties.map((p) => (
               <Card key={p.location + p.type} className="overflow-hidden">
-                <div className="relative h-40 border-b flex flex-col items-center justify-center gap-2 overflow-hidden" style={{ background: p.bg }}>
-                  <p.Icon className="h-16 w-16 opacity-70" style={{ color: p.iconColor }} strokeWidth={1} />
-                  <div className="absolute bottom-2 left-3 flex items-center gap-1 rounded bg-white/70 px-2 py-0.5 text-xs font-medium backdrop-blur-sm" style={{ color: p.iconColor }}>
+                <div className="relative h-40 border-b overflow-hidden">
+                  <Image
+                    src={p.photo}
+                    alt={`${p.type} ${p.location}`}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    sizes="(max-width: 640px) 100vw, 50vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                  <div className="absolute bottom-2 left-3 flex items-center gap-1 rounded bg-black/40 px-2 py-0.5 text-xs text-white backdrop-blur-sm">
                     <MapPin className="h-3 w-3" />{p.location}
                   </div>
                 </div>

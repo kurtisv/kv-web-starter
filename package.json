@@ -19,7 +19,8 @@
     "db:migrate": "prisma migrate dev",
     "db:seed": "tsx prisma/seed.ts",
     "create:new": "powershell.exe -ExecutionPolicy Bypass -NoProfile -File ./scripts/create-new-project.ps1",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "postinstall": "node scripts/patch-next-config.js"
   },
   "devDependencies": {
     "prettier": "^3.6.2",

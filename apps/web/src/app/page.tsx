@@ -28,6 +28,183 @@ import { CTASection } from "@/components/sections/cta-section";
 import { THEME_META } from "@/design-system/tokens";
 import { PROJECT_PRESETS } from "@/config/project-presets";
 
+function DemoThumbnail({ slug, accent, dark }: { slug: string; accent: string; dark: boolean }) {
+  const bg = dark ? "#1a1a2e" : "#f9fafb";
+  const line = dark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.06)";
+  const line2 = dark ? "rgba(255,255,255,0.14)" : "rgba(0,0,0,0.11)";
+  const af = accent + "33";
+
+  const Nav = () => (
+    <div className="flex h-6 shrink-0 items-center gap-2 border-b px-3" style={{ borderColor: line }}>
+      <div className="h-1.5 w-8 rounded-full" style={{ background: accent }} />
+      <div className="ml-auto flex gap-2">
+        {[16, 12, 14].map((w, i) => <div key={i} className="h-1 rounded-full" style={{ background: line2, width: w }} />)}
+      </div>
+    </div>
+  );
+
+  if (slug === "portfolio") return (
+    <div className="flex h-36 flex-col overflow-hidden" style={{ background: bg }}>
+      <Nav />
+      <div className="px-3 pt-2">
+        <div className="h-3 w-28 rounded" style={{ background: line2 }} />
+        <div className="mt-1 h-2 w-20 rounded" style={{ background: line }} />
+      </div>
+      <div className="flex flex-1 gap-1.5 px-3 pt-3">
+        {[af, line, line].map((c, i) => (
+          <div key={i} className="flex flex-1 flex-col overflow-hidden rounded">
+            <div className="flex-1" style={{ background: c }} />
+            <div className="mt-1 h-1.5 w-3/4 rounded" style={{ background: line2 }} />
+          </div>
+        ))}
+      </div>
+      <div className="pb-2" />
+    </div>
+  );
+
+  if (slug === "saas") return (
+    <div className="flex h-36 flex-col overflow-hidden" style={{ background: bg }}>
+      <Nav />
+      <div className="flex flex-1 gap-2 px-3 pt-3 pb-3">
+        {[false, true, false].map((feat, i) => (
+          <div key={i} className="flex flex-1 flex-col gap-1 rounded border p-2"
+            style={{ borderColor: feat ? accent : line, background: feat ? af : "transparent" }}>
+            <div className="h-1.5 w-8 rounded" style={{ background: feat ? accent : line2 }} />
+            <div className="h-3 w-10 rounded" style={{ background: feat ? accent : line2 }} />
+            {[1, 2, 3].map(j => <div key={j} className="h-1 rounded" style={{ background: feat ? accent + "40" : line }} />)}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  if (slug === "booking") return (
+    <div className="flex h-36 flex-col overflow-hidden" style={{ background: bg }}>
+      <Nav />
+      <div className="px-3 pt-2">
+        <div className="h-2 w-16 rounded" style={{ background: line2 }} />
+      </div>
+      <div className="mt-2 grid grid-cols-7 gap-0.5 px-3">
+        {Array.from({ length: 35 }, (_, i) => {
+          const highlighted = [3, 8, 15, 20, 27].includes(i);
+          const today = i === 10;
+          return <div key={i} className="h-3 rounded-sm" style={{ background: highlighted ? accent : today ? line2 : line }} />;
+        })}
+      </div>
+    </div>
+  );
+
+  if (slug === "api") return (
+    <div className="flex h-36 flex-col overflow-hidden" style={{ background: "#0d1117" }}>
+      <div className="flex h-6 shrink-0 items-center gap-1.5 border-b px-3" style={{ background: "#161b22", borderColor: "rgba(255,255,255,0.08)" }}>
+        {["#ef4444", "#f59e0b", "#22c55e"].map(c => <div key={c} className="h-2 w-2 rounded-full" style={{ background: c }} />)}
+      </div>
+      <div className="flex-1 px-3 pt-2 space-y-1.5">
+        {[
+          { w: "80%", c: accent },
+          { w: "70%", c: "rgba(255,255,255,0.35)" },
+          { w: "55%", c: "rgba(255,255,255,0.2)" },
+          { w: "40%", c: "#4ade80" },
+        ].map((l, i) => <div key={i} className="h-2 rounded" style={{ background: l.c, width: l.w }} />)}
+      </div>
+    </div>
+  );
+
+  if (slug === "real-estate") return (
+    <div className="flex h-36 flex-col overflow-hidden" style={{ background: bg }}>
+      <Nav />
+      <div className="grid grid-cols-2 gap-1.5 px-3 pt-2 pb-2 flex-1">
+        {[af, line, line, af].map((c, i) => (
+          <div key={i} className="flex flex-col overflow-hidden rounded">
+            <div className="flex-1" style={{ background: c }} />
+            <div className="mt-0.5 h-1.5 w-3/4 rounded" style={{ background: line2 }} />
+            <div className="mt-0.5 mb-0.5 h-1 w-1/2 rounded" style={{ background: accent }} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  if (slug === "local-business") return (
+    <div className="flex h-36 flex-col overflow-hidden" style={{ background: bg }}>
+      <Nav />
+      <div className="mx-3 mt-2 flex items-center justify-center overflow-hidden rounded" style={{ background: af, height: 52 }}>
+        <div className="h-4 w-24 rounded" style={{ background: accent + "80" }} />
+      </div>
+      <div className="flex gap-1.5 px-3 pt-2">
+        {[1, 2, 3].map(i => (
+          <div key={i} className="flex-1 rounded p-1.5" style={{ background: line }}>
+            <div className="mx-auto h-2 w-2 rounded-full" style={{ background: accent }} />
+            <div className="mt-1 h-1 rounded" style={{ background: line2 }} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  if (slug === "auto-blog") return (
+    <div className="flex h-36 flex-col overflow-hidden" style={{ background: "#0f172a" }}>
+      <div className="relative flex-1" style={{ background: "linear-gradient(135deg,#1e293b,#0f172a)" }}>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="h-9 w-9 rounded-full" style={{ background: accent + "30", border: `2px solid ${accent}` }} />
+        </div>
+        <div className="absolute bottom-2 left-3 space-y-1">
+          <div className="h-2 w-24 rounded" style={{ background: "rgba(255,255,255,0.55)" }} />
+          <div className="h-1.5 w-16 rounded" style={{ background: "rgba(255,255,255,0.25)" }} />
+        </div>
+        <div className="absolute right-2 top-2 rounded px-1.5 py-0.5" style={{ background: accent }}>
+          <div className="h-1 w-6 rounded" style={{ background: "rgba(0,0,0,0.4)" }} />
+        </div>
+      </div>
+      <div className="flex gap-2 px-3 py-2">
+        {[1, 2].map(i => (
+          <div key={i} className="flex-1 space-y-0.5">
+            <div className="h-1.5 rounded" style={{ background: "rgba(255,255,255,0.2)" }} />
+            <div className="h-1 w-3/4 rounded" style={{ background: "rgba(255,255,255,0.1)" }} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  if (slug === "ecommerce") return (
+    <div className="flex h-36 flex-col overflow-hidden" style={{ background: bg }}>
+      <Nav />
+      <div className="grid grid-cols-3 gap-1.5 px-3 pt-2 pb-2 flex-1">
+        {[af, line, af, line, line, af].map((c, i) => (
+          <div key={i} className="flex flex-col overflow-hidden rounded" style={{ background: line }}>
+            <div className="flex-1" style={{ background: c }} />
+            <div className="space-y-0.5 px-1 pb-1 pt-0.5">
+              <div className="h-1 rounded" style={{ background: line2 }} />
+              <div className="h-1.5 w-2/3 rounded" style={{ background: accent }} />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  // dashboard (default)
+  return (
+    <div className="flex h-36 flex-col overflow-hidden" style={{ background: bg }}>
+      <Nav />
+      <div className="flex gap-1.5 px-3 pt-2">
+        {[accent, line2, line2, line2].map((c, i) => (
+          <div key={i} className="flex-1 rounded p-1.5" style={{ background: i === 0 ? af : line }}>
+            <div className="h-1 rounded" style={{ background: c }} />
+            <div className="mt-1 h-3 w-3/4 rounded" style={{ background: c + (i === 0 ? "" : "88") }} />
+          </div>
+        ))}
+      </div>
+      <div className="flex flex-1 items-end gap-0.5 px-3 pt-2 pb-2">
+        {[50, 35, 70, 45, 90, 40, 65, 55, 80, 35, 60, 75].map((h, i) => (
+          <div key={i} className="flex-1 rounded-t" style={{ height: `${h}%`, background: i === 8 ? accent : line2 }} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 const DEMOS = [
   { slug: "portfolio",      label: "Portfolio",       Icon: Globe,       tagline: "Vitrine developpeur avec etudes de cas" },
   { slug: "saas",           label: "SaaS",            Icon: Zap,         tagline: "Plateforme avec abonnements et analytics" },
@@ -179,7 +356,7 @@ export default function Home() {
                 return (
                   <Link key={d.slug} href={`/demo/${d.slug}`} className="group block">
                     <Card className="h-full overflow-hidden transition-shadow hover:shadow-md">
-                      <div className="h-1.5 w-full" style={{ background: theme.accent }} />
+                      <DemoThumbnail slug={d.slug} accent={theme.accent} dark={theme.dark} />
                       <CardHeader className="pt-4 pb-3">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">

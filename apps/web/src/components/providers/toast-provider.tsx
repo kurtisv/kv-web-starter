@@ -17,7 +17,7 @@ export function ToastProvider() {
           cancelButton:
             "bg-secondary text-secondary-foreground text-xs font-medium px-3 py-1",
           error: "border-destructive/50 text-destructive",
-          success: "border-green-200 text-green-800",
+          success: "border-success/20 text-success",
         },
       }}
     />

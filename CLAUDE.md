@@ -17,12 +17,15 @@ kv-web-starter/
       dashboard/           — Pages protegees (OWNER/ADMIN uniquement)
       actions/             — Server Actions (auth.ts, billing.ts, booking.ts, api-keys.ts)
     components/
-      ui/                  — Primitives shadcn (button, card, input, dialog, sheet...)
+      ui/                  — Primitives (button 12v/6s, card variants, badge variants, EmptyState, LoadingState, ThemePreviewCard...)
+      sections/            — Blocs de page reutilisables (HeroSection, FeatureGrid, PricingSection, TestimonialSection...)
+      dashboard-ui/        — Composants dashboard (DashboardShell, MetricCard, ActivityFeed, DataTableShell)
+      layout/              — Layout helpers (SectionHeader, PageContainer)
       marketing/           — Composants pages publiques (navbar, footer, page-shell)
-      dashboard/           — Composants dashboard (sidebar, mobile-nav, header, nav-item)
+      dashboard/           — Composants dashboard nav (sidebar, mobile-nav, header, nav-item)
       providers/           — Providers React (toast-provider)
     design-system/
-      tokens.ts            — Source de verite pour les variables CSS Tailwind
+      tokens.ts            — Source de verite : BREAKPOINTS, SPACING, TYPOGRAPHY, THEMES (7), THEME_META
     lib/
       auth.config.ts       — Config NextAuth edge-compatible (middleware uniquement)
       auth.ts              — Config NextAuth complete (adapter Prisma + providers)
@@ -140,6 +143,19 @@ pnpm create:new  # powershell — demande Name et Destination
 - Ne JAMAIS exposer le client Prisma dans les composants client
 - Toujours utiliser `requireDashboardAccess()` avant une query dans une page dashboard
 - Logique DB complexe : dans `modules/<domaine>/db-access.ts`
+
+---
+
+## Design system — regles absolues
+
+1. Ne JAMAIS hardcoder de couleurs dans les composants (`#ffffff`, `text-green-500`, `bg-red-600`...)
+2. Utiliser TOUJOURS les utilitaires Tailwind lies aux variables CSS : `text-primary`, `bg-muted`, `border-border`
+3. Nouveaux composants : accepter un prop `variant` ou `className` — pas de style fixe en dur
+4. Chaque composant doit etre mobile-first et accessible (role, aria, focus-visible)
+5. Ne pas dupliquer de composants : verifier `components/sections/`, `dashboard-ui/`, `ui/` avant d'en creer un
+6. Pour changer de theme sur une page : `<div data-theme="luxury-auto">...</div>`
+7. Presets de projet dans `config/project-presets.ts` — utiliser `getProjectPreset()` pour adapter nav/cta/theme
+8. `globals.css` contient les 7 themes et la couche `@theme inline` — ne pas toucher sans mise a jour de `tokens.ts`
 
 ---
 

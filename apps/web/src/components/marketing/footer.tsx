@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { siteConfig } from "@/config/site";
 
 const columns = [
   {
@@ -36,7 +37,7 @@ export function Footer() {
       <div className="mx-auto max-w-6xl px-6 py-12">
         <div className="grid gap-10 sm:grid-cols-[1.5fr_repeat(3,_1fr)]">
           <div>
-            <p className="font-semibold text-foreground">KV Web Starter</p>
+            <p className="font-semibold text-foreground">{siteConfig.name}</p>
             <p className="mt-2 max-w-xs text-sm leading-6 text-muted-foreground">
               Base modulaire Next.js pour livrer des sites vitrines, des plateformes de
               reservation et des portails API en jours.
@@ -75,7 +76,7 @@ export function Footer() {
         </div>
 
         <div className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t pt-6 text-xs text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} KV Web Starter. Tous droits reserves.</p>
+          <p>&copy; {new Date().getFullYear()} {siteConfig.name}. Tous droits reserves.</p>
           <p>
             Fait avec Next.js, Tailwind CSS et beaucoup de cafe.
           </p>

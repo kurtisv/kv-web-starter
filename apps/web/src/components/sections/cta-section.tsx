@@ -1,0 +1,62 @@
+import * as React from "react";
+import { cn } from "@/lib/utils";
+
+interface CTASectionProps {
+  title: React.ReactNode;
+  description?: React.ReactNode;
+  actions?: React.ReactNode;
+  variant?: "default" | "dark" | "muted" | "border";
+  className?: string;
+}
+
+export function CTASection({ title, description, actions, variant = "default", className }: CTASectionProps) {
+  const base = "text-center";
+
+  if (variant === "dark") {
+    return (
+      <section className={cn("bg-foreground text-background", base, className)}>
+        <div className="mx-auto max-w-4xl px-6 py-16 sm:py-20">
+          <h2 className="text-3xl font-semibold tracking-tight">{title}</h2>
+          {description && <p className="mx-auto mt-4 max-w-xl text-lg opacity-70">{description}</p>}
+          {actions && <div className="mt-8 flex flex-wrap justify-center gap-3">{actions}</div>}
+        </div>
+      </section>
+    );
+  }
+
+  if (variant === "muted") {
+    return (
+      <section className={cn("bg-muted/40 border-y", base, className)}>
+        <div className="mx-auto max-w-4xl px-6 py-16 sm:py-20">
+          <h2 className="text-3xl font-semibold tracking-tight">{title}</h2>
+          {description && <p className="mx-auto mt-4 max-w-xl text-muted-foreground">{description}</p>}
+          {actions && <div className="mt-8 flex flex-wrap justify-center gap-3">{actions}</div>}
+        </div>
+      </section>
+    );
+  }
+
+  if (variant === "border") {
+    return (
+      <section className={cn("bg-background", base, className)}>
+        <div className="mx-auto max-w-6xl px-6 py-10">
+          <div className="border p-10">
+            <h2 className="text-3xl font-semibold tracking-tight">{title}</h2>
+            {description && <p className="mx-auto mt-4 max-w-xl text-muted-foreground">{description}</p>}
+            {actions && <div className="mt-8 flex flex-wrap justify-center gap-3">{actions}</div>}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section className={cn("bg-background", base, className)}>
+      <div className="mx-auto max-w-4xl px-6 py-16 sm:py-24">
+        <h2 className="text-3xl font-semibold tracking-tight">{title}</h2>
+        {description && <p className="mx-auto mt-4 max-w-xl text-muted-foreground">{description}</p>}
+        {actions && <div className="mt-8 flex flex-wrap justify-center gap-3">{actions}</div>}
+      </div>
+    </section>
+  );
+}

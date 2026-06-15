@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test("marketing, docs, and public API routes render", async ({ page, request }) => {
   await page.goto("/");
-  await expect(page.getByRole("heading", { name: /base premium/i })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /boilerplate|identit/i })).toBeVisible();
 
   await page.goto("/booking?date=2026-05-18");
   await expect(page.getByRole("heading", { name: /reservation claire/i })).toBeVisible();

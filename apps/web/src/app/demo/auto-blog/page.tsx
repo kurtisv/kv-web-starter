@@ -15,15 +15,15 @@ const cars = [
 ];
 
 const articles = [
-  { title: "Essai Porsche 911 GT3 2025: la perfection sur piste", date: "14 juin 2025", category: "Essai" },
-  { title: "Comparatif: M3 vs C63 AMG vs RS3", date: "10 juin 2025", category: "Comparatif" },
-  { title: "Electriques vs thermiques: le bilan 2025", date: "5 juin 2025", category: "Analyse" },
+  { title: "Essai Porsche 911 GT3 2025 : la perfection sur piste", date: "14 juin 2026", category: "Essai" },
+  { title: "Comparatif : M3 vs C63 AMG vs RS3", date: "10 juin 2026", category: "Comparatif" },
+  { title: "Électriques vs thermiques : le bilan 2026", date: "5 juin 2026", category: "Analyse" },
 ];
 
 const stats = [
   { value: "420+", label: "Fiches voitures" },
   { value: "1.2M", label: "Lecteurs/mois" },
-  { value: "150+", label: "Essais realises" },
+  { value: "150+", label: "Essais réalisés" },
   { value: "8 ans", label: "D'expertise" },
 ];
 
@@ -34,7 +34,7 @@ export default function DemoAutoBlogPage() {
         variant="dark"
         eyebrow="Passion automobile"
         title="La voiture, sans compromis."
-        description="Fiches techniques exhaustives, essais exigeants, comparatifs objectifs. Pour les vrais passionnes."
+        description="Fiches techniques exhaustives, essais exigeants, comparatifs objectifs. Pour les vrais passionnés."
         actions={
           <>
             <Button size="lg" className="bg-primary text-primary-foreground">
@@ -128,7 +128,7 @@ export default function DemoAutoBlogPage() {
       <CTASection
         variant="dark"
         title="Ne ratez aucun essai."
-        description="Newsletter hebdomadaire. 12 000 abonnes passionnes."
+        description="Newsletter hebdomadaire. 12 000 abonnés passionnés."
         actions={
           <Button size="lg" variant="outline" className="border-background/30 text-background hover:bg-background/10 hover:text-background">
             S&apos;abonner gratuitement <ArrowRight className="size-4" />

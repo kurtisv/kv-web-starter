@@ -66,7 +66,7 @@ export default function DemoAPIPage() {
         variant="centered"
         eyebrow="v2.4.0 — changelog"
         title={<>Une API <span className="text-primary">robuste</span>. Une integration rapide.</>}
-        description="REST JSON avec auth par cle API. Documentation auto-generee. SDKs Node, Python et Go disponibles."
+        description="REST JSON avec auth par cle API. Documentation auto-générée. SDKs Node, Python et Go disponibles."
         actions={
           <>
             <Button size="lg" variant="default">
@@ -136,7 +136,7 @@ export default function DemoAPIPage() {
       <CTASection
         variant="dark"
         title="Integrez en moins de 10 minutes."
-        description="Cle API generee en 30 secondes. Premiere requete en 5 minutes. Garantie."
+        description="Cle API générée en 30 secondes. Premiere requete en 5 minutes. Garantie."
         actions={
           <Button size="lg" variant="glass">
             <Link href="/login" className="flex items-center gap-2">Commencer gratuitement <ArrowRight className="size-4" /></Link>

@@ -17,13 +17,13 @@ const services = [
 
 const testimonials = [
   { quote: "Un moment de detente parfait. Je reviens chaque mois depuis 2 ans.", author: "Marie L.", role: "Cliente reguliere" },
-  { quote: "Reservation en ligne super simple et reminders automatiques. Excellent service.", author: "Thomas R.", role: "Nouveau client" },
+  { quote: "Réservation en ligne super simple et reminders automatiques. Excellent service.", author: "Thomas R.", role: "Nouveau client" },
   { quote: "Professionnelle et a l'ecoute. Je recommande sans hesitation.", author: "Sophie M.", role: "Cliente depuis 3 ans" },
 ];
 
 const steps = [
-  { icon: <CalendarDays className="h-5 w-5" />, title: "Choisissez un creneau", description: "Selectionnez le service, la date et l'heure qui vous conviennent." },
-  { icon: <CheckCircle2 className="h-5 w-5" />, title: "Confirmez et payez", description: "Paiement securise par Stripe. Remboursement garanti jusqu'a 24h avant." },
+  { icon: <CalendarDays className="h-5 w-5" />, title: "Choisissez un créneau", description: "Selectionnez le service, la date et l'heure qui vous conviennent." },
+  { icon: <CheckCircle2 className="h-5 w-5" />, title: "Confirmez et payez", description: "Paiement sécurisé par Stripe. Remboursement garanti jusqu'a 24h avant." },
   { icon: <Clock className="h-5 w-5" />, title: "Recevez votre confirmation", description: "Email de confirmation + rappel 24h avant votre rendez-vous." },
 ];
 
@@ -34,7 +34,7 @@ export default function DemoBookingPage() {
         variant="split"
         eyebrow="Bien-etre et relaxation"
         title="Prenez soin de vous. On s'occupe du reste."
-        description="Massages, soins du visage et reflexologie. Reservez en ligne en 2 minutes. Paiement securise."
+        description="Massages, soins du visage et reflexologie. Reservez en ligne en 2 minutes. Paiement sécurisé."
         actions={
           <>
             <Button asChild size="lg">

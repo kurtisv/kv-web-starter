@@ -17,14 +17,14 @@ const services = [
 
 const testimonials = [
   { quote: "La meilleure massotherapeute que j'ai trouvee. Je repars a chaque fois completement regeneree.", author: "Camille D.", role: "Cliente depuis 2 ans" },
-  { quote: "Ambiance zen, produits naturels. La reservation en ligne est super pratique.", author: "Laurent B.", role: "Client regulier" },
+  { quote: "Ambiance zen, produits naturels. La Réservation en ligne est super pratique.", author: "Laurent B.", role: "Client regulier" },
   { quote: "Les soins sont adaptes a mes besoins. Je recommande a toute ma famille.", author: "Isabelle M.", role: "Cliente depuis 1 an" },
 ];
 
 const features = [
   { icon: <Star className="h-5 w-5" />, title: "Produits 100% naturels", description: "Huiles essentielles bio, argiles, plantes locales. Rien de synthetique." },
-  { icon: <Clock className="h-5 w-5" />, title: "Flexibilite horaire", description: "Disponible du lundi au samedi, 9h-19h. Sur rendez-vous uniquement." },
-  { icon: <MapPin className="h-5 w-5" />, title: "Acces facile", description: "Centre-ville, parking gratuit a 100m. Accessible PMR." },
+  { icon: <Clock className="h-5 w-5" />, title: "flexibilité horaire", description: "Disponible du lundi au samedi, 9h-19h. Sur rendez-vous uniquement." },
+  { icon: <MapPin className="h-5 w-5" />, title: "Accès facile", description: "Centre-ville, parking gratuit a 100m. Accessible PMR." },
 ];
 
 export default function DemoLocalBusinessPage() {
@@ -34,7 +34,7 @@ export default function DemoLocalBusinessPage() {
         variant="split"
         eyebrow="Massotherapie & bien-etre"
         title="Votre oasis de detente au coeur de la ville."
-        description="Soins naturels personnalises dans un espace calme et bienveillant. Prenez soin de vous — vous le meritez."
+        description="Soins naturels personnalisés dans un espace calme et bienveillant. Prenez soin de vous — vous le meritez."
         actions={
           <>
             <Button asChild size="lg">
@@ -47,7 +47,7 @@ export default function DemoLocalBusinessPage() {
         }
         media={
           <div className="border rounded-lg bg-card p-5">
-            <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground mb-3">Prochains creneaux</p>
+            <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground mb-3">Prochains créneaux</p>
             <div className="grid gap-2">
               {["Aujourd'hui 14h30", "Demain 10h00", "Demain 15h00", "Jeudi 11h00"].map((slot, i) => (
                 <div key={slot} className="flex items-center justify-between border-b pb-2 last:border-0">

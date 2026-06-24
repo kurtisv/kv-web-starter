@@ -19,7 +19,7 @@ const products = [
 const trust = [
   { icon: <Truck className="h-5 w-5" />, title: "Livraison gratuite", description: "Des 60€ d'achat. Livraison en 48h garantie." },
   { icon: <RotateCcw className="h-5 w-5" />, title: "Retours gratuits", description: "30 jours pour changer d'avis. Sans condition." },
-  { icon: <Shield className="h-5 w-5" />, title: "Paiement securise", description: "3D Secure, Stripe. Vos donnees restent privees." },
+  { icon: <Shield className="h-5 w-5" />, title: "Paiement sécurisé", description: "3D Secure, Stripe. Vos données restent privées." },
 ];
 
 export default function DemoEcommercePage() {
@@ -27,9 +27,9 @@ export default function DemoEcommercePage() {
     <div data-theme="ecommerce-clean">
       <HeroSection
         variant="split"
-        eyebrow="Collection printemps 2025"
+        eyebrow="Collection printemps 2026"
         title="Artisanat cuir premium, livre chez vous."
-        description="Pieces fabriquees a la main, matieres nobles, finitions irreprochables. Garantie 2 ans incluse."
+        description="Pièces fabriquées à la main, matières nobles, finitions irréprochables. Garantie 2 ans incluse."
         actions={
           <>
             <Button size="lg">
@@ -44,7 +44,7 @@ export default function DemoEcommercePage() {
           <div className="border rounded-lg bg-muted/30 p-6 text-center">
             <div className="text-4xl font-semibold text-primary">-30%</div>
             <p className="mt-1 text-sm text-muted-foreground">sur toute la collection sacs</p>
-            <p className="text-xs text-muted-foreground mt-1">{"Jusqu'au 30 juin — code: ETE30"}</p>
+            <p className="text-xs text-muted-foreground mt-1">{"Jusqu'au 31 août — code : ETE30"}</p>
             <Button size="sm" className="mt-4">{"Profiter de l'offre"}</Button>
           </div>
         }
@@ -112,10 +112,10 @@ export default function DemoEcommercePage() {
       <CTASection
         variant="muted"
         title="Satisfait ou rembourse."
-        description="30 jours pour changer d'avis. Retours gratuits, sans question posee."
+        description="30 jours pour changer d'avis. Retours gratuits, sans question posée."
         actions={
           <Button size="lg">
-            Decouvrir la boutique <ArrowRight className="size-4" />
+            Découvrir la boutique <ArrowRight className="size-4" />
           </Button>
         }
       />

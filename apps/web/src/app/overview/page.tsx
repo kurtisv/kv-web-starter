@@ -77,7 +77,7 @@ const modules = [
   },
   {
     icon: CalendarDays,
-    title: "Reservations",
+    title: "Réservations",
     flag: "FEATURE_BOOKING=true",
     href: "/booking",
     description: "Services, staff, disponibilites, exceptions, paiements et confirmation par email.",
@@ -85,7 +85,7 @@ const modules = [
       "Slots calcules en temps reel",
       "Staff et horaires par service",
       "Exceptions et jours feries",
-      "Paiement Stripe integre",
+      "Paiement Stripe intégré",
       "Emails de confirmation automatiques",
     ],
   },
@@ -112,7 +112,7 @@ const modules = [
     features: [
       "PRO / BUSINESS / ENTERPRISE",
       "Webhooks synchronises avec Prisma",
-      "Customer Portal integre",
+      "Customer Portal intégré",
       "Trial et grace period",
       "Entitlements par plan",
     ],
@@ -125,7 +125,7 @@ const requestFlow = [
   { step: "3", label: "Rate limit Upstash verifie le quota de la cle API", who: "edge" },
   { step: "4", label: "Route handler valide les params Zod et charge le user", who: "app" },
   { step: "5", label: "Server Action interroge Prisma, incremente ApiUsage", who: "app" },
-  { step: "6", label: "Reponse JSON + headers Cache-Control", who: "client" },
+  { step: "6", label: "réponse JSON + headers Cache-Control", who: "client" },
 ];
 
 const stack = [
@@ -160,7 +160,7 @@ export default function OverviewPage() {
             </h1>
             <p className="mt-5 max-w-2xl text-lg leading-8 opacity-70">
               KV Web Starter est une base Next.js modulaire : active les modules dont tu as besoin,
-              ignore le reste. Sites vitrines, reservations, API payantes ou SaaS complet.
+              ignore le reste. Sites vitrines, Réservations, API payantes ou SaaS complet.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button asChild className="theme-hero-btn-primary">
@@ -199,7 +199,7 @@ export default function OverviewPage() {
           </h2>
           <p className="mt-3 max-w-2xl text-muted-foreground">
             Chaque requete traverse les couches dans l&apos;ordre. Tu sais exactement ce qui se passe
-            avant d&apos;ecrire la premiere ligne de code metier.
+            avant d&apos;ecrire la premiere ligne de code métier.
           </p>
 
           {/* Layer diagram */}
@@ -305,8 +305,8 @@ export default function OverviewPage() {
             Essayer en direct.
           </h2>
           <p className="mt-3 max-w-2xl text-muted-foreground">
-            Appels reels vers le serveur Next.js — pas de mock. Observe la reponse JSON,
-            le temps de reponse, et les headers renvoyes par le middleware.
+            Appels reels vers le serveur Next.js — pas de mock. Observe la réponse JSON,
+            le temps de réponse, et les headers renvoyes par le middleware.
           </p>
           <div className="mt-8 grid gap-6 md:grid-cols-2">
             <LiveApiDemo />
@@ -384,7 +384,7 @@ export default function OverviewPage() {
               {
                 icon: Shield,
                 title: "CSP strict",
-                desc: "Content-Security-Policy injecte sur chaque reponse par le middleware.",
+                desc: "Content-Security-Policy injecte sur chaque réponse par le middleware.",
               },
               {
                 icon: ShieldCheck,
@@ -394,7 +394,7 @@ export default function OverviewPage() {
               {
                 icon: Zap,
                 title: "Rate limiting",
-                desc: "Upstash Redis par IP sur /api/auth/*. Soft-fail si non configure.",
+                desc: "Upstash Redis par IP sur /api/auth/*. Soft-fail si non configuré.",
               },
               {
                 icon: Layers,
@@ -452,7 +452,7 @@ export default function OverviewPage() {
             Pret a commencer ?
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
-            Clone le boilerplate, configure les variables d&apos;env, et lance le serveur.
+            Clone le boilerplate, configuré les variables d&apos;env, et lance le serveur.
             Le dashboard est accessible en quelques minutes.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">

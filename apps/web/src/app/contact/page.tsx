@@ -13,7 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Contactez-nous pour toute question sur le boilerplate ou un projet personnalise.",
+  description: "Contactez-nous pour toute question sur le boilerplate ou un projet personnalisé.",
 };
 
 export default function ContactPage() {
@@ -49,7 +49,7 @@ export default function ContactPage() {
               <div className="border p-5">
                 <div className="flex items-center gap-3">
                   <Clock className="size-5 shrink-0" />
-                  <span className="font-medium">Delai de reponse</span>
+                  <span className="font-medium">Delai de réponse</span>
                 </div>
                 <p className="mt-2 text-sm text-muted-foreground">Sous 24 heures ouvrables, du lundi au vendredi.</p>
               </div>

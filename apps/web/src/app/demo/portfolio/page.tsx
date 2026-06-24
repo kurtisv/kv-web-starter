@@ -43,7 +43,7 @@ const projects = [
     ),
   },
   {
-    title: "App de reservations",
+    title: "App de Réservations",
     description: "Systeme de prise de rendez-vous avec confirmation email et calendrier.",
     tags: ["Next.js", "Prisma", "Resend"],
     href: "#",
@@ -67,9 +67,9 @@ export default function DemoPortfolioPage() {
     <div data-theme="corporate-classic">
       <HeroSection
         variant="split"
-        eyebrow="Developpeur Full Stack"
+        eyebrow="Développeur Full Stack"
         title="Je construis des produits qui fonctionnent."
-        description="Specialise Next.js, TypeScript et APIs. Je livre des applications rapides, accessibles et maintenables. Disponible pour missions freelance."
+        description="Spécialisé Next.js, TypeScript et APIs. Je livre des applications rapides, accessibles et maintenables. Disponible pour missions freelance."
         actions={
           <>
             <Button asChild size="lg">
@@ -81,16 +81,33 @@ export default function DemoPortfolioPage() {
           </>
         }
         media={
-          <div className="flex flex-col gap-3 border bg-muted/40 p-6">
-            <div className="flex items-center gap-2 text-sm">
-              <Globe className="h-4 w-4 text-muted-foreground" />
-              <span className="font-mono text-xs">kurtisv.dev</span>
+          <div className="flex flex-col gap-4 border bg-muted/40 p-6">
+            <div className="flex items-center gap-4">
+              <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full border-2 border-border">
+                <Image
+                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=128&q=80&auto=format&fit=crop&crop=face"
+                  alt="Alex Morin"
+                  fill
+                  className="object-cover"
+                  sizes="64px"
+                />
+              </div>
+              <div>
+                <p className="font-semibold">Alex Morin</p>
+                <p className="text-sm text-muted-foreground">Développeur Full Stack · Paris</p>
+              </div>
             </div>
-            <div className="flex items-center gap-2 text-sm">
-              <ExternalLink className="h-4 w-4 text-muted-foreground" />
-              <span className="font-mono text-xs">github.com/kurtisv</span>
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-2 text-sm">
+                <Globe className="h-4 w-4 text-muted-foreground" />
+                <span className="font-mono text-xs">alexmorin.dev</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm">
+                <ExternalLink className="h-4 w-4 text-muted-foreground" />
+                <span className="font-mono text-xs">github.com/alexmorin</span>
+              </div>
             </div>
-            <div className="mt-3 flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2">
               {["React", "Next.js", "TypeScript", "Prisma", "Tailwind"].map((t) => (
                 <Badge key={t} variant="outline" size="sm">{t}</Badge>
               ))}

@@ -12,8 +12,8 @@ import { prisma } from "@/lib/db";
 import { generateBookingSlots } from "@/modules/booking";
 
 export const metadata: Metadata = {
-  title: "Reserver un creneau",
-  description: "Choisissez un service, une date et un creneau disponible. Confirmation par email immediate.",
+  title: "Reserver un créneau",
+  description: "Choisissez un service, une date et un créneau disponible. Confirmation par email immediate.",
 };
 
 // ------------------------------------------------------------------ demo data
@@ -35,7 +35,7 @@ const demoServices = [
   },
 ];
 
-const fallbackStaff = [{ id: undefined as string | undefined, name: "Toute disponibilite" }];
+const fallbackStaff = [{ id: undefined as string | undefined, name: "Toute disponibilité" }];
 const fallbackDate = new Date().toISOString().slice(0, 10);
 
 // ------------------------------------------------------------------ types
@@ -150,7 +150,7 @@ export default async function BookingPage({
               Prise de rendez-vous
             </Badge>
             <h1 className="text-3xl font-semibold sm:text-4xl">
-              Reservez votre creneau.
+              Reservez votre créneau.
             </h1>
             <p className="mt-3 max-w-xl opacity-70">
               Choisissez un service et une date — les disponibilites s&apos;affichent
@@ -271,7 +271,7 @@ export default async function BookingPage({
             {/* Slot grid */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">3. Choisir un creneau</CardTitle>
+                <CardTitle className="text-base">3. Choisir un créneau</CardTitle>
                 <CardDescription>
                   {formatDateLabel(selectedDate)} &mdash; {selectedService.name}
                 </CardDescription>
@@ -280,7 +280,7 @@ export default async function BookingPage({
                 {slots.length === 0 ? (
                   <div className="border bg-muted/30 px-4 py-8 text-center">
                     <CalendarDays className="mx-auto size-8 text-muted-foreground/40" />
-                    <p className="mt-3 text-sm font-medium">Aucun creneau disponible</p>
+                    <p className="mt-3 text-sm font-medium">Aucun créneau disponible</p>
                     <p className="mt-1 text-xs text-muted-foreground">
                       Essayez une autre date ou un autre service.
                     </p>
@@ -289,7 +289,7 @@ export default async function BookingPage({
                   <div
                     className="grid grid-cols-3 gap-2 sm:grid-cols-4"
                     role="radiogroup"
-                    aria-label="Creneaux disponibles"
+                    aria-label="créneaux disponibles"
                   >
                     {slots.map((slot, i) => (
                       <label
@@ -375,8 +375,8 @@ export default async function BookingPage({
                     disabled={slots.length === 0}
                   >
                     {slots.length === 0
-                      ? "Aucun creneau disponible"
-                      : "Confirmer la reservation"}
+                      ? "Aucun créneau disponible"
+                      : "Confirmer la Réservation"}
                   </Button>
 
                   <p className="text-center text-xs text-muted-foreground">

@@ -10,7 +10,7 @@ import { MarketingPageShell } from "@/components/marketing/page-shell";
 
 export const metadata: Metadata = {
   title: "Tarifs",
-  description: "Plans Starter, Pro et Business. Paiements Stripe, acces instantane, annulation a tout moment.",
+  description: "Plans Starter, Pro et Business. Paiements Stripe, accès instantané, Annulation à tout moment.",
 };
 
 // ------------------------------------------------------------------ data
@@ -27,11 +27,11 @@ const plans = [
     dark: false,
     features: [
       { label: "Site vitrine complet", included: true },
-      { label: "Pages SEO optimisees", included: true },
+      { label: "Pages SEO optimisées", included: true },
       { label: "Formulaire de contact", included: true },
       { label: "Dashboard basique", included: true },
       { label: "1 utilisateur", included: true },
-      { label: "Reservations en ligne", included: false },
+      { label: "Réservations en ligne", included: false },
       { label: "Paiements Stripe", included: false },
       { label: "Portail API", included: false },
       { label: "Emails automatiques", included: false },
@@ -41,7 +41,7 @@ const plans = [
     name: "Pro",
     price: "49",
     period: "par mois",
-    description: "Pour les services avec reservation et dashboard complet.",
+    description: "Pour les services avec réservation et dashboard complet.",
     plan: "PRO",
     cta: "Choisir Pro",
     ctaVariant: "default" as const,
@@ -49,21 +49,21 @@ const plans = [
     badge: "Le plus populaire",
     features: [
       { label: "Tout le plan Starter", included: true },
-      { label: "Reservations en ligne", included: true },
-      { label: "Staff et services illimites", included: true },
-      { label: "Paiements Stripe integres", included: true },
+      { label: "Réservations en ligne", included: true },
+      { label: "Staff et services illimités", included: true },
+      { label: "Paiements Stripe intégrés", included: true },
       { label: "Emails automatiques (Resend)", included: true },
       { label: "Dashboard complet", included: true },
       { label: "5 utilisateurs", included: true },
       { label: "Portail API", included: false },
-      { label: "Cles API et scopes", included: false },
+      { label: "Clés API et scopes", included: false },
     ],
   },
   {
     name: "Business",
     price: "149",
     period: "par mois",
-    description: "Pour les plateformes SaaS et les APIs monetisees.",
+    description: "Pour les plateformes SaaS et les APIs monétisées.",
     plan: "BUSINESS",
     cta: "Choisir Business",
     ctaVariant: "secondary" as const,
@@ -71,29 +71,29 @@ const plans = [
     features: [
       { label: "Tout le plan Pro", included: true },
       { label: "Portail API avec documentation", included: true },
-      { label: "Cles API et scopes granulaires", included: true },
-      { label: "Rate limiting par cle", included: true },
-      { label: "Suivi d'utilisation en temps reel", included: true },
-      { label: "Utilisateurs illimites", included: true },
-      { label: "Webhooks configures", included: true },
+      { label: "Clés API et scopes granulaires", included: true },
+      { label: "Rate limiting par clé", included: true },
+      { label: "Suivi d'utilisation en temps réel", included: true },
+      { label: "Utilisateurs illimités", included: true },
+      { label: "Webhooks configurés", included: true },
       { label: "Support prioritaire", included: true },
-      { label: "SLA 99.9 % de disponibilite", included: true },
+      { label: "SLA 99,9 % de disponibilité", included: true },
     ],
   },
 ];
 
 const billingFaqs = [
   {
-    q: "Puis-je annuler a tout moment ?",
-    a: "Oui. Aucun engagement. Tu geres ton abonnement directement depuis le portail client Stripe — annulation immediate, sans frais.",
+    q: "Puis-je annuler à tout moment ?",
+    a: "Oui. Aucun engagement. Tu gères ton abonnement directement depuis le portail client Stripe — annulation immédiate, sans frais.",
   },
   {
-    q: "Y a-t-il une periode d'essai ?",
-    a: "Les nouvelles inscriptions Pro et Business beneficient de 14 jours d'essai gratuits. Aucune carte requise pour commencer.",
+    q: "Y a-t-il une période d'essai ?",
+    a: "Les nouvelles inscriptions Pro et Business bénéficient de 14 jours d'essai gratuits. Aucune carte requise pour commencer.",
   },
   {
-    q: "Les paiements sont-ils securises ?",
-    a: "Les paiements passent par Stripe — la plateforme de reference utilisee par Amazon, Google et des millions d'entreprises. Nous ne stockons jamais les informations de carte.",
+    q: "Les paiements sont-ils sécurisés ?",
+    a: "Les paiements passent par Stripe — la plateforme de référence utilisée par Amazon, Google et des millions d'entreprises. Nous ne stockons jamais les informations de carte.",
   },
 ];
 
@@ -112,7 +112,7 @@ export default function PricingPage() {
               Simple, transparent, sans surprise.
             </h1>
             <p className="mx-auto mt-5 max-w-xl text-lg opacity-70">
-              Commence gratuitement. Passe au Pro quand tu as besoin des reservations.
+              Commence gratuitement. Passe au Pro quand tu as besoin des réservations.
               Business pour les plateformes API.
             </p>
           </div>
@@ -146,7 +146,7 @@ export default function PricingPage() {
                     )}
                   </div>
                   <div className="mt-2 flex items-end gap-1">
-                    <span className="text-4xl font-semibold">{plan.price} $</span>
+                    <span className="text-4xl font-semibold">{plan.price} €</span>
                     <span
                       className={`mb-1 text-sm ${plan.dark ? "opacity-60" : "text-muted-foreground"}`}
                     >
@@ -218,7 +218,7 @@ export default function PricingPage() {
           </div>
 
           <p className="mt-6 text-center text-sm text-muted-foreground">
-            Tous les prix en USD. Facturation mensuelle. Annulation a tout moment.
+            Tous les prix en EUR. Facturation mensuelle. Annulation à tout moment.
           </p>
         </section>
 

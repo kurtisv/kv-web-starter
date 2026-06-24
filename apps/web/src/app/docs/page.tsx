@@ -34,15 +34,15 @@ const personas = [
     icon: CalendarDays,
     who: "Tu geres un service avec rendez-vous",
     examples: "Coiffeur, clinique, coach, garage, notaire...",
-    gets: "Un formulaire de reservation en ligne. Tes clients choisissent leur creneau, payent, et recoivent un email de confirmation automatiquement.",
-    module: "Module Reservations",
+    gets: "Un formulaire de Réservation en ligne. Tes clients choisissent leur créneau, payent, et recoivent un email de confirmation automatiquement.",
+    module: "Module Réservations",
     href: "/booking",
   },
   {
     icon: Zap,
     who: "Tu lances un SaaS ou une API",
-    examples: "Startup tech, developpeur indie, agence...",
-    gets: "Un systeme de plans payants, des cles d'acces securisees, un dashboard pour suivre l'utilisation, et une documentation integree.",
+    examples: "Startup tech, développeur indie, agence...",
+    gets: "Un systeme de plans payants, des cles d'Accès securisees, un dashboard pour suivre l'utilisation, et une documentation integree.",
     module: "Module API + Billing",
     href: "/pricing",
   },
@@ -66,15 +66,15 @@ const personas = [
 
 const alreadyBuilt = [
   { icon: Lock, label: "Connexion securisee", desc: "Email, GitHub OAuth, ou compte demo pour les tests" },
-  { icon: LayoutDashboard, label: "Dashboard admin", desc: "Interface pour gerer reservations, clients et statistiques" },
-  { icon: CalendarDays, label: "Systeme de reservation", desc: "Creneaux, staff, horaires, exceptions — tout configurable" },
+  { icon: LayoutDashboard, label: "Dashboard admin", desc: "Interface pour gerer Réservations, clients et statistiques" },
+  { icon: CalendarDays, label: "Systeme de Réservation", desc: "créneaux, staff, horaires, exceptions — tout configurable" },
   { icon: CreditCard, label: "Paiements Stripe", desc: "Checkout, abonnements, factures et portail client" },
   { icon: Mail, label: "Emails automatiques", desc: "Confirmations, rappels et transactionnels via Resend" },
-  { icon: KeyRound, label: "Cles API", desc: "Generer et gerer des cles d'acces securisees avec limites" },
+  { icon: KeyRound, label: "Cles API", desc: "Generer et gerer des cles d'Accès securisees avec limites" },
   { icon: ShieldCheck, label: "Securite integree", desc: "Protection des pages, entetes de securite, journaux d'audit" },
-  { icon: Code2, label: "Documentation API", desc: "Pages de docs interactives generees automatiquement" },
+  { icon: Code2, label: "Documentation API", desc: "Pages de docs interactives générées automatiquement" },
   { icon: Globe, label: "SEO complet", desc: "Sitemap, balises Open Graph, metadata par page" },
-  { icon: Users, label: "Multi-roles", desc: "Proprietaire, admin, membre — acces differencies" },
+  { icon: Users, label: "Multi-roles", desc: "Proprietaire, admin, membre — Accès differencies" },
   { icon: Zap, label: "Bilingue EN/FR", desc: "Toutes les pages et messages dans les deux langues" },
   { icon: CheckCircle2, label: "Tests inclus", desc: "Suite de tests automatises pour eviter les regressions" },
 ];
@@ -86,7 +86,7 @@ const modules = [
     flag: "Actif par defaut",
     flagColor: "text-green-600",
     what: "Toutes les pages qu'un site professionnel doit avoir : accueil, services, temoignages, FAQ, contact, mentions legales et politique de confidentialite.",
-    why: "Au lieu de payer un developpeur pour construire ces pages une par une, elles sont deja la. Tu changes les textes, les couleurs, les photos — c'est tout.",
+    why: "Au lieu de payer un développeur pour construire ces pages une par une, elles sont deja la. Tu changes les textes, les couleurs, les photos — c'est tout.",
     includes: [
       "Page d'accueil avec sections hero, modules et CTA",
       "Page services avec cartes et descriptions",
@@ -98,17 +98,17 @@ const modules = [
   },
   {
     icon: CalendarDays,
-    name: "Reservations",
+    name: "Réservations",
     flag: "Activer avec FEATURE_BOOKING=true",
     flagColor: "text-blue-600",
-    what: "Ton client arrive sur le site, choisit un service, voit les creneaux disponibles, reserve et paye. Toi, tu le vois dans ton dashboard.",
+    what: "Ton client arrive sur le site, choisit un service, voit les créneaux disponibles, reserve et paye. Toi, tu le vois dans ton dashboard.",
     why: "Plus besoin de Calendly ou de repondre aux messages un par un. Tout est centralise et automatique.",
     includes: [
-      "Page publique de reservation avec calendrier",
+      "Page publique de Réservation avec calendrier",
       "Gestion des services (nom, duree, prix)",
       "Gestion du staff et de leurs horaires",
       "Exceptions et jours feries",
-      "Paiement integre au moment de la reservation",
+      "Paiement intégré au moment de la Réservation",
       "Email de confirmation automatique au client",
     ],
   },
@@ -121,8 +121,8 @@ const modules = [
     why: "Stripe est le systeme de paiement le plus fiable du marche. Son integration prend normalement des semaines — ici c'est deja fait.",
     includes: [
       "3 plans configurables (Starter, Pro, Business)",
-      "Checkout Stripe securise",
-      "Webhook pour mettre a jour l'acces en temps reel",
+      "Checkout Stripe sécurisé",
+      "Webhook pour mettre a jour l'Accès en temps reel",
       "Portail client pour modifier ou annuler",
       "Historique des paiements dans le dashboard",
       "Support des periodes d'essai",
@@ -130,13 +130,13 @@ const modules = [
   },
   {
     icon: KeyRound,
-    name: "API et portail developpeur",
+    name: "API et portail développeur",
     flag: "Activer avec FEATURE_API_PORTAL=true",
     flagColor: "text-orange-600",
-    what: "Vends l'acces a tes donnees ou services via une API. Tes clients creent leurs cles d'acces, les utilisent dans leur code, et toi tu vois chaque appel dans le dashboard.",
+    what: "Vends l'Accès a tes donnees ou services via une API. Tes clients creent leurs cles d'Accès, les utilisent dans leur code, et toi tu vois chaque appel dans le dashboard.",
     why: "Pour les startups qui veulent monetiser leurs donnees (scores, indices, previsions) sans se batir une infrastructure de zero.",
     includes: [
-      "Cles API generees et securisees",
+      "Cles API générées et securisees",
       "Limites d'utilisation par plan",
       "Compteur d'appels en temps reel",
       "Documentation interactive (tester dans le navigateur)",
@@ -162,13 +162,13 @@ const setupSteps = [
   {
     n: "03",
     title: "Creer la base de donnees",
-    plain: "La structure de ta base de donnees est creee automatiquement. Toutes les tables (utilisateurs, reservations, paiements) sont deja definies.",
+    plain: "La structure de ta base de donnees est créée automatiquement. Toutes les tables (utilisateurs, Réservations, paiements) sont deja definies.",
     cmd: "pnpm db:migrate && pnpm db:seed",
   },
   {
     n: "04",
     title: "Demarrer et voir le resultat",
-    plain: "Lance le serveur et ouvre le site dans ton navigateur. Connecte-toi au dashboard, teste une reservation, explore les pages.",
+    plain: "Lance le serveur et ouvre le site dans ton navigateur. Connecte-toi au dashboard, teste une Réservation, explore les pages.",
     cmd: "pnpm dev",
   },
 ];
@@ -176,7 +176,7 @@ const setupSteps = [
 const beginnerFaqs = [
   {
     q: "Je ne sais pas coder. Est-ce fait pour moi ?",
-    a: "Ce boilerplate est destine aux developpeurs ou aux agences qui creent des sites pour leurs clients. Si tu n'es pas developpeur, trouve quelqu'un qui l'est — il gagnera plusieurs semaines de travail grace a cette base.",
+    a: "Ce boilerplate est destine aux Développeurs ou aux agences qui creent des sites pour leurs clients. Si tu n'es pas développeur, trouve quelqu'un qui l'est — il gagnera plusieurs semaines de travail grace a cette base.",
   },
   {
     q: "C'est quoi un boilerplate ?",
@@ -184,7 +184,7 @@ const beginnerFaqs = [
   },
   {
     q: "Combien de temps pour livrer un site client ?",
-    a: "Avec ce boilerplate, un developpeur experimente peut livrer un site vitrine en 1-2 jours, un site avec reservations et paiements en 3-5 jours. Sans boilerplate, les memes fonctionnalites prendraient 4 a 8 semaines.",
+    a: "Avec ce boilerplate, un développeur experimente peut livrer un site vitrine en 1-2 jours, un site avec Réservations et paiements en 3-5 jours. Sans boilerplate, les memes fonctionnalites prendraient 4 a 8 semaines.",
   },
   {
     q: "Peut-on l'utiliser pour plusieurs projets ?",
@@ -260,7 +260,7 @@ export default function DocsPage() {
           </div>
           <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {[
-              { before: "4-8 semaines", after: "2-5 jours", label: "Site avec reservations" },
+              { before: "4-8 semaines", after: "2-5 jours", label: "Site avec Réservations" },
               { before: "6-10 semaines", after: "3-7 jours", label: "SaaS avec paiements" },
               { before: "2-3 semaines", after: "1-2 jours", label: "Site vitrine" },
               { before: "8-12 semaines", after: "5-10 jours", label: "Portail API complet" },
@@ -343,7 +343,7 @@ export default function DocsPage() {
             </h2>
             <p className="mt-3 max-w-2xl text-muted-foreground">
               Chaque module est independant. Un salon de coiffure n&apos;a pas besoin du portail API.
-              Une startup tech n&apos;a pas besoin du module de reservations. Tu choisis.
+              Une startup tech n&apos;a pas besoin du module de Réservations. Tu choisis.
             </p>
             <div className="mt-8 grid gap-6">
               {modules.map((mod) => (
@@ -396,7 +396,7 @@ export default function DocsPage() {
             4 etapes pour avoir le site en local.
           </h2>
           <p className="mt-3 max-w-2xl text-muted-foreground">
-            Pour les developpeurs qui veulent voir le site tourner sur leur machine.
+            Pour les Développeurs qui veulent voir le site tourner sur leur machine.
           </p>
           <div className="mt-8 grid gap-4">
             {setupSteps.map((step) => (
@@ -446,7 +446,7 @@ export default function DocsPage() {
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Button asChild size="lg">
               <Link href="/booking">
-                Essayer la reservation <ArrowRight className="size-4" />
+                Essayer la Réservation <ArrowRight className="size-4" />
               </Link>
             </Button>
             <Button asChild variant="secondary" size="lg">

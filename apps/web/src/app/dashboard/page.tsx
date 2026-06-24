@@ -29,7 +29,7 @@ async function getDashboardStats() {
     if (process.env.NODE_ENV === "development") {
       console.warn("[dashboard] DB unavailable, using demo stats");
     }
-    return { todayBookings: 4, activeSubscriptions: 12, monthlyRequests: 1847 };
+    return { todayBookings: 4, activeSubscriptions: 12, monthlyRequests: 1847, monthlyRevenue: "2 400 €" };
   }
 }
 
@@ -37,11 +37,11 @@ export default async function DashboardPage() {
   await requireDashboardAccess();
   const t = await getTranslations("Dashboard");
 
-  const { todayBookings, activeSubscriptions, monthlyRequests } = await getDashboardStats();
+  const { todayBookings, activeSubscriptions, monthlyRequests, monthlyRevenue } = await getDashboardStats();
 
   const stats: [string, string | number][] = [
     [t("stats.todayBookings"), todayBookings],
-    [t("stats.monthlyRevenue"), "$—"],
+    [t("stats.monthlyRevenue"), monthlyRevenue ?? "—"],
     [t("stats.monthlyRequests"), monthlyRequests],
     [t("stats.activeSubscriptions"), activeSubscriptions],
   ];

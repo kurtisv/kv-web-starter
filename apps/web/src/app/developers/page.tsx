@@ -16,9 +16,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { MarketingPageShell } from "@/components/marketing/page-shell";
 
 export const metadata: Metadata = {
-  title: "Portail developpeur",
+  title: "Portail développeur",
   description:
-    "Integre l'API KV Web Starter. Cles d'acces, scopes, rate limiting, documentation interactive.",
+    "intégré l'API KV Web Starter. Cles d'Accès, scopes, rate limiting, documentation interactive.",
 };
 
 const endpoints = [
@@ -38,7 +38,7 @@ const endpoints = [
     method: "GET",
     path: "/api/v1/scores",
     auth: true,
-    description: "Exemple de donnees metier (a personnaliser par projet).",
+    description: "Exemple de donnees métier (a personnaliser par projet).",
   },
   {
     method: "POST",
@@ -62,11 +62,11 @@ const authMethods = [
 ];
 
 const scopes = [
-  { name: "demo:read", desc: "Acces aux endpoints de demonstration" },
+  { name: "demo:read", desc: "Accès aux endpoints de demonstration" },
   { name: "scores:read", desc: "Lecture des donnees de score" },
-  { name: "bookings:read", desc: "Lecture des reservations" },
-  { name: "bookings:write", desc: "Creer et modifier des reservations" },
-  { name: "admin:*", desc: "Acces complet (plan Enterprise)" },
+  { name: "bookings:read", desc: "Lecture des Réservations" },
+  { name: "bookings:write", desc: "Creer et modifier des Réservations" },
+  { name: "admin:*", desc: "Accès complet (plan Enterprise)" },
 ];
 
 const limits = [
@@ -103,13 +103,13 @@ export default function DevelopersPage() {
         <section className="border-b theme-hero">
           <div className="mx-auto max-w-6xl px-6 py-16 sm:py-20">
             <Badge className="mb-5 border-background/20 bg-background/10 text-background">
-              Portail developpeur
+              Portail développeur
             </Badge>
             <h1 className="max-w-3xl text-4xl font-semibold tracking-normal text-balance sm:text-5xl">
-              Integre l&apos;API en quelques minutes.
+              intégré l&apos;API en quelques minutes.
             </h1>
             <p className="mt-5 max-w-2xl text-lg leading-8 opacity-70">
-              Cles d&apos;acces securisees, scopes granulaires, rate limiting automatique
+              Cles d&apos;Accès securisees, scopes granulaires, rate limiting automatique
               et documentation interactive. Tout est pret.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
@@ -161,8 +161,8 @@ export default function DevelopersPage() {
               },
               {
                 n: "3",
-                title: "Verifier la reponse",
-                body: "La reponse inclut le statut, les metadonnees de la cle, et les scopes actifs. Si tu obtiens 401, la cle est invalide ou les scopes sont insuffisants.",
+                title: "Verifier la réponse",
+                body: "La réponse inclut le statut, les metadonnees de la cle, et les scopes actifs. Si tu obtiens 401, la cle est invalide ou les scopes sont insuffisants.",
                 link: null,
                 linkLabel: null,
               },
@@ -243,7 +243,7 @@ export default function DevelopersPage() {
           </div>
 
           <div className="mt-6 border bg-muted/30 p-5">
-            <p className="text-sm font-medium">Reponses d&apos;erreur courantes</p>
+            <p className="text-sm font-medium">réponses d&apos;erreur courantes</p>
             <div className="mt-3 grid gap-2 text-sm text-muted-foreground">
               {[
                 { code: "401", msg: "Cle absente, invalide ou revoquee" },
@@ -335,7 +335,7 @@ export default function DevelopersPage() {
               </h2>
               <p className="mt-3 text-muted-foreground">
                 Les limites sont appliquees automatiquement via Upstash Redis.
-                Les headers de reponse indiquent le quota restant.
+                Les headers de réponse indiquent le quota restant.
               </p>
               <div className="mt-6 border">
                 <div className="grid grid-cols-3 border-b bg-muted/50 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
@@ -371,7 +371,7 @@ export default function DevelopersPage() {
             <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {[
                 { icon: Lock, title: "Cles hashees SHA-256", desc: "La valeur en clair n'est jamais stockee. Si la DB fuite, les cles sont inutilisables." },
-                { icon: Zap, title: "Rate limiting edge", desc: "Limite par cle ET par IP. Appliquee avant meme que le code metier s'execute." },
+                { icon: Zap, title: "Rate limiting edge", desc: "Limite par cle ET par IP. Appliquee avant meme que le code métier s'execute." },
                 { icon: ShieldCheck, title: "Scopes valides cote serveur", desc: "Chaque route verifie les scopes independamment. Pas de confiance implicite." },
                 { icon: CheckCircle2, title: "Journaux d'audit", desc: "Chaque utilisation de cle est enregistree avec timestamp, IP et endpoint." },
                 { icon: Code2, title: "Validation Zod", desc: "Tous les inputs sont valides par un schema Zod avant traitement." },

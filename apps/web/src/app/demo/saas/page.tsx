@@ -11,7 +11,7 @@ import { MetricCard, MetricGrid } from "@/components/dashboard-ui/metric-card";
 const features = [
   { icon: <Zap className="h-5 w-5" />, title: "Ultra rapide", description: "Traitement en moins de 200ms. Cache intelligent sur toutes les requetes." },
   { icon: <Lock className="h-5 w-5" />, title: "Securite enterprise", description: "SOC2, chiffrement AES-256, audit logs complets et SSO disponible." },
-  { icon: <BarChart2 className="h-5 w-5" />, title: "Analytics integre", description: "Tableaux de bord en temps reel. Export CSV/JSON a tout moment." },
+  { icon: <BarChart2 className="h-5 w-5" />, title: "Analytics intégré", description: "Tableaux de bord en temps reel. Export CSV/JSON a tout moment." },
   { icon: <Globe className="h-5 w-5" />, title: "Multi-region", description: "Deploy dans 12 regions. Failover automatique sous 30 secondes." },
   { icon: <Clock className="h-5 w-5" />, title: "99.99% uptime", description: "SLA garanti. Incidents publics en temps reel sur status.votresaas.com." },
   { icon: <Shield className="h-5 w-5" />, title: "RGPD ready", description: "Hebergement EU, DPA disponible, droit a l'oubli automatise." },

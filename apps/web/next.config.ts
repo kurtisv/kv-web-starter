@@ -4,6 +4,11 @@ import createNextIntlPlugin from "next-intl/plugin";
 
 const nextConfig: NextConfig = {
   allowedDevOrigins: ["127.0.0.1"],
+  redirects: async () => [
+    { source: "/guide",       destination: "/docs",       permanent: true },
+    { source: "/reservation", destination: "/booking",    permanent: true },
+    { source: "/api",         destination: "/developers", permanent: false },
+  ],
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },

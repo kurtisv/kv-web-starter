@@ -20,11 +20,11 @@ const faqs = [
   },
   {
     q: "Je ne sais pas coder. Est-ce fait pour moi ?",
-    a: "Ce projet est destine aux developpeurs ou aux agences qui creent des sites pour leurs clients. Si tu n'es pas developpeur, trouve quelqu'un qui l'est — il ou elle gagnera plusieurs semaines de travail grace a cette base.",
+    a: "Ce projet est destine aux Développeurs ou aux agences qui creent des sites pour leurs clients. Si tu n'es pas développeur, trouve quelqu'un qui l'est — il ou elle gagnera plusieurs semaines de travail grace a cette base.",
   },
   {
     q: "Combien de temps pour livrer un site avec ce boilerplate ?",
-    a: "Un site vitrine : 1-2 jours. Un site avec reservations et paiements : 3-5 jours. Un portail API complet : 5-10 jours. Sans boilerplate, les memes fonctionnalites prendraient 4 a 12 semaines.",
+    a: "Un site vitrine : 1-2 jours. Un site avec Réservations et paiements : 3-5 jours. Un portail API complet : 5-10 jours. Sans boilerplate, les memes fonctionnalites prendraient 4 a 12 semaines.",
   },
   {
     q: "Peut-on l'utiliser pour plusieurs projets clients ?",
@@ -36,7 +36,7 @@ const faqs = [
   },
   {
     q: "Peut-on cacher un module qu'on n'utilise pas ?",
-    a: "Oui. Chaque module (reservations, paiements, API, CMS) est controle par une variable d'environnement. Si tu n'actives pas FEATURE_BOOKING, la page de reservation et toutes les fonctions associees restent invisibles. Aucun code mort n'est expose.",
+    a: "Oui. Chaque module (Réservations, paiements, API, CMS) est controle par une variable d'environnement. Si tu n'actives pas FEATURE_BOOKING, la page de Réservation et toutes les fonctions associees restent invisibles. Aucun code mort n'est expose.",
   },
   {
     q: "Le site fonctionne-t-il sur telephone ?",
@@ -48,15 +48,15 @@ const faqs = [
   },
   {
     q: "Est-ce que le site est optimise pour Google ?",
-    a: "Oui. Chaque page a ses propres titre, description et balises Open Graph. Le sitemap.xml et le robots.txt sont generes automatiquement. Les pages se chargent rapidement grace au rendu cote serveur (Server Components).",
+    a: "Oui. Chaque page a ses propres titre, description et balises Open Graph. Le sitemap.xml et le robots.txt sont générés automatiquement. Les pages se chargent rapidement grace au rendu cote serveur (Server Components).",
   },
   {
-    q: "Sanity CMS est-il necessaire ?",
+    q: "Sanity CMS est-il nécessaire ?",
     a: "Non. Sanity est une option pour les clients qui veulent modifier eux-memes les textes et images du site sans toucher au code. Si ton client n'en a pas besoin, tu n'actives pas cette fonctionnalite.",
   },
   {
     q: "Est-ce que les paiements Stripe fonctionnent vraiment ?",
-    a: "Oui, le module billing est complet : checkout securise, webhooks pour mettre a jour les acces en temps reel, portail client pour gerer l'abonnement, et support des periodes d'essai. Il faut ton propre compte Stripe — les cles sont renseignees dans le fichier de configuration.",
+    a: "Oui, le module billing est complet : checkout sécurisé, webhooks pour mettre a jour les Accès en temps reel, portail client pour gerer l'abonnement, et support des periodes d'essai. Il faut ton propre compte Stripe — les cles sont renseignees dans le fichier de configuration.",
   },
   {
     q: "Comment tester le site avant de le livrer ?",
@@ -76,7 +76,7 @@ export default function FaqPage() {
               repondues clairement.
             </h1>
             <p className="mt-5 max-w-2xl text-lg opacity-70">
-              Pour les developpeurs, les agences et les clients qui veulent comprendre
+              Pour les Développeurs, les agences et les clients qui veulent comprendre
               ce qu&apos;ils obtiennent avant de commencer.
             </p>
           </div>

@@ -20,7 +20,7 @@ import { MarketingPageShell } from "@/components/marketing/page-shell";
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Ce que tu obtiens avec KV Web Starter : site vitrine, reservations, paiements, API et dashboard admin.",
+    "Ce que tu obtiens avec KV Web Starter : site vitrine, Réservations, paiements, API et dashboard admin.",
 };
 
 const services = [
@@ -44,21 +44,21 @@ const services = [
   },
   {
     icon: CalendarDays,
-    title: "Reservations en ligne",
+    title: "Réservations en ligne",
     description:
       "Tes clients reservent et payent en autonomie. Tu geres tout depuis le dashboard sans jamais decrocher le telephone.",
     items: [
-      "Page publique de reservation",
-      "Calendrier interactif avec creneaux disponibles",
+      "Page publique de Réservation",
+      "Calendrier interactif avec créneaux disponibles",
       "Gestion des services, durees et prix",
       "Gestion du staff et de leurs horaires",
       "Exceptions et jours feries",
-      "Paiement Stripe au moment de la reservation",
+      "Paiement Stripe au moment de la Réservation",
       "Email de confirmation automatique",
       "Vue agenda dans le dashboard",
     ],
     href: "/booking",
-    cta: "Tester la reservation",
+    cta: "Tester la Réservation",
   },
   {
     icon: CreditCard,
@@ -68,7 +68,7 @@ const services = [
     items: [
       "3 plans configurables (Starter, Pro, Business)",
       "Page de tarification presentable au client",
-      "Checkout Stripe securise",
+      "Checkout Stripe sécurisé",
       "Webhook synchronise en temps reel",
       "Portail client pour modifier ou annuler",
       "Periodes d'essai gererables",
@@ -80,16 +80,16 @@ const services = [
   },
   {
     icon: KeyRound,
-    title: "Portail API et developpeurs",
+    title: "Portail API et Développeurs",
     description:
-      "Pour les services qui veulent vendre l'acces a leurs donnees ou fonctionnalites via une API.",
+      "Pour les services qui veulent vendre l'Accès a leurs donnees ou fonctionnalites via une API.",
     items: [
-      "Cles API generees et hashees",
+      "Cles API générées et hashees",
       "Scopes et permissions par cle",
       "Limites d'appels par plan",
       "Compteur d'utilisation en temps reel",
       "Documentation interactive (testable en direct)",
-      "Page portail developpeur",
+      "Page portail développeur",
       "Endpoint de demonstration inclus",
       "Guide d'integration",
     ],
@@ -100,10 +100,10 @@ const services = [
     icon: LayoutDashboard,
     title: "Dashboard d'administration",
     description:
-      "Interface complete pour gerer le site, les clients, les reservations et les statistiques.",
+      "Interface complete pour gerer le site, les clients, les Réservations et les statistiques.",
     items: [
       "Vue d'ensemble avec statistiques en temps reel",
-      "Gestion des reservations (accepter, annuler)",
+      "Gestion des Réservations (accepter, annuler)",
       "Liste des clients et abonnements",
       "Gestion des cles API",
       "Configuration des services et du staff",
@@ -116,13 +116,13 @@ const services = [
   },
   {
     icon: ShieldCheck,
-    title: "Securite et fiabilite",
+    title: "Securite et fiabilité",
     description:
-      "Les protections essentielles sont activees par defaut. Ton site est securise sans configuration supplementaire.",
+      "Les protections essentielles sont activees par defaut. Ton site est sécurisé sans configuration supplementaire.",
     items: [
       "Connexion securisee (email, GitHub OAuth)",
       "Protection de toutes les pages privees",
-      "Entetes de securite sur chaque reponse",
+      "Entetes de securite sur chaque réponse",
       "Cles API hashees (jamais stockees en clair)",
       "Limite d'appels pour eviter les abus",
       "Journal d'audit des actions sensibles",
@@ -138,7 +138,7 @@ const services = [
     description:
       "Tous les emails transactionnels sont preconfigures. Tes clients recoivent les bons messages au bon moment.",
     items: [
-      "Confirmation de reservation",
+      "Confirmation de Réservation",
       "Rappel avant le rendez-vous",
       "Email de bienvenue a l'inscription",
       "Confirmation de paiement",
@@ -174,7 +174,7 @@ export default function ServicesPage() {
                 </Link>
               </Button>
               <Button asChild variant="outline" className="border-background/30 text-background hover:bg-background/10">
-                <Link href="/booking">Tester la reservation</Link>
+                <Link href="/booking">Tester la Réservation</Link>
               </Button>
             </div>
           </div>

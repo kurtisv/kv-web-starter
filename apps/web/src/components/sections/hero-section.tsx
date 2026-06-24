@@ -22,7 +22,7 @@ export function HeroSection({
 }: HeroSectionProps) {
   if (variant === "dark") {
     return (
-      <section className={cn("bg-foreground text-background", className)}>
+      <section className={cn("theme-hero", className)}>
         <div className="mx-auto max-w-6xl px-6 py-20 sm:py-28">
           {eyebrow && (
             <p className="mb-5 text-sm font-medium uppercase tracking-[0.18em] opacity-50">

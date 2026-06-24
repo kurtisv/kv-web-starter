@@ -16,11 +16,11 @@ interface StatsSectionProps {
 export function StatsSection({ stats, variant = "grid", className }: StatsSectionProps) {
   if (variant === "dark") {
     return (
-      <section className={cn("bg-foreground text-background", className)}>
+      <section className={cn("theme-hero", className)}>
         <div className="mx-auto max-w-6xl px-6 py-14">
-          <div className={`grid gap-px bg-background/10 border border-background/10 grid-cols-2 sm:grid-cols-${Math.min(stats.length, 4)}`}>
+          <div className={`grid gap-px bg-white/10 border border-white/10 grid-cols-2 sm:grid-cols-${Math.min(stats.length, 4)}`}>
             {stats.map((s, i) => (
-              <div key={i} className="bg-foreground px-6 py-7">
+              <div key={i} className="bg-black/20 px-6 py-7">
                 <div className="text-4xl font-semibold">{s.value}</div>
                 <div className="mt-1 text-sm opacity-50">{s.label}</div>
                 {s.description && (

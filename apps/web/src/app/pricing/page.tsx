@@ -105,7 +105,7 @@ export default function PricingPage() {
       <main>
 
         {/* Header */}
-        <section className="border-b bg-foreground text-background">
+        <section className="border-b theme-hero">
           <div className="mx-auto max-w-6xl px-6 py-16 text-center">
             <Badge className="mb-5 border-background/20 bg-background/10 text-background">Tarifs</Badge>
             <h1 className="text-4xl font-semibold tracking-normal text-balance sm:text-5xl">

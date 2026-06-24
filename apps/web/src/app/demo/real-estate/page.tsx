@@ -31,7 +31,7 @@ export default function DemoRealEstatePage() {
         description="Biens selectionnes, scores de quartier, rendements calcules. L'immobilier rendu simple."
         actions={
           <>
-            <Button size="lg" className="bg-background text-foreground hover:bg-background/90">
+            <Button size="lg" className="theme-hero-btn-primary">
               <Search className="size-4" /> Rechercher un bien
             </Button>
             <Button size="lg" variant="glass">

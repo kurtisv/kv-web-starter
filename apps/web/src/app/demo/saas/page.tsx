@@ -94,7 +94,7 @@ export default function DemoSaaSPage() {
         title="Pret a simplifier votre workflow ?"
         description="Rejoignez 12 000 equipes qui gagnent 10h/semaine."
         actions={
-          <Button size="lg" className="bg-background text-foreground hover:bg-background/90">
+          <Button size="lg" className="theme-hero-btn-primary">
             Commencer maintenant <ArrowRight className="size-4" />
           </Button>
         }

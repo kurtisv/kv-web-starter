@@ -100,7 +100,7 @@ export default function DevelopersPage() {
       <main>
 
         {/* Hero */}
-        <section className="border-b bg-foreground text-background">
+        <section className="border-b theme-hero">
           <div className="mx-auto max-w-6xl px-6 py-16 sm:py-20">
             <Badge className="mb-5 border-background/20 bg-background/10 text-background">
               Portail developpeur
@@ -116,7 +116,7 @@ export default function DevelopersPage() {
               <Button
                 asChild
                 size="lg"
-                className="bg-background text-foreground hover:bg-background/90"
+                className="theme-hero-btn-primary"
               >
                 <Link href="/dashboard/api-keys">
                   Creer une cle API <ArrowRight className="size-4" />

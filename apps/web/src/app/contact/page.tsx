@@ -22,7 +22,7 @@ export default function ContactPage() {
       <main>
 
         {/* Hero */}
-        <section className="border-b bg-foreground text-background">
+        <section className="border-b theme-hero">
           <div className="mx-auto max-w-6xl px-6 py-16">
             <Badge className="mb-4 border-background/20 bg-background/10 text-background">Contact</Badge>
             <h1 className="text-4xl font-semibold sm:text-5xl">On se parle.</h1>

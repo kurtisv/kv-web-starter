@@ -6,6 +6,9 @@
 :root {
   --background: #ffffff;
   --foreground: #18181b;
+  --hero-from: #1e3a8a;
+  --hero-to: #0f172a;
+  --hero-text: #f0f6ff;
   --card: #ffffff;
   --card-foreground: #18181b;
   --muted: #f4f4f5;
@@ -72,6 +75,9 @@
   --accent: #dbeafe;
   --accent-foreground: #1e40af;
   --radius: 0.25rem;
+  --hero-from: #1e3a8a;
+  --hero-to: #0f172a;
+  --hero-text: #f0f6ff;
 }
 
 /* ============================================================
@@ -81,7 +87,7 @@
 [data-theme="premium-saas"] {
   --background: #ffffff;
   --foreground: #0f172a;
-  --card: #ffffff;
+  --card: #f9f8ff;
   --card-foreground: #0f172a;
   --muted: #f5f3ff;
   --muted-foreground: #6b7280;
@@ -95,6 +101,9 @@
   --accent: #ddd6fe;
   --accent-foreground: #5b21b6;
   --radius: 0.75rem;
+  --hero-from: #4c1d95;
+  --hero-to: #2e1065;
+  --hero-text: #faf5ff;
 }
 
 /* ============================================================
@@ -118,6 +127,10 @@
   --accent: #b45309;
   --accent-foreground: #fafafa;
   --radius: 0.125rem;
+  --hero-from: #0d0000;
+  --hero-to: #1a0505;
+  --hero-text: #fafafa;
+  --hero-accent-color: #ef4444;
 }
 
 /* ============================================================
@@ -141,6 +154,9 @@
   --accent: #fb923c;
   --accent-foreground: #ffffff;
   --radius: 0.5rem;
+  --hero-from: #14532d;
+  --hero-to: #052e16;
+  --hero-text: #f0fdf4;
 }
 
 /* ============================================================
@@ -150,7 +166,7 @@
 [data-theme="real-estate"] {
   --background: #ffffff;
   --foreground: #0f172a;
-  --card: #ffffff;
+  --card: #f7fafe;
   --card-foreground: #0f172a;
   --muted: #f0f9ff;
   --muted-foreground: #475569;
@@ -164,6 +180,9 @@
   --accent: #b45309;
   --accent-foreground: #ffffff;
   --radius: 0.375rem;
+  --hero-from: #0284c7;
+  --hero-to: #0c4a6e;
+  --hero-text: #f0f9ff;
 }
 
 /* ============================================================
@@ -173,7 +192,7 @@
 [data-theme="ecommerce-clean"] {
   --background: #ffffff;
   --foreground: #111827;
-  --card: #ffffff;
+  --card: #fff8f5;
   --card-foreground: #111827;
   --muted: #f9fafb;
   --muted-foreground: #6b7280;
@@ -187,6 +206,10 @@
   --accent: #16a34a;
   --accent-foreground: #ffffff;
   --radius: 0.375rem;
+  --hero-from: #1c0f07;
+  --hero-to: #030712;
+  --hero-text: #fff7ed;
+  --hero-accent-color: #ea580c;
 }
 
 /* ============================================================
@@ -196,7 +219,7 @@
 [data-theme="dark-tech-api"] {
   --background: #030712;
   --foreground: #f9fafb;
-  --card: #111827;
+  --card: #0d1929;
   --card-foreground: #f9fafb;
   --muted: #1f2937;
   --muted-foreground: #9ca3af;
@@ -210,6 +233,10 @@
   --accent: #4ade80;
   --accent-foreground: #030712;
   --radius: 0.25rem;
+  --hero-from: #050d1f;
+  --hero-to: #030712;
+  --hero-text: #e0f7fa;
+  --hero-accent-color: #22d3ee;
 }
 
 /* ============================================================
@@ -248,6 +275,50 @@
 body {
   background: var(--background);
   color: var(--foreground);
+}
+
+/* ============================================================
+   THEME HERO — gradient adaptatif par theme
+   ============================================================ */
+.theme-hero {
+  background: linear-gradient(135deg, var(--hero-from) 0%, var(--hero-to) 100%);
+  color: var(--hero-text);
+  /* Remap --background inside hero so text-background / bg-background/10 / border-background/30
+     all resolve to --hero-text (always a light/off-white color) regardless of the active theme.
+     This fixes dark-theme heroes where --background is near-black. */
+  --background: var(--hero-text);
+  --color-background: var(--hero-text);
+}
+
+/* Bouton principal dans un hero sombre — fond blanc, texte colore */
+.theme-hero-btn-primary {
+  background-color: rgba(255, 255, 255, 0.95);
+  color: var(--hero-from);
+  border-color: transparent;
+  font-weight: 600;
+}
+.theme-hero-btn-primary:hover {
+  background-color: rgba(255, 255, 255, 1);
+  opacity: 0.92;
+}
+
+/* Bouton secondaire dans un hero sombre — contour blanc semi-transparent */
+.theme-hero-btn-outline {
+  background-color: transparent;
+  border-color: rgba(255, 255, 255, 0.28);
+  color: rgba(255, 255, 255, 0.88);
+}
+.theme-hero-btn-outline:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 1);
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+/* Accent line optionnel pour themes avec --hero-accent-color */
+.theme-hero-accent-bar {
+  height: 3px;
+  background: var(--hero-accent-color, var(--primary));
+  width: 100%;
 }
 
 /* ============================================================

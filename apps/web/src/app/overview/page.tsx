@@ -151,7 +151,7 @@ export default function OverviewPage() {
       <main>
 
         {/* Hero */}
-        <section className="border-b bg-foreground text-background">
+        <section className="border-b theme-hero">
           <div className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
             <Badge className="mb-5 border-background/20 bg-background/10 text-background">Vue d&apos;ensemble</Badge>
             <h1 className="text-4xl font-semibold tracking-normal text-balance sm:text-5xl">
@@ -163,7 +163,7 @@ export default function OverviewPage() {
               ignore le reste. Sites vitrines, reservations, API payantes ou SaaS complet.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Button asChild className="bg-background text-foreground hover:bg-background/90">
+              <Button asChild className="theme-hero-btn-primary">
                 <Link href="/dashboard">
                   Ouvrir le dashboard <ArrowRight className="size-4" />
                 </Link>

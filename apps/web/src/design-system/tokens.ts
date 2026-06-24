@@ -77,47 +77,68 @@ export const THEMES = [
 
 export type ThemeId = typeof THEMES[number];
 
-export const THEME_META: Record<ThemeId, { label: string; description: string; dark: boolean; accent: string }> = {
+export const THEME_META: Record<ThemeId, { label: string; description: string; dark: boolean; accent: string; bg: string; fg: string; heroFrom: string }> = {
   "corporate-classic": {
     label: "Corporate Classic",
     description: "Professional blue — B2B, portfolio, consultant",
     dark: false,
     accent: "#1e40af",
+    bg: "#f8fafc",
+    fg: "#0f172a",
+    heroFrom: "#1e3a8a",
   },
   "premium-saas": {
     label: "Premium SaaS",
     description: "Violet gradients — SaaS product, pricing, dashboards",
     dark: false,
     accent: "#7c3aed",
+    bg: "#ffffff",
+    fg: "#0f172a",
+    heroFrom: "#4c1d95",
   },
   "luxury-auto": {
     label: "Luxury Auto",
     description: "Dark + red — automotive blog, car showcase",
     dark: true,
     accent: "#ef4444",
+    bg: "#09090b",
+    fg: "#fafafa",
+    heroFrom: "#0d0000",
   },
   "local-business": {
     label: "Local Business",
     description: "Warm + green — restaurant, massage, local services",
     dark: false,
     accent: "#4d7c0f",
+    bg: "#fefce8",
+    fg: "#292524",
+    heroFrom: "#14532d",
   },
   "real-estate": {
     label: "Real Estate",
     description: "Sky blue + gold — property listings, real estate",
     dark: false,
     accent: "#0284c7",
+    bg: "#ffffff",
+    fg: "#0f172a",
+    heroFrom: "#0284c7",
   },
   "ecommerce-clean": {
     label: "E-commerce Clean",
     description: "Orange CTA + trust — products, cart, checkout",
     dark: false,
     accent: "#ea580c",
+    bg: "#ffffff",
+    fg: "#111827",
+    heroFrom: "#1c0f07",
   },
   "dark-tech-api": {
     label: "Dark Tech / API",
     description: "Cyan on dark — developer portal, API docs, metrics",
     dark: true,
     accent: "#22d3ee",
+    bg: "#030712",
+    fg: "#f9fafb",
+    heroFrom: "#050d1f",
   },
 };

@@ -8,7 +8,7 @@ export default function NotFound() {
   return (
     <MarketingPageShell>
       <main>
-        <section className="bg-foreground text-background">
+        <section className="theme-hero">
           <div className="mx-auto max-w-6xl px-6 py-24 sm:py-32">
             <p className="text-sm font-medium uppercase tracking-widest opacity-40">404</p>
             <h1 className="mt-4 text-4xl font-semibold sm:text-6xl">
@@ -18,7 +18,7 @@ export default function NotFound() {
               La page que tu cherches a ete deplacee, supprimee, ou n&apos;a jamais existe.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Button asChild className="bg-background text-foreground hover:bg-background/90">
+              <Button asChild className="theme-hero-btn-primary">
                 <Link href="/">
                   Retour a l&apos;accueil <ArrowRight className="size-4" />
                 </Link>

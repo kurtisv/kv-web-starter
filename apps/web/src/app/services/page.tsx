@@ -156,7 +156,7 @@ export default function ServicesPage() {
   return (
     <MarketingPageShell>
       <main>
-        <section className="border-b bg-foreground text-background">
+        <section className="border-b theme-hero">
           <div className="mx-auto max-w-6xl px-6 py-16">
             <Badge className="mb-5 border-background/20 bg-background/10 text-background">Ce qu&apos;on obtient</Badge>
             <h1 className="text-4xl font-semibold tracking-normal text-balance sm:text-5xl">
@@ -168,7 +168,7 @@ export default function ServicesPage() {
               ignore le reste. Pas de code mort, pas de fonctionnalites inutiles.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Button asChild className="bg-background text-foreground hover:bg-background/90">
+              <Button asChild className="theme-hero-btn-primary">
                 <Link href="/docs">
                   Lire le guide complet <ArrowRight className="size-4" />
                 </Link>

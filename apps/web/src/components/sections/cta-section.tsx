@@ -14,7 +14,7 @@ export function CTASection({ title, description, actions, variant = "default", c
 
   if (variant === "dark") {
     return (
-      <section className={cn("bg-foreground text-background", base, className)}>
+      <section className={cn("theme-hero", base, className)}>
         <div className="mx-auto max-w-4xl px-6 py-16 sm:py-20">
           <h2 className="text-3xl font-semibold tracking-tight">{title}</h2>
           {description && <p className="mx-auto mt-4 max-w-xl text-lg opacity-70">{description}</p>}

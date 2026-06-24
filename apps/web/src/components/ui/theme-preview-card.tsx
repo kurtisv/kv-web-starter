@@ -22,9 +22,10 @@ export function ThemePreviewCard({ themeId, active, onClick, className }: ThemeP
         className,
       )}
     >
-      {/* Swatch */}
-      <div className="flex h-10 w-full overflow-hidden rounded-sm border">
-        <div className="flex-1" style={{ background: "var(--background, #fff)" }} />
+      {/* Swatch — shows actual target theme colors, not the current page theme */}
+      <div className="flex h-10 w-full overflow-hidden rounded-sm border border-black/10">
+        <div className="flex-1" style={{ background: meta.bg }} />
+        <div className="w-3" style={{ background: meta.fg }} />
         <div className="w-6" style={{ background: meta.accent }} />
       </div>
 

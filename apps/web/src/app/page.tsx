@@ -271,7 +271,9 @@ export default function Home() {
       <main>
 
         {/* Hero */}
-        <section className="bg-foreground text-background">
+        <section className="theme-hero">
+          {/* Accent bar for themes that define --hero-accent-color */}
+          <div className="theme-hero-accent-bar" />
           <div className="mx-auto max-w-6xl px-6 py-20 sm:py-28">
             <p className="mb-5 text-sm font-medium uppercase tracking-[0.18em] opacity-50">
               Next.js 16 &middot; Tailwind v4 &middot; Auth.js v5 &middot; Stripe &middot; Prisma
@@ -279,7 +281,7 @@ export default function Home() {
             <h1 className="max-w-4xl text-5xl font-semibold tracking-tight text-balance sm:text-7xl">
               Un boilerplate. 9 identites de projet.
             </h1>
-            <p className="mt-7 max-w-2xl text-lg leading-8 opacity-70">
+            <p className="mt-7 max-w-2xl text-lg leading-8 opacity-75">
               Reservations, SaaS, portfolio, e-commerce, immobilier — chaque preset
               reconfigure le theme, la navigation et la logique produit.
               Clone, personnalise, livre en jours.
@@ -288,7 +290,7 @@ export default function Home() {
               <Button
                 asChild
                 size="lg"
-                className="bg-background text-foreground hover:bg-background/90"
+                className="theme-hero-btn-primary shadow-md"
               >
                 <Link href="/demo">
                   Voir les 9 demos <ArrowRight className="size-4" />
@@ -298,7 +300,7 @@ export default function Home() {
                 asChild
                 variant="outline"
                 size="lg"
-                className="border-background/30 text-background hover:bg-background/10 hover:text-background"
+                className="theme-hero-btn-outline"
               >
                 <Link href="/docs">Lire le guide</Link>
               </Button>
@@ -406,7 +408,7 @@ export default function Home() {
               <Button
                 asChild
                 size="lg"
-                className="bg-background text-foreground hover:bg-background/90"
+                className="theme-hero-btn-primary shadow-md"
               >
                 <Link href="/docs">
                   Lire le guide <ArrowRight className="size-4" />
@@ -414,8 +416,9 @@ export default function Home() {
               </Button>
               <Button
                 asChild
-                variant="glass"
+                variant="outline"
                 size="lg"
+                className="theme-hero-btn-outline"
               >
                 <Link href="/demo">Voir les demos</Link>
               </Button>

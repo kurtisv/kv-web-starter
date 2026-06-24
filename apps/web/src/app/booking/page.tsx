@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Stepper } from "@/components/ui/stepper";
 import { MarketingPageShell } from "@/components/marketing/page-shell";
 import { prisma } from "@/lib/db";
 import { generateBookingSlots } from "@/modules/booking";
@@ -145,6 +146,15 @@ export default async function BookingPage({
     bookedIntervals: data.bookings,
   });
 
+  const bookingSteps = [
+    { label: "Service" },
+    { label: "Date" },
+    { label: "Creneau" },
+    { label: "Coordonnees" },
+  ];
+
+  const currentStep = !params.serviceId ? 0 : !params.date ? 1 : 2;
+
   return (
     <MarketingPageShell>
       <main>
@@ -162,6 +172,9 @@ export default async function BookingPage({
               Choisissez un service et une date — les disponibilites s&apos;affichent
               automatiquement. Confirmation par email immediate.
             </p>
+            <div className="mt-8 max-w-sm">
+              <Stepper steps={bookingSteps} currentStep={currentStep} />
+            </div>
           </div>
         </section>
 

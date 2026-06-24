@@ -1,5 +1,6 @@
 import { Footer } from "@/components/marketing/footer";
 import { Navbar } from "@/components/marketing/navbar";
+import { BackToTop } from "@/components/ui/back-to-top";
 
 export function MarketingPageShell({ children }: { children: React.ReactNode }) {
   return (
@@ -7,6 +8,7 @@ export function MarketingPageShell({ children }: { children: React.ReactNode }) 
       <Navbar />
       {children}
       <Footer />
+      <BackToTop />
     </div>
   );
 }

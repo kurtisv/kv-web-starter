@@ -18,7 +18,7 @@ import { MarketingPageShell } from "@/components/marketing/page-shell";
 export const metadata: Metadata = {
   title: "Portail développeur",
   description:
-    "intégré l'API KV Web Starter. Cles d'Accès, scopes, rate limiting, documentation interactive.",
+    "Intégrez l'API KV Web Starter. Clés d'accès, scopes, rate limiting, documentation interactive.",
 };
 
 const endpoints = [

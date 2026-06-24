@@ -9,12 +9,12 @@ import { Button } from "@/components/ui/button";
 import { MetricCard, MetricGrid } from "@/components/dashboard-ui/metric-card";
 
 const features = [
-  { icon: <Zap className="h-5 w-5" />, title: "Ultra rapide", description: "Traitement en moins de 200ms. Cache intelligent sur toutes les requetes." },
+  { icon: <Zap className="h-5 w-5" />, title: "Ultra rapide", description: "Traitement en moins de 200ms. Cache intelligent sur toutes les requêtes." },
   { icon: <Lock className="h-5 w-5" />, title: "Securite enterprise", description: "SOC2, chiffrement AES-256, audit logs complets et SSO disponible." },
   { icon: <BarChart2 className="h-5 w-5" />, title: "Analytics intégré", description: "Tableaux de bord en temps reel. Export CSV/JSON a tout moment." },
   { icon: <Globe className="h-5 w-5" />, title: "Multi-region", description: "Deploy dans 12 regions. Failover automatique sous 30 secondes." },
   { icon: <Clock className="h-5 w-5" />, title: "99.99% uptime", description: "SLA garanti. Incidents publics en temps reel sur status.votresaas.com." },
-  { icon: <Shield className="h-5 w-5" />, title: "RGPD ready", description: "Hebergement EU, DPA disponible, droit a l'oubli automatise." },
+  { icon: <Shield className="h-5 w-5" />, title: "RGPD ready", description: "Hébergement EU, DPA disponible, droit a l'oubli automatisé." },
 ];
 
 const plans = [
@@ -23,7 +23,7 @@ const plans = [
     price: "0€",
     period: "/mois",
     description: "Parfait pour tester.",
-    features: ["5 000 requetes/mois", "1 utilisateur", "Support communaute", "API REST"],
+    features: ["5 000 requêtes/mois", "1 utilisateur", "Support communaute", "API REST"],
     cta: "Commencer",
     ctaHref: "/login",
   },
@@ -31,8 +31,8 @@ const plans = [
     name: "Pro",
     price: "49€",
     period: "/mois",
-    description: "Pour les equipes en croissance.",
-    features: ["100 000 requetes/mois", "10 utilisateurs", "Support prioritaire", "API REST + Webhooks", "Analytics avances"],
+    description: "Pour les équipes en croissance.",
+    features: ["100 000 requêtes/mois", "10 utilisateurs", "Support prioritaire", "API REST + Webhooks", "Analytics avances"],
     cta: "Essai 14 jours",
     ctaHref: "/login",
     featured: true,
@@ -42,7 +42,7 @@ const plans = [
     name: "Enterprise",
     price: "Sur mesure",
     description: "Pour les grandes organisations.",
-    features: ["Requetes illimitees", "Utilisateurs illimites", "SLA garanti", "Support dedie 24/7", "SSO + SAML", "Audit logs"],
+    features: ["requêtes illimitees", "Utilisateurs illimites", "SLA garanti", "Support dedie 24/7", "SSO + SAML", "Audit logs"],
     cta: "Nous contacter",
     ctaHref: "/contact",
   },
@@ -62,7 +62,7 @@ export default function DemoSaaSPage() {
         variant="centered"
         eyebrow="Nouveau — V3 disponible"
         title={<>La plateforme qui <span className="text-primary">simplifie</span> votre workflow.</>}
-        description="Gagnez 10h/semaine. Integrez en 5 minutes. Sans carte de credit pour commencer."
+        description="Gagnez 10h/semaine. Intégrez en 5 minutes. Sans carte de credit pour commencer."
         actions={
           <>
             <Button size="xl" variant="default">
@@ -91,8 +91,8 @@ export default function DemoSaaSPage() {
       <PricingSection eyebrow="Tarifs" title="Simple et transparent." plans={plans} />
       <CTASection
         variant="dark"
-        title="Pret a simplifier votre workflow ?"
-        description="Rejoignez 12 000 equipes qui gagnent 10h/semaine."
+        title="Prêt à simplifier votre workflow ?"
+        description="Rejoignez 12 000 équipes qui gagnent 10h/semaine."
         actions={
           <Button size="lg" className="theme-hero-btn-primary">
             Commencer maintenant <ArrowRight className="size-4" />

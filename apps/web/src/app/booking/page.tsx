@@ -96,7 +96,7 @@ async function getBookingData(bookingDate: string) {
 
 function formatPrice(priceCents: number | null) {
   if (!priceCents) return "Gratuit";
-  return `${(priceCents / 100).toFixed(0)} $`;
+  return `${(priceCents / 100).toFixed(0)} €`;
 }
 
 function normalizeDate(date?: string) {
@@ -126,10 +126,16 @@ export default async function BookingPage({
   const selectedStaff =
     data.staff.find((s) => s.id === params.staffId) ?? data.staff[0] ?? fallbackStaff[0];
 
+  const demoRules = [0, 1, 2, 3, 4, 5, 6].map((d) => ({
+    weekday: d,
+    startTime: "09:00",
+    endTime: "17:00",
+  }));
+
   const rules =
     data.rules.length > 0
       ? data.rules.filter((r) => !selectedStaff.id || r.staffId === selectedStaff.id)
-      : [{ weekday: 1, startTime: "09:00", endTime: "17:00" }];
+      : demoRules;
 
   const slots = generateBookingSlots({
     date: selectedDate,

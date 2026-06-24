@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import { ThemeSwitcher } from "@/components/ui/theme-switcher";
+import { MobileMenu } from "@/components/marketing/mobile-menu";
 import { siteConfig } from "@/config/site";
 
 export function Navbar() {
@@ -20,9 +21,10 @@ export function Navbar() {
         </nav>
         <div className="flex items-center gap-2">
           <ThemeSwitcher />
-          <Button asChild size="sm">
+          <Button asChild size="sm" className="hidden md:inline-flex">
             <Link href={siteConfig.ctaHref}>{siteConfig.cta}</Link>
           </Button>
+          <MobileMenu />
         </div>
       </div>
     </header>

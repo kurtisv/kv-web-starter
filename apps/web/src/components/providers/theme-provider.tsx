@@ -38,7 +38,8 @@ export function ThemeProvider({
   const setTheme = useCallback((next: ThemeId) => {
     setThemeState(next);
     document.documentElement.setAttribute("data-theme", next);
-    document.cookie = `${COOKIE_NAME}=${next}; path=/; max-age=${COOKIE_MAX_AGE}; SameSite=Lax`;
+    const secure = location.protocol === "https:" ? "; Secure" : "";
+    document.cookie = `${COOKIE_NAME}=${next}; path=/; max-age=${COOKIE_MAX_AGE}; SameSite=Lax${secure}`;
   }, []);
 
   useEffect(() => {

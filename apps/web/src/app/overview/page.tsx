@@ -107,7 +107,7 @@ const modules = [
     icon: CreditCard,
     title: "Billing SaaS",
     flag: "FEATURE_BILLING=true",
-    href: "/pricing",
+    href: "/dashboard/billing",
     description: "Plans Stripe, webhooks, Customer Portal, entitlements et suivi des subscriptions.",
     features: [
       "PRO / BUSINESS / ENTERPRISE",
@@ -464,11 +464,6 @@ export default function OverviewPage() {
             <Button asChild variant="secondary" size="lg">
               <Link href="/docs">
                 Guide complet
-              </Link>
-            </Button>
-            <Button asChild variant="secondary" size="lg">
-              <Link href="/pricing">
-                Voir les plans
               </Link>
             </Button>
           </div>

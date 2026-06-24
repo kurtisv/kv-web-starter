@@ -38,7 +38,6 @@ export default function NotFound() {
                 { href: "/", label: "Accueil" },
                 { href: "/docs", label: "Guide" },
                 { href: "/services", label: "Services" },
-                { href: "/pricing", label: "Tarifs" },
                 { href: "/booking", label: "Réservation" },
                 { href: "/developers", label: "API" },
                 { href: "/faq", label: "FAQ" },

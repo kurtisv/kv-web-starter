@@ -44,7 +44,7 @@ const personas = [
     examples: "Startup tech, développeur indie, agence...",
     gets: "Un systeme de plans payants, des cles d'Accès securisees, un dashboard pour suivre l'utilisation, et une documentation integree.",
     module: "Module API + Billing",
-    href: "/pricing",
+    href: "/dashboard/billing",
   },
   {
     icon: Globe,
@@ -448,9 +448,6 @@ export default function DocsPage() {
               <Link href="/booking">
                 Essayer la Réservation <ArrowRight className="size-4" />
               </Link>
-            </Button>
-            <Button asChild variant="secondary" size="lg">
-              <Link href="/pricing">Voir les plans</Link>
             </Button>
             <Button asChild variant="secondary" size="lg">
               <Link href="/developers">Explorer l&apos;API</Link>

@@ -75,8 +75,8 @@ const services = [
       "Historique des paiements",
       "Facturation automatique mensuelle",
     ],
-    href: "/pricing",
-    cta: "Voir les plans",
+    href: "/dashboard/billing",
+    cta: "Voir le portail",
   },
   {
     icon: KeyRound,

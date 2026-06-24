@@ -32,7 +32,7 @@ export default async function DashboardStaffPage() {
   return (
     <main className="grid gap-6 px-6 py-10">
       <div>
-        <h1 className="text-3xl font-semibold">Staff</h1>
+        <h1 className="text-3xl font-semibold">Equipe</h1>
         <p className="mt-3 text-muted-foreground">
           Gere les intervenants qui peuvent recevoir des reservations.
         </p>
@@ -41,22 +41,22 @@ export default async function DashboardStaffPage() {
       <section className="grid gap-6 xl:grid-cols-[0.8fr_1.2fr]">
         <Card>
           <CardHeader>
-            <CardTitle>Add staff</CardTitle>
+            <CardTitle>Ajouter un intervenant</CardTitle>
             <CardDescription>Email optionnel pour les notifications.</CardDescription>
           </CardHeader>
           <CardContent>
             <form action={createStaffMember} className="grid gap-4">
               <div className="grid gap-2">
-                <Label htmlFor="name">Name</Label>
-                <Input id="name" name="name" placeholder="Jane Operator" required />
+                <Label htmlFor="name">Nom</Label>
+                <Input id="name" name="name" placeholder="Jane Operatrice" required />
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
-                <Input id="email" name="email" type="email" placeholder="jane@example.com" />
+                <Input id="email" name="email" type="email" placeholder="jane@exemple.com" />
               </div>
               <Button type="submit">
                 <PlusCircle className="size-4" />
-                Add staff
+                Ajouter
               </Button>
             </form>
           </CardContent>
@@ -64,16 +64,16 @@ export default async function DashboardStaffPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Staff members</CardTitle>
-            <CardDescription>{staff.length} active staff member(s).</CardDescription>
+            <CardTitle>Membres de l&apos;equipe</CardTitle>
+            <CardDescription>{staff.length} intervenant(s) actif(s).</CardDescription>
           </CardHeader>
           <CardContent>
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Name</TableHead>
+                  <TableHead>Nom</TableHead>
                   <TableHead>Email</TableHead>
-                  <TableHead>Status</TableHead>
+                  <TableHead>Statut</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -90,15 +90,15 @@ export default async function DashboardStaffPage() {
                     </TableCell>
                     <TableCell>
                       <div className="grid gap-2">
-                        <span>{member.isActive ? "Active" : "Inactive"}</span>
+                        <span>{member.isActive ? "Actif" : "Inactif"}</span>
                         <div className="flex gap-2">
                           <Button form={`staff-${member.id}`} type="submit" size="sm" variant="secondary">
-                            Save
+                            Sauvegarder
                           </Button>
                           <form action={deactivateStaffMember}>
                             <input type="hidden" name="staffId" value={member.id} />
                             <Button type="submit" size="sm" variant="ghost">
-                              Disable
+                              Desactiver
                             </Button>
                           </form>
                         </div>

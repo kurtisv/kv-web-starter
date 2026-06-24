@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Clock, Mail, MessageCircle } from "lucide-react";
 
 import { sendContactMessage } from "@/app/actions/contact";
+import { Alert } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -16,10 +17,24 @@ export const metadata: Metadata = {
   description: "Contactez-nous pour toute question sur le boilerplate ou un projet personnalisé.",
 };
 
-export default function ContactPage() {
+export default async function ContactPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ success?: string; error?: string }>;
+}) {
+  const params = (await searchParams) ?? {};
+
   return (
     <MarketingPageShell>
       <main>
+
+        {params.success === "1" && (
+          <div className="mx-auto max-w-6xl px-6 pt-6">
+            <Alert variant="success" title="Message envoye">
+              Merci, votre message a bien ete recu. Reponse sous 24 heures ouvrables.
+            </Alert>
+          </div>
+        )}
 
         {/* Hero */}
         <section className="border-b theme-hero">

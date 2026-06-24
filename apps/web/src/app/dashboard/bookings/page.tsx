@@ -8,16 +8,16 @@ const upcomingBookings = [
   {
     customer: "Alex Martin",
     service: "Discovery call",
-    start: "18 May, 09:00",
-    status: "Confirmed",
-    payment: "Not required",
+    start: "18 mai, 09:00",
+    status: "Confirme",
+    payment: "Non requis",
   },
   {
     customer: "Sam Gagnon",
     service: "Implementation sprint",
-    start: "18 May, 11:00",
-    status: "Pending",
-    payment: "Pending",
+    start: "18 mai, 11:00",
+    status: "En attente",
+    payment: "En attente",
   },
 ];
 
@@ -25,7 +25,7 @@ export default function DashboardBookingsPage() {
   return (
     <main className="grid gap-6 px-6 py-10">
       <div>
-        <h1 className="text-3xl font-semibold">Bookings</h1>
+        <h1 className="text-3xl font-semibold">Reservations</h1>
         <p className="mt-3 text-muted-foreground">
           Vue operationnelle pour suivre les reservations, paiements et capacite.
         </p>
@@ -36,7 +36,7 @@ export default function DashboardBookingsPage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
               <CalendarDays className="size-4" />
-              Today
+              Aujourd&apos;hui
             </CardTitle>
             <CardDescription>Reservations planifiees.</CardDescription>
           </CardHeader>
@@ -46,7 +46,7 @@ export default function DashboardBookingsPage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
               <UsersRound className="size-4" />
-              Customers
+              Clients
             </CardTitle>
             <CardDescription>Nouveaux clients ce mois-ci.</CardDescription>
           </CardHeader>
@@ -56,28 +56,28 @@ export default function DashboardBookingsPage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
               <CircleDollarSign className="size-4" />
-              Paid
+              Paiements
             </CardTitle>
             <CardDescription>Paiements confirmes.</CardDescription>
           </CardHeader>
-          <CardContent className="text-3xl font-semibold">$2.4k</CardContent>
+          <CardContent className="text-3xl font-semibold">2 400 $</CardContent>
         </Card>
       </section>
 
       <Card>
         <CardHeader>
-          <CardTitle>Upcoming bookings</CardTitle>
+          <CardTitle>Prochaines reservations</CardTitle>
           <CardDescription>Structure prete pour une source Prisma.</CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Customer</TableHead>
+                <TableHead>Client</TableHead>
                 <TableHead>Service</TableHead>
-                <TableHead>Start</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Payment</TableHead>
+                <TableHead>Debut</TableHead>
+                <TableHead>Statut</TableHead>
+                <TableHead>Paiement</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -87,7 +87,7 @@ export default function DashboardBookingsPage() {
                   <TableCell>{booking.service}</TableCell>
                   <TableCell>{booking.start}</TableCell>
                   <TableCell>
-                    <Badge className={booking.status === "Confirmed" ? "bg-primary text-primary-foreground" : ""}>
+                    <Badge className={booking.status === "Confirme" ? "bg-primary text-primary-foreground" : ""}>
                       {booking.status}
                     </Badge>
                   </TableCell>

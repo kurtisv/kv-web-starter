@@ -68,7 +68,7 @@ export default async function DashboardApiUsagePage() {
   return (
     <main className="grid gap-6 px-6 py-10">
       <div>
-        <h1 className="text-3xl font-semibold">API Usage</h1>
+        <h1 className="text-3xl font-semibold">Utilisation API</h1>
         <p className="mt-3 text-muted-foreground">
           Suivi des appels API, statuts, unites et latence des cles client.
         </p>
@@ -79,7 +79,7 @@ export default async function DashboardApiUsagePage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
               <Activity className="size-4" />
-              Requests
+              Requetes
             </CardTitle>
             <CardDescription>Derniers appels charges.</CardDescription>
           </CardHeader>
@@ -89,7 +89,7 @@ export default async function DashboardApiUsagePage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
               <Gauge className="size-4" />
-              Units
+              Unites
             </CardTitle>
             <CardDescription>Unites facturees.</CardDescription>
           </CardHeader>
@@ -99,7 +99,7 @@ export default async function DashboardApiUsagePage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
               <TriangleAlert className="size-4" />
-              Errors
+              Erreurs
             </CardTitle>
             <CardDescription>Status 4xx/5xx.</CardDescription>
           </CardHeader>
@@ -109,7 +109,7 @@ export default async function DashboardApiUsagePage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
               <Clock3 className="size-4" />
-              Latency
+              Latence
             </CardTitle>
             <CardDescription>Moyenne observee.</CardDescription>
           </CardHeader>
@@ -121,20 +121,20 @@ export default async function DashboardApiUsagePage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Recent calls</CardTitle>
+          <CardTitle>Appels recents</CardTitle>
           <CardDescription>Les 100 derniers appels API du compte.</CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Time</TableHead>
-                <TableHead>Key</TableHead>
-                <TableHead>Method</TableHead>
+                <TableHead>Heure</TableHead>
+                <TableHead>Cle</TableHead>
+                <TableHead>Methode</TableHead>
                 <TableHead>Endpoint</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Latency</TableHead>
-                <TableHead>Units</TableHead>
+                <TableHead>Statut</TableHead>
+                <TableHead>Latence</TableHead>
+                <TableHead>Unites</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

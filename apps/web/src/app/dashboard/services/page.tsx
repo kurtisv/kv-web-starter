@@ -42,13 +42,13 @@ export default async function DashboardServicesPage() {
       <section className="grid gap-6 xl:grid-cols-[0.9fr_1.1fr]">
         <Card>
           <CardHeader>
-            <CardTitle>Create service</CardTitle>
+            <CardTitle>Creer un service</CardTitle>
             <CardDescription>Le slug est genere depuis le nom si laisse vide.</CardDescription>
           </CardHeader>
           <CardContent>
             <form action={createService} className="grid gap-4">
               <div className="grid gap-2">
-                <Label htmlFor="name">Name</Label>
+                <Label htmlFor="name">Nom</Label>
                 <Input id="name" name="name" placeholder="Discovery call" required />
               </div>
               <div className="grid gap-2">
@@ -57,21 +57,21 @@ export default async function DashboardServicesPage() {
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="description">Description</Label>
-                <Textarea id="description" name="description" placeholder="Short client-facing summary" />
+                <Textarea id="description" name="description" placeholder="Bref descriptif client" />
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="grid gap-2">
-                  <Label htmlFor="durationMin">Duration minutes</Label>
+                  <Label htmlFor="durationMin">Duree (minutes)</Label>
                   <Input id="durationMin" name="durationMin" type="number" min={5} defaultValue={30} required />
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="priceCents">Price cents</Label>
+                  <Label htmlFor="priceCents">Prix (centimes)</Label>
                   <Input id="priceCents" name="priceCents" type="number" min={0} placeholder="12500" />
                 </div>
               </div>
               <Button type="submit">
                 <PlusCircle className="size-4" />
-                Add service
+                Ajouter un service
               </Button>
             </form>
           </CardContent>
@@ -80,16 +80,16 @@ export default async function DashboardServicesPage() {
         <Card>
           <CardHeader>
             <CardTitle>Services</CardTitle>
-            <CardDescription>{services.length} configured service(s).</CardDescription>
+            <CardDescription>{services.length} service(s) configure(s).</CardDescription>
           </CardHeader>
           <CardContent>
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Name</TableHead>
+                  <TableHead>Nom</TableHead>
                   <TableHead>Slug</TableHead>
-                  <TableHead>Duration</TableHead>
-                  <TableHead>Price</TableHead>
+                  <TableHead>Duree</TableHead>
+                  <TableHead>Prix</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -126,12 +126,12 @@ export default async function DashboardServicesPage() {
                         />
                         <div className="flex gap-2">
                           <Button form={`service-${service.id}`} type="submit" size="sm" variant="secondary">
-                            Save
+                            Sauvegarder
                           </Button>
                           <form action={deactivateService}>
                             <input type="hidden" name="serviceId" value={service.id} />
                             <Button type="submit" size="sm" variant="ghost">
-                              Disable
+                              Desactiver
                             </Button>
                           </form>
                         </div>

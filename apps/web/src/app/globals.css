@@ -359,3 +359,15 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Sonner renders an aria-live section for screen readers — ensure it never
+   contributes to page flow even if the fixed positioning from the data-attr
+   selector hasn't applied yet (e.g. during SSR hydration). */
+section[aria-live]:not([data-sonner-toaster]) {
+  position: fixed !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  pointer-events: none;
+}

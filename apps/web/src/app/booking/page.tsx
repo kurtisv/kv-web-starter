@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { CalendarDays, Clock3 } from "lucide-react";
 
 import { createBookingRequest } from "@/app/actions/booking";
+import { Alert } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -45,6 +46,14 @@ type BookingSearchParams = {
   serviceId?: string;
   staffId?: string;
   date?: string;
+  success?: string;
+  error?: string;
+};
+
+const bookingErrorMessages: Record<string, string> = {
+  "service-not-found": "Le service selectionne n'existe pas ou est desactive.",
+  "slot-conflict": "Ce creneau vient d'etre pris. Choisissez-en un autre.",
+  "server-error": "Une erreur technique est survenue. Reessayez dans quelques instants.",
 };
 
 // ------------------------------------------------------------------ data fetching
@@ -158,6 +167,21 @@ export default async function BookingPage({
   return (
     <MarketingPageShell>
       <main>
+
+        {params.success === "1" && (
+          <div className="mx-auto max-w-6xl px-6 pt-6">
+            <Alert variant="success" title="Demande envoyee">
+              Votre demande de reservation a ete recue. Confirmation par email sous peu.
+            </Alert>
+          </div>
+        )}
+        {params.error && (
+          <div className="mx-auto max-w-6xl px-6 pt-6">
+            <Alert variant="error" title="Erreur lors de la reservation">
+              {bookingErrorMessages[params.error] ?? bookingErrorMessages["server-error"]}
+            </Alert>
+          </div>
+        )}
 
         {/* Header */}
         <section className="border-b theme-hero">

@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
+import { CopyCode } from "@/components/ui/copy-button";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { MarketingPageShell } from "@/components/marketing/page-shell";
@@ -106,7 +107,7 @@ export default function DevelopersPage() {
               Portail développeur
             </Badge>
             <h1 className="max-w-3xl text-4xl font-semibold tracking-normal text-balance sm:text-5xl">
-              intégré l&apos;API en quelques minutes.
+              Intégrez l&apos;API en quelques minutes.
             </h1>
             <p className="mt-5 max-w-2xl text-lg leading-8 opacity-70">
               Cles d&apos;Accès securisees, scopes granulaires, rate limiting automatique
@@ -207,9 +208,7 @@ export default function DevelopersPage() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <pre className="overflow-x-auto bg-foreground p-4 text-xs leading-relaxed text-background">
-                      <code>{code}</code>
-                    </pre>
+                    <CopyCode code={code} language={lang} />
                   </CardContent>
                 </Card>
               ))}

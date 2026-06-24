@@ -1,5 +1,6 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import { z } from "zod";
 
 import { ContactConfirmationEmail } from "@/emails/contact-confirmation";
@@ -22,9 +23,15 @@ export async function sendContactMessage(formData: FormData) {
     return;
   }
 
-  await sendTransactionalEmail({
-    to: parsed.data.email,
-    subject: "Votre message a ete recu",
-    react: <ContactConfirmationEmail name={parsed.data.name} />,
-  });
+  try {
+    await sendTransactionalEmail({
+      to: parsed.data.email,
+      subject: "Votre message a ete recu",
+      react: <ContactConfirmationEmail name={parsed.data.name} />,
+    });
+  } catch {
+    // Email non-critical
+  }
+
+  redirect("/contact?success=1");
 }

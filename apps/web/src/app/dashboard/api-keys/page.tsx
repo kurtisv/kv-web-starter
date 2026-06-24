@@ -57,7 +57,7 @@ export default async function DashboardApiKeysPage() {
   return (
     <main className="grid gap-6 px-6 py-10">
       <div>
-        <h1 className="text-3xl font-semibold">API Keys</h1>
+        <h1 className="text-3xl font-semibold">Cles API</h1>
         <p className="mt-3 text-muted-foreground">
           Gestion des cles, scopes et usage avant branchement Prisma complet.
         </p>
@@ -68,7 +68,7 @@ export default async function DashboardApiKeysPage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
               <KeyRound className="size-4" />
-              Active keys
+              Cles actives
             </CardTitle>
             <CardDescription>Cles non revoquees.</CardDescription>
           </CardHeader>
@@ -101,18 +101,18 @@ export default async function DashboardApiKeysPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Keys</CardTitle>
+            <CardTitle>Cles</CardTitle>
             <CardDescription>Prefixes et scopes stockes en base.</CardDescription>
           </CardHeader>
           <CardContent>
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Prefix</TableHead>
+                  <TableHead>Nom</TableHead>
+                  <TableHead>Prefixe</TableHead>
                   <TableHead>Scopes</TableHead>
-                  <TableHead>Last used</TableHead>
-                  <TableHead>Status</TableHead>
+                  <TableHead>Derniere util.</TableHead>
+                  <TableHead>Statut</TableHead>
                   <TableHead>Action</TableHead>
                 </TableRow>
               </TableHeader>
@@ -126,14 +126,14 @@ export default async function DashboardApiKeysPage() {
                     <TableCell>
                       <Badge>{apiKey.scopes.join(", ")}</Badge>
                     </TableCell>
-                    <TableCell>{apiKey.lastUsedAt ? apiKey.lastUsedAt.toDateString() : "Never"}</TableCell>
-                    <TableCell>{apiKey.revokedAt ? "Revoked" : "Active"}</TableCell>
+                    <TableCell>{apiKey.lastUsedAt ? apiKey.lastUsedAt.toDateString() : "Jamais"}</TableCell>
+                    <TableCell>{apiKey.revokedAt ? "Revoquee" : "Active"}</TableCell>
                     <TableCell>
                       {!apiKey.revokedAt ? (
                         <form action={revokeDashboardApiKey}>
                           <input type="hidden" name="apiKeyId" value={apiKey.id} />
                           <Button type="submit" variant="secondary" size="sm">
-                            Revoke
+                            Revoquer
                           </Button>
                         </form>
                       ) : null}

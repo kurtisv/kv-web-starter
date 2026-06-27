@@ -48,3 +48,8 @@ next-env.d.ts
 
 # generated
 apps/web/src/generated/prisma/
+
+# video renders (generated assets — not committed, rebuild via pnpm video:render)
+apps/web/public/videos/*.mp4
+apps/web/public/videos/*.webm
+packages/video/.remotion-props-tmp.json

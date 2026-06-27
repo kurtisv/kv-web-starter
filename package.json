@@ -19,6 +19,13 @@
     "db:migrate": "prisma migrate dev",
     "db:seed": "tsx prisma/seed.ts",
     "create:new": "powershell.exe -ExecutionPolicy Bypass -NoProfile -File ./scripts/create-new-project.ps1",
+    "video:preview": "pnpm --filter @kv/video preview",
+    "video:render": "powershell.exe -ExecutionPolicy Bypass -NoProfile -File ./scripts/Render-Video.ps1",
+    "video:render:reel": "powershell.exe -ExecutionPolicy Bypass -NoProfile -File ./scripts/Render-Video.ps1 -Composition LaunchReel",
+    "video:render:background": "powershell.exe -ExecutionPolicy Bypass -NoProfile -File ./scripts/Render-Video.ps1 -Composition HeroBackground",
+    "video:render:hero": "powershell.exe -ExecutionPolicy Bypass -NoProfile -File ./scripts/Render-Video.ps1 -Composition HeroIntro",
+    "video:render:stats": "powershell.exe -ExecutionPolicy Bypass -NoProfile -File ./scripts/Render-Video.ps1 -Composition StatsCounter",
+    "video:render:features": "powershell.exe -ExecutionPolicy Bypass -NoProfile -File ./scripts/Render-Video.ps1 -Composition FeatureReveal",
     "format": "prettier --write .",
     "postinstall": "node scripts/patch-next-config.js"
   },

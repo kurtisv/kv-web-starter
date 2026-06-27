@@ -37,7 +37,7 @@ function timeAgo(date: Date): string {
 }
 
 export function NotificationBell() {
-  const { notifications, unreadCount, dismiss, markRead, markAllRead } = useNotifications();
+  const { notifications, unreadCount, dismiss, markRead, markAllRead, clearAll } = useNotifications();
   const [open, setOpen] = React.useState(false);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
@@ -134,7 +134,7 @@ export function NotificationBell() {
               <button
                 type="button"
                 onClick={() => {
-                  markAllRead();
+                  clearAll();
                   setOpen(false);
                 }}
                 className="text-xs text-muted-foreground transition-colors hover:text-foreground"

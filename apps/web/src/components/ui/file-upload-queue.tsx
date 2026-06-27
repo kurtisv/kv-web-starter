@@ -63,6 +63,9 @@ export function useUploadQueue(onUpload?: (file: File) => Promise<UploadResult>)
 
   async function uploadItem(index: number) {
     if (!onUpload) return;
+    const file = items[index]?.file;
+    if (!file) return;
+
     setItems((prev) =>
       prev.map((it, i) => (i === index ? { ...it, status: "uploading", progress: 5 } : it))
     );
@@ -78,7 +81,7 @@ export function useUploadQueue(onUpload?: (file: File) => Promise<UploadResult>)
     }, 100);
 
     try {
-      const result = await onUpload(items[index].file);
+      const result = await onUpload(file);
       clearInterval(tick);
       setItems((prev) =>
         prev.map((it, i) =>

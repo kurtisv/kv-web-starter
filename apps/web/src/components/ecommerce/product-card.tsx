@@ -45,6 +45,7 @@ export function ProductCard({
 
   function handleAddToCart(e: React.MouseEvent) {
     e.preventDefault();
+    e.stopPropagation();
     if (!product.inStock) return;
 
     if (onAddToCart) {

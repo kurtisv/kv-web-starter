@@ -117,7 +117,7 @@ export function MediaGrid({
 
       {/* Lightbox */}
       {lightbox?.src && (
-        <Dialog open={!!lightbox} onOpenChange={() => setLightbox(null)}>
+        <Dialog open={!!lightbox} onOpenChange={() => setLightbox(null)} className="max-w-4xl p-0 bg-black/90 border-0">
           <div className="relative mx-auto max-h-[80vh] max-w-4xl">
             <Image
               src={lightbox.src}

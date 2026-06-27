@@ -32,6 +32,7 @@ export default function DemoAutoBlogPage() {
     <div data-theme="luxury-auto">
       <HeroSection
         variant="dark"
+        videoSrc="/videos/themes/luxury-auto-bg.mp4"
         eyebrow="Passion automobile"
         title="La voiture, sans compromis."
         description="Fiches techniques exhaustives, essais exigeants, comparatifs objectifs. Pour les vrais passionnés."

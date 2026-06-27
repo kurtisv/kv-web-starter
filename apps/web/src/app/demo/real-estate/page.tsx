@@ -26,6 +26,7 @@ export default function DemoRealEstatePage() {
     <div data-theme="real-estate">
       <HeroSection
         variant="dark"
+        videoSrc="/videos/themes/real-estate-bg.mp4"
         eyebrow="Immobilier premium"
         title="Investissez au bon endroit."
         description="Biens selectionnes, scores de quartier, rendements calcules. L'immobilier rendu simple."

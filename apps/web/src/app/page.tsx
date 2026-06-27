@@ -273,8 +273,20 @@ export default function Home() {
       <main>
 
         {/* Hero — AnimatedHero handles word-by-word reveal on mount */}
-        <section className="theme-hero">
-          <div className="theme-hero-accent-bar" />
+        {/* hero-background.mp4 is a text-free seamless-loop Remotion render (HeroBackground, premium-saas theme) */}
+        <section className="theme-hero relative overflow-hidden">
+          <video
+            src="/videos/hero-background.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            aria-hidden
+            className="absolute inset-0 h-full w-full object-cover"
+            style={{ opacity: 0.18, mixBlendMode: "soft-light" }}
+          />
+          <div className="theme-hero-accent-bar relative z-10" />
+          <div className="relative z-10">
           <AnimatedHero
             eyebrow="Next.js 16 · Tailwind v4 · Auth.js v5 · Stripe · Prisma"
             title="Un boilerplate. 9 identites de projet."
@@ -290,6 +302,7 @@ export default function Home() {
               </>
             }
           />
+          </div>
         </section>
 
         {/* Stats — fade up when scrolled to */}

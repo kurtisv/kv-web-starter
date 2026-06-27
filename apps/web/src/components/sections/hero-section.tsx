@@ -8,6 +8,9 @@ interface HeroSectionProps {
   actions?: React.ReactNode;
   media?: React.ReactNode;
   variant?: "centered" | "split" | "dark" | "minimal";
+  // Optional: path to a text-free looping Remotion render used as a subtle backdrop.
+  // Only used in the "dark" variant. Must be muted and loop-safe.
+  videoSrc?: string;
   className?: string;
 }
 
@@ -18,12 +21,22 @@ export function HeroSection({
   actions,
   media,
   variant = "centered",
+  videoSrc,
   className,
 }: HeroSectionProps) {
   if (variant === "dark") {
     return (
-      <section className={cn("theme-hero", className)}>
-        <div className="mx-auto max-w-6xl px-6 py-20 sm:py-28">
+      <section className={cn("theme-hero", videoSrc ? "relative overflow-hidden" : "", className)}>
+        {/* Text-free decorative background video — seamless loop, no audio, aria-hidden */}
+        {videoSrc && (
+          <video
+            src={videoSrc}
+            autoPlay muted loop playsInline aria-hidden
+            className="absolute inset-0 h-full w-full object-cover"
+            style={{ opacity: 0.18, mixBlendMode: "soft-light" }}
+          />
+        )}
+        <div className={cn("mx-auto max-w-6xl px-6 py-20 sm:py-28", videoSrc ? "relative z-10" : "")}>
           {eyebrow && (
             <p className="mb-5 text-sm font-medium uppercase tracking-[0.18em] opacity-50">
               {eyebrow}

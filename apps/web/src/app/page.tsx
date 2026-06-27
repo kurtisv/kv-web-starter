@@ -22,6 +22,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { RevealSection } from "@/components/ui/reveal-section";
+import { PlayOnceVideo } from "@/components/ui/play-once-video";
 import { MarketingPageShell } from "@/components/marketing/page-shell";
 import { AnimatedHero } from "@/components/sections/animated-hero";
 import { StatsSection } from "@/components/sections/stats-section";
@@ -302,6 +303,77 @@ export default function Home() {
               </>
             }
           />
+          </div>
+        </section>
+
+        {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
+        {/* Launch Reel — cinematic product demo, plays once on scroll  */}
+        {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
+        <section className="relative overflow-hidden bg-[#07051a] py-20 sm:py-28">
+          {/* Ambient glow behind the video */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute left-1/2 top-1/2 h-[600px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-25 blur-[120px]"
+            style={{ background: "radial-gradient(ellipse at center, #7c3aed 0%, #3b0764 50%, transparent 100%)" }}
+          />
+
+          <div className="relative mx-auto max-w-5xl px-6">
+            {/* Section header */}
+            <RevealSection variant="fade-up" className="mb-10 text-center">
+              <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-white/60 uppercase tracking-widest">
+                12 secondes
+              </span>
+              <h2 className="mt-3 text-3xl font-semibold tracking-tight text-white text-balance sm:text-5xl">
+                Tout comprendre<br />en un coup d&apos;oeil.
+              </h2>
+              <p className="mx-auto mt-5 max-w-xl text-base leading-7 text-white/55">
+                Themes, modules, stack technique — la reponse complete au "c'est quoi exactement ?"
+                en 12 secondes chrono.
+              </p>
+            </RevealSection>
+
+            {/* Video frame */}
+            <RevealSection variant="fade-up" delay={0.12}>
+              <div className="relative">
+                {/* Outer glow ring */}
+                <div
+                  aria-hidden
+                  className="absolute -inset-px rounded-2xl opacity-60 blur-sm"
+                  style={{ background: "linear-gradient(135deg, #7c3aed22, #06b6d422, #7c3aed22)" }}
+                />
+                {/* Video container */}
+                <div className="relative overflow-hidden rounded-2xl border border-white/10 shadow-[0_32px_80px_rgba(0,0,0,0.7)]">
+                  {/* Corner accent dots */}
+                  <div aria-hidden className="absolute left-3 top-3 z-10 flex gap-1.5">
+                    {["#ef4444", "#f59e0b", "#22c55e"].map((c) => (
+                      <div key={c} className="h-2.5 w-2.5 rounded-full" style={{ background: c }} />
+                    ))}
+                  </div>
+                  <PlayOnceVideo
+                    src="/videos/launch-reel.mp4"
+                    className="w-full"
+                    threshold={0.15}
+                  />
+                </div>
+              </div>
+            </RevealSection>
+
+            {/* Quick chips below video */}
+            <RevealSection variant="fade-in" delay={0.28} className="mt-8 flex flex-wrap justify-center gap-3">
+              {[
+                { label: "9 themes visuels" },
+                { label: "Auth + Stripe + Prisma" },
+                { label: "Deployable en 2-5j" },
+                { label: "TypeScript strict" },
+              ].map(({ label }) => (
+                <span
+                  key={label}
+                  className="rounded-full border border-white/10 bg-white/5 px-3.5 py-1 text-xs text-white/50"
+                >
+                  {label}
+                </span>
+              ))}
+            </RevealSection>
           </div>
         </section>
 

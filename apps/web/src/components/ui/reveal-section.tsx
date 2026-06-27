@@ -1,9 +1,8 @@
 "use client";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { motion, useInView, type Variants } from "framer-motion";
-import { useRef, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-// Per-variant initial/visible states
 const MOTION_VARIANTS: Record<string, Variants> = {
   "fade-up": {
     hidden:  { opacity: 0, y: 48 },
@@ -31,10 +30,9 @@ const MOTION_VARIANTS: Record<string, Variants> = {
   },
 };
 
-// Easing curves
 const EASE = {
   smooth:  [0.25, 0.1, 0.25, 1]  as [number, number, number, number],
-  spring:  [0.34, 1.56, 0.64, 1] as [number, number, number, number], // slight overshoot
+  spring:  [0.34, 1.56, 0.64, 1] as [number, number, number, number],
   decel:   [0.0,  0.0,  0.2,  1] as [number, number, number, number],
 };
 
@@ -43,12 +41,12 @@ type RevealVariant = keyof typeof MOTION_VARIANTS;
 interface RevealSectionProps {
   children: ReactNode;
   variant?: RevealVariant;
-  delay?: number;       // seconds — stagger items by passing i * 0.06
-  duration?: number;    // seconds, default 0.55
+  delay?: number;
+  duration?: number;
   ease?: keyof typeof EASE;
   className?: string;
-  once?: boolean;       // default true — don't re-animate on scroll back
-  threshold?: number;   // 0..1, fraction of element visible before triggering
+  once?: boolean;
+  threshold?: number;
 }
 
 export function RevealSection({
@@ -63,6 +61,19 @@ export function RevealSection({
 }: RevealSectionProps) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once, amount: threshold });
+
+  // Avoid hydration mismatch: on first server render the div is plain (no inline
+  // style). Only apply Framer Motion initial="hidden" AFTER the client has mounted.
+  // This means no flash of invisible content on hard refresh.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+
+  // Before mount: render a plain div that matches the SSR output exactly.
+  // After mount: switch to motion.div — React treats this as a re-render, not
+  // a hydration mismatch, because useEffect runs client-only.
+  if (!mounted) {
+    return <div ref={ref} className={cn(className)}>{children}</div>;
+  }
 
   return (
     <motion.div

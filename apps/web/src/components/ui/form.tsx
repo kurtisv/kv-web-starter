@@ -3,6 +3,7 @@ import * as React from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { EASE, DURATION } from "@/components/animations/motion";
+import { Label } from "@/components/ui/label";
 
 export function Form({ className, ...props }: React.FormHTMLAttributes<HTMLFormElement>) {
   return <form className={cn("grid gap-4", className)} {...props} />;
@@ -32,6 +33,53 @@ export function FormMessage({ children, className }: React.HTMLAttributes<HTMLPa
         </motion.p>
       ) : null}
     </AnimatePresence>
+  );
+}
+
+/**
+ * Complete form field wrapper: label, optional description, animated error.
+ * Passes htmlFor/id to the child via the id prop on the wrapping div context.
+ *
+ * Usage:
+ *   <Field label="Email" htmlFor="email" required error={errors.email?.message}>
+ *     <Input id="email" {...register("email")} />
+ *   </Field>
+ */
+export function Field({
+  label,
+  htmlFor,
+  description,
+  error,
+  required,
+  children,
+  className,
+}: {
+  label?: string;
+  htmlFor?: string;
+  description?: string;
+  error?: string;
+  required?: boolean;
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div className={cn("grid gap-1.5", className)}>
+      {label && (
+        <Label htmlFor={htmlFor}>
+          {label}
+          {required && (
+            <span className="ml-0.5 text-destructive" aria-hidden>
+              *
+            </span>
+          )}
+        </Label>
+      )}
+      {description && (
+        <p className="text-xs text-muted-foreground">{description}</p>
+      )}
+      {children}
+      <FormMessage>{error}</FormMessage>
+    </div>
   );
 }
 

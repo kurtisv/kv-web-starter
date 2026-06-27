@@ -8,9 +8,10 @@ import { z } from "zod";
 
 import { signInWithCredentials, signInWithGitHub } from "@/app/actions/auth";
 import { Button } from "@/components/ui/button";
-import { Form, FormField, FormMessage } from "@/components/ui/form";
+import { Form, FormField, FormMessage, FormBanner } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { AnimatedFormFields } from "@/components/animations/animated-form-fields";
 
 const credentialsSchema = z.object({
   email: z.string().email("Email invalide"),
@@ -109,14 +110,9 @@ export function LoginForm({
             </p>
           </div>
 
-          {authError ? (
-            <p
-              role="alert"
-              className="mb-5 border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"
-            >
-              Identifiants invalides. Verifie ton email et mot de passe.
-            </p>
-          ) : null}
+          <FormBanner variant="error" className="mb-5">
+            {authError ? "Identifiants invalides. Verifie ton email et mot de passe." : null}
+          </FormBanner>
 
           <div className="grid gap-4">
             {hasGitHub ? (
@@ -128,7 +124,7 @@ export function LoginForm({
             ) : null}
 
             {hasDemoLogin ? (
-              <Form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
+              <Form onSubmit={handleSubmit(onSubmit)} className="contents">
                 {hasGitHub && (
                   <div className="relative">
                     <div className="absolute inset-0 flex items-center">
@@ -140,35 +136,35 @@ export function LoginForm({
                   </div>
                 )}
 
-                <FormField>
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    autoComplete="email"
-                    placeholder="admin@example.com"
-                    {...register("email")}
-                  />
-                  {errors.email && <FormMessage>{errors.email.message}</FormMessage>}
-                </FormField>
+                <AnimatedFormFields>
+                  <FormField>
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      autoComplete="email"
+                      placeholder="admin@example.com"
+                      {...register("email")}
+                    />
+                    <FormMessage>{errors.email?.message}</FormMessage>
+                  </FormField>
 
-                <FormField>
-                  <Label htmlFor="password">Mot de passe</Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    autoComplete="current-password"
-                    placeholder="Minimum 8 caracteres"
-                    {...register("password")}
-                  />
-                  {errors.password && (
-                    <FormMessage>{errors.password.message}</FormMessage>
-                  )}
-                </FormField>
+                  <FormField>
+                    <Label htmlFor="password">Mot de passe</Label>
+                    <Input
+                      id="password"
+                      type="password"
+                      autoComplete="current-password"
+                      placeholder="Minimum 8 caracteres"
+                      {...register("password")}
+                    />
+                    <FormMessage>{errors.password?.message}</FormMessage>
+                  </FormField>
 
-                <Button type="submit" className="w-full" disabled={isSubmitting}>
-                  {isSubmitting ? "Connexion..." : "Se connecter"}
-                </Button>
+                  <Button type="submit" className="w-full" disabled={isSubmitting}>
+                    {isSubmitting ? "Connexion..." : "Se connecter"}
+                  </Button>
+                </AnimatedFormFields>
               </Form>
             ) : null}
 

@@ -7,6 +7,7 @@ import { getLocale, getMessages } from "next-intl/server";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { ToastProvider } from "@/components/providers/toast-provider";
 import { CookieBanner } from "@/components/ui/cookie-banner";
+import { PageTransition } from "@/components/animations/page-transition";
 import { THEMES, type ThemeId } from "@/design-system/tokens";
 import "./globals.css";
 
@@ -53,7 +54,7 @@ export default async function RootLayout({
       <body className="flex min-h-full flex-col">
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ThemeProvider initialTheme={theme}>
-            {children}
+            <PageTransition>{children}</PageTransition>
             <ToastProvider />
             <CookieBanner />
           </ThemeProvider>

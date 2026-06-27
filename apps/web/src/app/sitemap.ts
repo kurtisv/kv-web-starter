@@ -5,7 +5,6 @@ import { env } from "@/lib/env";
 const routes = [
   "",
   "/services",
-  "/pricing",
   "/contact",
   "/faq",
   "/testimonials",

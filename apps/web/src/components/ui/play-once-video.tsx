@@ -5,17 +5,19 @@ import { cn } from "@/lib/utils";
 interface PlayOnceVideoProps {
   src: string;
   className?: string;
-  // How much of the video must be visible before it plays (0–1)
+  /** How much of the video must be visible to play (0-1). Default 0.6. */
   threshold?: number;
-  // Poster image (first frame) to show before playback
   poster?: string;
 }
 
-// Plays the video once when scrolled into view, then freezes on the last frame.
-// Never loops. Respects prefers-reduced-motion.
-export function PlayOnceVideo({ src, className, threshold = 0.2, poster }: PlayOnceVideoProps) {
+/**
+ * Plays the video while it is in the viewport (>= threshold visible).
+ * Resets to the start each time it re-enters view so the user always
+ * catches the beginning. Pauses immediately when scrolled away.
+ * Respects prefers-reduced-motion: jumps to last frame instead.
+ */
+export function PlayOnceVideo({ src, className, threshold = 0.6, poster }: PlayOnceVideoProps) {
   const ref = useRef<HTMLVideoElement>(null);
-  const playedRef = useRef(false);
 
   useEffect(() => {
     const video = ref.current;
@@ -25,32 +27,30 @@ export function PlayOnceVideo({ src, className, threshold = 0.2, poster }: PlayO
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    // Freeze on last frame when animation completes
-    const handleEnded = () => {
-      video.pause();
-      // currentTime stays at end — browser shows the last rendered frame
-    };
-    video.addEventListener("ended", handleEnded);
-
     if (prefersReduced) {
-      // Skip animation, jump to end when loaded
       const handleCanPlay = () => {
         video.currentTime = video.duration || 999;
         video.pause();
       };
       video.addEventListener("canplay", handleCanPlay);
-      return () => {
-        video.removeEventListener("ended", handleEnded);
-        video.removeEventListener("canplay", handleCanPlay);
-      };
+      return () => video.removeEventListener("canplay", handleCanPlay);
     }
+
+    // Reset to start after playing so next entry restarts cleanly
+    const handleEnded = () => {
+      video.currentTime = 0;
+      video.pause();
+    };
+    video.addEventListener("ended", handleEnded);
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !playedRef.current) {
-          playedRef.current = true;
+        if (entry.isIntersecting) {
+          // If ended (currentTime at end), reset before playing
+          if (video.ended) video.currentTime = 0;
           video.play().catch(() => {});
-          observer.disconnect();
+        } else {
+          video.pause();
         }
       },
       { threshold },
@@ -71,7 +71,7 @@ export function PlayOnceVideo({ src, className, threshold = 0.2, poster }: PlayO
       poster={poster}
       muted
       playsInline
-      preload="auto"
+      preload="none"
       className={cn("w-full", className)}
     />
   );

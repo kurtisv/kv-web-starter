@@ -9,7 +9,6 @@ export const siteConfig = {
     { href: "/demo",       label: "Démo" },
     { href: "/docs",       label: "Guide" },
     { href: "/services",   label: "Services" },
-    { href: "/pricing",    label: "Tarifs" },
     { href: "/booking",    label: "Réservation" },
     { href: "/developers", label: "API" },
     { href: "/faq",        label: "FAQ" },
@@ -20,7 +19,6 @@ export const siteConfig = {
       links: [
         { href: "/docs",      label: "Guide" },
         { href: "/services",  label: "Services" },
-        { href: "/pricing",   label: "Tarifs" },
         { href: "/overview",  label: "Comment ça marche" },
       ],
     },

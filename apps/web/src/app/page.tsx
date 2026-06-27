@@ -282,6 +282,7 @@ export default function Home() {
             muted
             loop
             playsInline
+            preload="none"
             aria-hidden
             className="absolute inset-0 h-full w-full object-cover"
             style={{ opacity: 0.18, mixBlendMode: "soft-light" }}
@@ -310,11 +311,11 @@ export default function Home() {
         {/* Launch Reel — cinematic product demo, plays once on scroll  */}
         {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
         <section className="relative overflow-hidden bg-[#07051a] py-20 sm:py-28">
-          {/* Ambient glow behind the video */}
+          {/* Ambient glow — uses the active theme's ring/accent color */}
           <div
             aria-hidden
             className="pointer-events-none absolute left-1/2 top-1/2 h-[600px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-25 blur-[120px]"
-            style={{ background: "radial-gradient(ellipse at center, #7c3aed 0%, #3b0764 50%, transparent 100%)" }}
+            style={{ background: "radial-gradient(ellipse at center, var(--ring) 0%, color-mix(in oklch, var(--ring) 40%, transparent) 50%, transparent 100%)" }}
           />
 
           <div className="relative mx-auto max-w-5xl px-6">
@@ -335,11 +336,11 @@ export default function Home() {
             {/* Video frame */}
             <RevealSection variant="fade-up" delay={0.12}>
               <div className="relative">
-                {/* Outer glow ring */}
+                {/* Outer glow ring — theme-aware */}
                 <div
                   aria-hidden
                   className="absolute -inset-px rounded-2xl opacity-60 blur-sm"
-                  style={{ background: "linear-gradient(135deg, #7c3aed22, #06b6d422, #7c3aed22)" }}
+                  style={{ background: "linear-gradient(135deg, color-mix(in oklch, var(--ring) 13%, transparent), color-mix(in oklch, var(--ring) 8%, transparent), color-mix(in oklch, var(--ring) 13%, transparent))" }}
                 />
                 {/* Video container */}
                 <div className="relative overflow-hidden rounded-2xl border border-white/10 shadow-[0_32px_80px_rgba(0,0,0,0.7)]">
@@ -352,7 +353,7 @@ export default function Home() {
                   <PlayOnceVideo
                     src="/videos/launch-reel.mp4"
                     className="w-full"
-                    threshold={0.15}
+                    threshold={0.6}
                   />
                 </div>
               </div>

@@ -31,7 +31,7 @@ export function HeroSection({
         {videoSrc && (
           <video
             src={videoSrc}
-            autoPlay muted loop playsInline aria-hidden
+            autoPlay muted loop playsInline preload="metadata" aria-hidden
             className="absolute inset-0 h-full w-full object-cover"
             style={{ opacity: 0.18, mixBlendMode: "soft-light" }}
           />

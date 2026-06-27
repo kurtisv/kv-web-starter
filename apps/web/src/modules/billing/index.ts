@@ -1,6 +1,6 @@
 export const billingModule = {
   key: "billing",
-  routes: ["/pricing", "/dashboard/billing", "/api/webhooks/stripe"],
+  routes: ["/dashboard/billing", "/api/webhooks/stripe"],
 };
 
 export {

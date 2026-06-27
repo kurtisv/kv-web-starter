@@ -1,14 +1,18 @@
 import type { Metadata } from "next";
-import { CalendarDays, Clock3 } from "lucide-react";
 
 import { createBookingRequest } from "@/app/actions/booking";
 import { Alert } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Stepper } from "@/components/ui/stepper";
+import {
+  ServicePicker,
+  StaffPicker,
+  TimeSlotGrid,
+  BookingDateSelector,
+  BookingForm,
+  BookingSummaryCard,
+} from "@/components/booking";
 import { MarketingPageShell } from "@/components/marketing/page-shell";
 import { prisma } from "@/lib/db";
 import { generateBookingSlots } from "@/modules/booking";
@@ -37,7 +41,7 @@ const demoServices = [
   },
 ];
 
-const fallbackStaff = [{ id: undefined as string | undefined, name: "Toute disponibilité" }];
+const fallbackStaff = [{ id: undefined as string | undefined, name: "Toute disponibilite" }];
 const fallbackDate = new Date().toISOString().slice(0, 10);
 
 // ------------------------------------------------------------------ types
@@ -104,21 +108,8 @@ async function getBookingData(bookingDate: string) {
   }
 }
 
-function formatPrice(priceCents: number | null) {
-  if (!priceCents) return "Gratuit";
-  return `${(priceCents / 100).toFixed(0)} €`;
-}
-
 function normalizeDate(date?: string) {
   return date && /^\d{4}-\d{2}-\d{2}$/.test(date) ? date : fallbackDate;
-}
-
-function formatDateLabel(date: string) {
-  return new Date(date + "T12:00:00").toLocaleDateString("fr-CA", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-  });
 }
 
 // ------------------------------------------------------------------ page
@@ -131,6 +122,7 @@ export default async function BookingPage({
   const params = (await searchParams) ?? {};
   const selectedDate = normalizeDate(params.date);
   const data = await getBookingData(selectedDate);
+
   const selectedService =
     data.services.find((s) => s.id === params.serviceId) ?? data.services[0] ?? demoServices[0];
   const selectedStaff =
@@ -161,13 +153,12 @@ export default async function BookingPage({
     { label: "Creneau" },
     { label: "Coordonnees" },
   ];
-
   const currentStep = !params.serviceId ? 0 : !params.date ? 1 : 2;
 
   return (
     <MarketingPageShell>
       <main>
-
+        {/* Alerts */}
         {params.success === "1" && (
           <div className="mx-auto max-w-6xl px-6 pt-6">
             <Alert variant="success" title="Demande envoyee">
@@ -183,14 +174,14 @@ export default async function BookingPage({
           </div>
         )}
 
-        {/* Header */}
+        {/* Hero */}
         <section className="border-b theme-hero">
           <div className="mx-auto max-w-6xl px-6 py-12">
             <Badge className="mb-4 border-background/20 bg-background/10 text-background">
               Prise de rendez-vous
             </Badge>
             <h1 className="text-3xl font-semibold sm:text-4xl">
-              Reservez votre créneau.
+              Reservez votre creneau.
             </h1>
             <p className="mt-3 max-w-xl opacity-70">
               Choisissez un service et une date — les disponibilites s&apos;affichent
@@ -204,10 +195,10 @@ export default async function BookingPage({
 
         <section className="mx-auto grid max-w-6xl gap-6 px-6 py-10 lg:grid-cols-[1fr_1.3fr] lg:items-start">
 
-          {/* Left column: service + date selection */}
+          {/* Left: service + staff + date */}
           <div className="grid gap-4 lg:sticky lg:top-6">
 
-            {/* Service */}
+            {/* 1 — Service */}
             <Card>
               <CardHeader>
                 <CardTitle className="text-base">1. Choisir un service</CardTitle>
@@ -218,145 +209,76 @@ export default async function BookingPage({
                 )}
               </CardHeader>
               <CardContent>
-                <form method="get" id="service-form" className="grid gap-3">
-                  {data.services.map((service) => (
-                    <label
-                      key={service.id}
-                      className="flex cursor-pointer items-start gap-3 border p-4 transition-colors has-[:checked]:border-foreground has-[:checked]:bg-foreground/5"
-                    >
-                      <input
-                        className="mt-1 accent-foreground"
-                        name="serviceId"
-                        type="radio"
-                        value={service.id}
-                        defaultChecked={service.id === selectedService.id}
-                        form="service-form"
+                <form method="get" id="service-form">
+                  <ServicePicker
+                    services={data.services}
+                    selectedId={selectedService.id}
+                    formId="service-form"
+                  />
+                  {data.staff.length > 1 ? (
+                    <div className="mt-4">
+                      <p className="mb-2 text-sm font-medium">Avec qui ?</p>
+                      <StaffPicker
+                        staff={data.staff}
+                        selectedId={selectedStaff.id}
+                        formId="service-form"
                       />
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center justify-between gap-2">
-                          <span className="font-medium">{service.name}</span>
-                          <span className="shrink-0 text-sm font-medium">
-                            {formatPrice(service.priceCents)}
-                          </span>
-                        </div>
-                        {service.description && (
-                          <p className="mt-0.5 text-sm text-muted-foreground">
-                            {service.description}
-                          </p>
-                        )}
-                        <div className="mt-1.5 flex items-center gap-1.5 text-xs text-muted-foreground">
-                          <Clock3 className="size-3" />
-                          {service.durationMin} min
-                        </div>
-                      </div>
-                    </label>
-                  ))}
-
-                  {/* Staff (hidden if only one) */}
-                  {data.staff.length > 1 && (
-                    <div className="grid gap-2">
-                      <Label htmlFor="staffId" className="text-sm font-medium">
-                        Avec qui ?
-                      </Label>
-                      <select
-                        id="staffId"
-                        name="staffId"
-                        className="h-10 border border-border bg-background px-3 text-sm"
-                        defaultValue={selectedStaff.id}
-                        form="service-form"
-                      >
-                        {data.staff.map((s) => (
-                          <option key={s.id ?? "any"} value={s.id}>
-                            {s.name}
-                          </option>
-                        ))}
-                      </select>
                     </div>
-                  )}
-                  {data.staff.length <= 1 && (
-                    <input type="hidden" name="staffId" value={selectedStaff.id ?? ""} form="service-form" />
+                  ) : (
+                    <StaffPicker
+                      staff={data.staff}
+                      selectedId={selectedStaff.id}
+                      formId="service-form"
+                    />
                   )}
                 </form>
               </CardContent>
             </Card>
 
-            {/* Date */}
+            {/* 2 — Date */}
             <Card>
               <CardHeader>
                 <CardTitle className="text-base">2. Choisir une date</CardTitle>
               </CardHeader>
               <CardContent>
-                <form method="get" className="grid gap-3">
-                  <input type="hidden" name="serviceId" value={selectedService.id} />
-                  {selectedStaff.id && (
-                    <input type="hidden" name="staffId" value={selectedStaff.id} />
-                  )}
-                  <Input
-                    id="date"
-                    name="date"
-                    type="date"
-                    defaultValue={selectedDate}
-                    min={new Date().toISOString().slice(0, 10)}
-                  />
-                  <Button type="submit" className="w-full">
-                    <CalendarDays className="size-4" />
-                    Voir les disponibilites
-                  </Button>
-                </form>
+                <BookingDateSelector
+                  serviceId={selectedService.id}
+                  staffId={selectedStaff.id}
+                  value={selectedDate}
+                />
               </CardContent>
             </Card>
 
+            {/* Summary */}
+            <BookingSummaryCard
+              service={selectedService}
+              staff={selectedStaff}
+              date={selectedDate}
+            />
           </div>
 
-          {/* Right column: slots + form */}
+          {/* Right: slots + form */}
           <div className="grid gap-4">
 
-            {/* Slot grid */}
+            {/* 3 — Slot */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">3. Choisir un créneau</CardTitle>
+                <CardTitle className="text-base">3. Choisir un creneau</CardTitle>
                 <CardDescription>
-                  {formatDateLabel(selectedDate)} &mdash; {selectedService.name}
+                  {new Date(`${selectedDate}T12:00:00`).toLocaleDateString("fr-CA", {
+                    weekday: "long",
+                    day: "numeric",
+                    month: "long",
+                  })}{" "}
+                  &mdash; {selectedService.name}
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                {slots.length === 0 ? (
-                  <div className="border bg-muted/30 px-4 py-8 text-center">
-                    <CalendarDays className="mx-auto size-8 text-muted-foreground/40" />
-                    <p className="mt-3 text-sm font-medium">Aucun créneau disponible</p>
-                    <p className="mt-1 text-xs text-muted-foreground">
-                      Essayez une autre date ou un autre service.
-                    </p>
-                  </div>
-                ) : (
-                  <div
-                    className="grid grid-cols-3 gap-2 sm:grid-cols-4"
-                    role="radiogroup"
-                    aria-label="créneaux disponibles"
-                  >
-                    {slots.map((slot, i) => (
-                      <label
-                        key={slot.startTime}
-                        className="flex h-11 cursor-pointer items-center justify-center border text-sm font-medium transition-colors has-[:checked]:border-foreground has-[:checked]:bg-foreground has-[:checked]:text-background hover:border-foreground/50"
-                      >
-                        <input
-                          className="sr-only"
-                          name="startAt"
-                          form="booking-form"
-                          type="radio"
-                          value={slot.startAt.toISOString()}
-                          defaultChecked={i === 0}
-                          required
-                        />
-                        {slot.startTime}
-                      </label>
-                    ))}
-                  </div>
-                )}
+                <TimeSlotGrid slots={slots} formId="booking-form" />
               </CardContent>
             </Card>
 
-            {/* Booking form */}
+            {/* 4 — Coordonnees */}
             <Card>
               <CardHeader>
                 <CardTitle className="text-base">4. Vos coordonnees</CardTitle>
@@ -365,77 +287,19 @@ export default async function BookingPage({
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <form
+                <BookingForm
                   id="booking-form"
                   action={createBookingRequest}
-                  className="grid gap-4"
-                >
-                  <input type="hidden" name="serviceId" value={selectedService.id} />
-                  {selectedStaff.id && (
-                    <input type="hidden" name="staffId" value={selectedStaff.id} />
-                  )}
-
-                  <div className="grid gap-1.5">
-                    <Label htmlFor="customerName">Nom complet</Label>
-                    <Input
-                      id="customerName"
-                      name="customerName"
-                      placeholder="Marie Tremblay"
-                      required
-                      autoComplete="name"
-                    />
-                  </div>
-
-                  <div className="grid gap-1.5">
-                    <Label htmlFor="customerEmail">Adresse email</Label>
-                    <Input
-                      id="customerEmail"
-                      name="customerEmail"
-                      type="email"
-                      placeholder="marie@exemple.com"
-                      required
-                      autoComplete="email"
-                    />
-                  </div>
-
-                  <div className="grid gap-1.5">
-                    <Label htmlFor="customerPhone">
-                      Telephone{" "}
-                      <span className="text-muted-foreground">(optionnel)</span>
-                    </Label>
-                    <Input
-                      id="customerPhone"
-                      name="customerPhone"
-                      type="tel"
-                      placeholder="+1 514 555 0100"
-                      autoComplete="tel"
-                    />
-                  </div>
-
-                  <Button
-                    type="submit"
-                    className="w-full"
-                    disabled={slots.length === 0}
-                  >
-                    {slots.length === 0
-                      ? "Aucun créneau disponible"
-                      : "Confirmer la Réservation"}
-                  </Button>
-
-                  <p className="text-center text-xs text-muted-foreground">
-                    En continuant, vous acceptez les{" "}
-                    <a href="/terms" className="underline underline-offset-2">
-                      conditions d&apos;utilisation
-                    </a>
-                    .
-                  </p>
-                </form>
+                  serviceId={selectedService.id}
+                  staffId={selectedStaff.id}
+                  disabled={slots.length === 0}
+                  disabledReason="Aucun creneau disponible"
+                />
               </CardContent>
             </Card>
 
           </div>
         </section>
-
       </main>
     </MarketingPageShell>
   );

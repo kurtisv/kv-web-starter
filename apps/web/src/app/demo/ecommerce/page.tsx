@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ProductCard, type ProductItem } from "@/components/ecommerce/product-card";
 import { CheckoutSteps } from "@/components/ecommerce/checkout-steps";
+import { PriceDisplay } from "@/components/ecommerce/price-display";
+import { RatingStars } from "@/components/ecommerce/rating-stars";
 
 const products: ProductItem[] = [
   {
@@ -125,6 +127,58 @@ export default function DemoEcommercePage() {
         </div>
       </section>
 
+      {/* List layout — same ProductCard, layout="list" prop */}
+      <section className="border-y bg-muted/30">
+        <div className="mx-auto max-w-6xl px-6 py-14">
+          <div className="mb-6 flex items-center gap-3">
+            <h2 className="text-xl font-semibold">Vue liste</h2>
+            <Badge variant="outline" size="sm" className="font-mono">layout=&quot;list&quot;</Badge>
+          </div>
+          <div className="grid gap-3 max-w-2xl">
+            {products.slice(0, 3).map((p) => (
+              <ProductCard key={p.id} product={p} layout="list" />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* PriceDisplay + RatingStars showcase */}
+      <section className="bg-background border-b">
+        <div className="mx-auto max-w-6xl px-6 py-14">
+          <h2 className="mb-8 text-xl font-semibold">Composants de prix et notation</h2>
+          <div className="grid gap-8 sm:grid-cols-2">
+            <div className="grid gap-4">
+              <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">PriceDisplay</p>
+              <div className="grid gap-3">
+                <div className="flex items-center gap-4 border p-3">
+                  <span className="w-24 text-xs text-muted-foreground">size=&quot;sm&quot;</span>
+                  <PriceDisplay priceCents={4900} originalPriceCents={6900} size="sm" />
+                </div>
+                <div className="flex items-center gap-4 border p-3">
+                  <span className="w-24 text-xs text-muted-foreground">size=&quot;md&quot;</span>
+                  <PriceDisplay priceCents={14900} originalPriceCents={19900} size="md" />
+                </div>
+                <div className="flex items-center gap-4 border p-3">
+                  <span className="w-24 text-xs text-muted-foreground">size=&quot;lg&quot;</span>
+                  <PriceDisplay priceCents={28900} size="lg" />
+                </div>
+              </div>
+            </div>
+            <div className="grid gap-4">
+              <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">RatingStars</p>
+              <div className="grid gap-3">
+                {([5, 4.5, 4.2, 3.5, 2] as const).map((r) => (
+                  <div key={r} className="flex items-center gap-4 border p-3">
+                    <span className="w-8 text-xs text-muted-foreground">{r}</span>
+                    <RatingStars rating={r} reviewCount={Math.round(r * 27)} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Trust signals */}
       <FeatureGrid
         features={trust}
@@ -134,11 +188,19 @@ export default function DemoEcommercePage() {
       />
 
       {/* Checkout steps demo */}
-      <section className="mx-auto max-w-2xl px-6 py-12">
-        <h2 className="mb-6 text-center text-lg font-semibold text-muted-foreground">
-          Flux de commande
-        </h2>
-        <CheckoutSteps currentStep={2} />
+      <section className="mx-auto max-w-2xl px-6 py-14">
+        <h2 className="mb-2 text-center text-xl font-semibold">Flux de commande</h2>
+        <p className="mb-8 text-center text-sm text-muted-foreground">
+          Stepper a 5 etapes, etape courante configurable via prop.
+        </p>
+        <div className="grid gap-6">
+          {([0, 1, 2, 3, 4] as const).map((step) => (
+            <div key={step} className="grid gap-2">
+              <p className="text-xs text-muted-foreground font-mono">currentStep={step}</p>
+              <CheckoutSteps currentStep={step} />
+            </div>
+          ))}
+        </div>
       </section>
 
       <CTASection

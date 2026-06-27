@@ -1,7 +1,10 @@
 import { getTranslations } from "next-intl/server";
+import { CalendarDays, CreditCard, Activity, Users } from "lucide-react";
 
 import { requireDashboardAccess } from "@/lib/dashboard-auth";
 import { prisma } from "@/lib/db";
+import { DashboardPageHeader } from "@/components/dashboard-ui/dashboard-shell";
+import { MetricCard, MetricGrid } from "@/components/dashboard-ui/metric-card";
 
 function startOfCurrentMonth() {
   const now = new Date();
@@ -39,30 +42,35 @@ export default async function DashboardPage() {
 
   const { todayBookings, activeSubscriptions, monthlyRequests, monthlyRevenue } = await getDashboardStats();
 
-  const stats: [string, string | number][] = [
-    [t("stats.todayBookings"), todayBookings],
-    [t("stats.monthlyRevenue"), monthlyRevenue ?? "—"],
-    [t("stats.monthlyRequests"), monthlyRequests],
-    [t("stats.activeSubscriptions"), activeSubscriptions],
-  ];
-
   return (
     <main className="px-6 py-10 text-foreground">
       <div className="mx-auto max-w-6xl">
-        <div className="mb-8">
-          <p className="text-sm font-medium uppercase tracking-[0.18em] text-muted-foreground">
-            Dashboard
-          </p>
-          <h1 className="mt-3 text-3xl font-semibold">{t("overview.title")}</h1>
-        </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {stats.map(([label, value]) => (
-            <section key={label} className="border bg-card p-5">
-              <p className="text-sm text-muted-foreground">{label}</p>
-              <p className="mt-3 text-2xl font-semibold tabular-nums">{value}</p>
-            </section>
-          ))}
-        </div>
+        <DashboardPageHeader
+          title={t("overview.title")}
+          description={t("stats.todayBookings") ? undefined : "Vue d'ensemble de votre activite."}
+        />
+        <MetricGrid>
+          <MetricCard
+            label={t("stats.todayBookings")}
+            value={todayBookings}
+            icon={<CalendarDays className="h-4 w-4" />}
+          />
+          <MetricCard
+            label={t("stats.monthlyRevenue")}
+            value={monthlyRevenue ?? "—"}
+            icon={<CreditCard className="h-4 w-4" />}
+          />
+          <MetricCard
+            label={t("stats.monthlyRequests")}
+            value={monthlyRequests}
+            icon={<Activity className="h-4 w-4" />}
+          />
+          <MetricCard
+            label={t("stats.activeSubscriptions")}
+            value={activeSubscriptions}
+            icon={<Users className="h-4 w-4" />}
+          />
+        </MetricGrid>
       </div>
     </main>
   );

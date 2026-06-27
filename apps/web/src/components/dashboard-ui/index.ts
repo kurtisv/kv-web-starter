@@ -2,3 +2,8 @@ export * from "./dashboard-shell";
 export * from "./metric-card";
 export * from "./activity-feed";
 export * from "./data-table-shell";
+export * from "./status-badge";
+export * from "./filter-bar";
+export * from "./confirm-dialog";
+export * from "./entity-drawer";
+export * from "./bulk-action-bar";

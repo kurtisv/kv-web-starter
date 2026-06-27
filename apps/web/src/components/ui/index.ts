@@ -27,3 +27,8 @@ export * from "./theme-preview-card";
 export * from "./time-picker";
 export * from "./use-toast";
 export * from "./notification-bell";
+export * from "./file-dropzone";
+export * from "./file-upload-queue";
+export * from "./image-preview";
+export * from "./avatar-upload";
+export * from "./media-grid";

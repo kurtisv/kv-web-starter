@@ -1,8 +1,31 @@
-export default function DashboardSettingsPage() {
+import { auth } from "@/lib/auth";
+import { DashboardPageHeader } from "@/components/dashboard-ui/dashboard-shell";
+import {
+  SettingsProfileSection,
+  SettingsBusinessSection,
+  SettingsMediaSection,
+} from "./settings-client";
+
+export default async function DashboardSettingsPage() {
+  const session = await auth();
+
   return (
-    <main className="px-6 py-10">
-      <h1 className="text-3xl font-semibold">Settings</h1>
-      <p className="mt-3 text-muted-foreground">Configuration business, modules et integrations.</p>
+    <main className="grid gap-6 px-6 py-10">
+      <DashboardPageHeader
+        title="Parametres"
+        description="Configuration du profil, de l'entreprise et des medias."
+      />
+
+      <div className="grid gap-6 lg:grid-cols-[1fr_1fr]">
+        <SettingsProfileSection
+          name={session?.user?.name}
+          email={session?.user?.email}
+          avatarSrc={session?.user?.image}
+        />
+        <SettingsBusinessSection />
+      </div>
+
+      <SettingsMediaSection />
     </main>
   );
 }

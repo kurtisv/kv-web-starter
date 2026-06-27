@@ -21,7 +21,9 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { RevealSection } from "@/components/ui/reveal-section";
 import { MarketingPageShell } from "@/components/marketing/page-shell";
+import { AnimatedHero } from "@/components/sections/animated-hero";
 import { StatsSection } from "@/components/sections/stats-section";
 import { FeatureGrid } from "@/components/sections/feature-grid";
 import { CTASection } from "@/components/sections/cta-section";
@@ -270,77 +272,45 @@ export default function Home() {
     <MarketingPageShell>
       <main>
 
-        {/* Hero */}
+        {/* Hero — AnimatedHero handles word-by-word reveal on mount */}
         <section className="theme-hero">
-          {/* Accent bar for themes that define --hero-accent-color */}
           <div className="theme-hero-accent-bar" />
-          <div className="mx-auto max-w-6xl px-6 py-20 sm:py-28">
-            <p className="mb-5 text-sm font-medium uppercase tracking-[0.18em] opacity-50">
-              Next.js 16 &middot; Tailwind v4 &middot; Auth.js v5 &middot; Stripe &middot; Prisma
-            </p>
-            <h1 className="max-w-4xl text-5xl font-semibold tracking-tight text-balance sm:text-7xl">
-              Un boilerplate. 9 identites de projet.
-            </h1>
-            <p className="mt-7 max-w-2xl text-lg leading-8 opacity-75">
-              Reservations, SaaS, portfolio, e-commerce, immobilier — chaque preset
-              reconfigure le theme, la navigation et la logique produit.
-              Clone, personnalise, livre en jours.
-            </p>
-            <div className="mt-9 flex flex-wrap gap-3">
-              <Button
-                asChild
-                size="lg"
-                className="theme-hero-btn-primary shadow-md"
-              >
-                <Link href="/demo">
-                  Voir les 9 demos <ArrowRight className="size-4" />
-                </Link>
-              </Button>
-              <Button
-                asChild
-                variant="outline"
-                size="lg"
-                className="theme-hero-btn-outline"
-              >
-                <Link href="/docs">Lire le guide</Link>
-              </Button>
-            </div>
-
-            {/* Theme accent swatch strip */}
-            <div className="mt-14 space-y-2">
-              <p className="text-xs opacity-30 uppercase tracking-widest">7 themes visuels</p>
-              <div className="flex gap-2">
-                {(Object.entries(THEME_META) as [string, typeof THEME_META[keyof typeof THEME_META]][]).map(([id, meta]) => (
-                  <div key={id} className="group relative flex-1">
-                    <div
-                      className="h-2 w-full rounded-sm transition-all group-hover:h-3"
-                      style={{ background: meta.accent }}
-                    />
-                    <span className="absolute top-3 left-0 hidden text-[10px] opacity-50 leading-tight whitespace-nowrap lg:group-hover:block">
-                      {meta.label}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+          <AnimatedHero
+            eyebrow="Next.js 16 · Tailwind v4 · Auth.js v5 · Stripe · Prisma"
+            title="Un boilerplate. 9 identites de projet."
+            description="Reservations, SaaS, portfolio, e-commerce, immobilier — chaque preset reconfigure le theme, la navigation et la logique produit. Clone, personnalise, livre en jours."
+            actions={
+              <>
+                <Button asChild size="lg" className="theme-hero-btn-primary shadow-md">
+                  <Link href="/demo">Voir les 9 demos <ArrowRight className="size-4" /></Link>
+                </Button>
+                <Button asChild variant="outline" size="lg" className="theme-hero-btn-outline">
+                  <Link href="/docs">Lire le guide</Link>
+                </Button>
+              </>
+            }
+          />
         </section>
 
-        {/* Stats */}
-        <StatsSection
-          variant="strip"
-          stats={[
-            { value: "9", label: "Presets projet" },
-            { value: "7", label: "Themes visuels" },
-            { value: "50+", label: "Composants UI" },
-            { value: "2-5j", label: "Pour livrer" },
-          ]}
-        />
+        {/* Stats — fade up when scrolled to */}
+        <RevealSection variant="fade-up" delay={0.05}>
+          <StatsSection
+            variant="strip"
+            stats={[
+              { value: "9",   label: "Presets projet" },
+              { value: "7",   label: "Themes visuels" },
+              { value: "50+", label: "Composants UI"  },
+              { value: "2-5j",label: "Pour livrer"    },
+            ]}
+          />
+        </RevealSection>
 
         {/* 9 demos gallery */}
         <section className="border-b bg-background">
           <div className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
-            <div className="mx-auto mb-12 max-w-2xl text-center">
+
+            {/* Section header */}
+            <RevealSection variant="fade-up" className="mx-auto mb-12 max-w-2xl text-center">
               <Badge className="mb-4">Demo Gallery</Badge>
               <h2 className="text-3xl font-semibold tracking-tight">
                 9 identites visuelles, une base commune.
@@ -349,82 +319,83 @@ export default function Home() {
                 Chaque demo montre un theme distinct et une logique produit realiste.
                 Un seul boilerplate, plusieurs identites.
               </p>
-            </div>
+            </RevealSection>
 
+            {/* Cards — each staggered by its position in the grid */}
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {DEMOS.map((d) => {
+              {DEMOS.map((d, i) => {
                 const preset = PROJECT_PRESETS[d.slug];
                 const theme = THEME_META[preset.theme];
                 return (
-                  <Link key={d.slug} href={`/demo/${d.slug}`} className="group block">
-                    <Card className="h-full overflow-hidden transition-shadow hover:shadow-md">
-                      <DemoThumbnail slug={d.slug} accent={theme.accent} dark={theme.dark} />
-                      <CardHeader className="pt-4 pb-3">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <d.Icon className="h-4 w-4 text-muted-foreground" />
-                            <CardTitle className="text-base">{d.label}</CardTitle>
+                  <RevealSection
+                    key={d.slug}
+                    variant="fade-up"
+                    delay={0.05 + i * 0.06}
+                    threshold={0.05}
+                  >
+                    <Link href={`/demo/${d.slug}`} className="group block h-full">
+                      <Card className="h-full overflow-hidden transition-shadow hover:shadow-md">
+                        <DemoThumbnail slug={d.slug} accent={theme.accent} dark={theme.dark} />
+                        <CardHeader className="pt-4 pb-3">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <d.Icon className="h-4 w-4 text-muted-foreground" />
+                              <CardTitle className="text-base">{d.label}</CardTitle>
+                            </div>
+                            <ArrowRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
                           </div>
-                          <ArrowRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
-                        </div>
-                        <CardDescription className="mt-1 text-sm">{d.tagline}</CardDescription>
-                      </CardHeader>
-                      <CardContent className="pb-4 pt-0">
-                        <Badge variant="outline" size="sm">{theme.label}</Badge>
-                      </CardContent>
-                    </Card>
-                  </Link>
+                          <CardDescription className="mt-1 text-sm">{d.tagline}</CardDescription>
+                        </CardHeader>
+                        <CardContent className="pb-4 pt-0">
+                          <Badge variant="outline" size="sm">{theme.label}</Badge>
+                        </CardContent>
+                      </Card>
+                    </Link>
+                  </RevealSection>
                 );
               })}
             </div>
 
-            <div className="mt-10 text-center">
+            <RevealSection variant="fade-in" delay={0.1} className="mt-10 text-center">
               <Button asChild variant="outline" size="lg">
                 <Link href="/demo">
                   Explorer la galerie <ArrowRight className="size-4" />
                 </Link>
               </Button>
-            </div>
+            </RevealSection>
           </div>
         </section>
 
-        {/* Stack inclus */}
-        <FeatureGrid
-          eyebrow="Stack inclus"
-          title="Tout ce dont tu as besoin, deja configure."
-          description="Chaque module est operationnel. Tu branches les variables d'environnement, tu lances — c'est tout."
-          features={stackFeatures}
-          columns={3}
-          variant="cards"
-        />
+        {/* Stack inclus — slide in as a unit, then inner cards from feature-grid */}
+        <RevealSection variant="fade-up" threshold={0.08}>
+          <FeatureGrid
+            eyebrow="Stack inclus"
+            title="Tout ce dont tu as besoin, deja configure."
+            description="Chaque module est operationnel. Tu branches les variables d'environnement, tu lances — c'est tout."
+            features={stackFeatures}
+            columns={3}
+            variant="cards"
+          />
+        </RevealSection>
 
-        {/* CTA */}
-        <CTASection
-          variant="dark"
-          title="Pret a livrer ton prochain projet ?"
-          description="Clone la base, active les modules dont tu as besoin, configure — et livre en jours."
-          actions={
-            <>
-              <Button
-                asChild
-                size="lg"
-                className="theme-hero-btn-primary shadow-md"
-              >
-                <Link href="/docs">
-                  Lire le guide <ArrowRight className="size-4" />
-                </Link>
-              </Button>
-              <Button
-                asChild
-                variant="outline"
-                size="lg"
-                className="theme-hero-btn-outline"
-              >
-                <Link href="/demo">Voir les demos</Link>
-              </Button>
-            </>
-          }
-        />
+        {/* CTA — scale-in for visual weight */}
+        <RevealSection variant="scale-in" ease="spring" threshold={0.15}>
+          <CTASection
+            variant="dark"
+            title="Pret a livrer ton prochain projet ?"
+            description="Clone la base, active les modules dont tu as besoin, configure — et livre en jours."
+            actions={
+              <>
+                <Button asChild size="lg" className="theme-hero-btn-primary shadow-md">
+                  <Link href="/docs">Lire le guide <ArrowRight className="size-4" /></Link>
+                </Button>
+                <Button asChild variant="outline" size="lg" className="theme-hero-btn-outline">
+                  <Link href="/demo">Voir les demos</Link>
+                </Button>
+              </>
+            }
+          />
+        </RevealSection>
 
       </main>
     </MarketingPageShell>

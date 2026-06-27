@@ -12,6 +12,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Form, FormField, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { NewApiKeyReveal } from "@/components/api-portal/api-key-display";
 
 const apiKeySchema = z.object({
   name: z.string().min(1, "Le nom est requis").max(64, "Nom trop long"),
@@ -65,7 +66,8 @@ export function ApiKeyForm() {
 
           <FormField>
             <Label htmlFor="scopes">Scopes</Label>
-            <Input id="scopes" {...register("scopes")} />
+            <Input id="scopes" placeholder="demo:read scores:read" {...register("scopes")} />
+            <p className="text-xs text-muted-foreground">Separez plusieurs scopes par des espaces.</p>
             {errors.scopes && <FormMessage>{errors.scopes.message}</FormMessage>}
           </FormField>
 
@@ -74,12 +76,9 @@ export function ApiKeyForm() {
           </Button>
         </Form>
 
-        {createdKey?.ok ? (
-          <div className="mt-5 border bg-secondary p-4">
-            <p className="text-sm font-medium">Copiez cette cle maintenant</p>
-            <code className="mt-2 block break-all text-sm">{createdKey.plainTextKey}</code>
-          </div>
-        ) : null}
+        {createdKey?.ok && (
+          <NewApiKeyReveal plainTextKey={createdKey.plainTextKey} />
+        )}
       </CardContent>
     </Card>
   );

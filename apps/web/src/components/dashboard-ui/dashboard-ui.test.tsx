@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { ActivityFeed } from "./activity-feed";
+import { AuditLogTimeline } from "./audit-log-timeline";
 import {
   DashboardContent,
   DashboardHeader,
@@ -9,6 +10,7 @@ import {
   DashboardShell,
 } from "./dashboard-shell";
 import { DataTableShell } from "./data-table-shell";
+import { EmptyDashboardState } from "./empty-dashboard-state";
 import { MetricCard, MetricGrid } from "./metric-card";
 
 // ---------------------------------------------------------------------------
@@ -240,5 +242,23 @@ describe("DataTableShell", () => {
     render(<DataTableShell data={data} columns={columns} keyField="id" />);
     const rows = screen.getAllByRole("row");
     expect(rows.length).toBe(3); // 1 header + 2 data rows
+  });
+});
+
+describe("roadmap dashboard components", () => {
+  it("renders audit log entries", () => {
+    render(
+      <AuditLogTimeline
+        items={[{ id: "1", action: "Client cree", actor: "Admin", createdAt: "now" }]}
+      />,
+    );
+    expect(screen.getByText("Client cree")).toBeTruthy();
+    expect(screen.getByText("Admin")).toBeTruthy();
+  });
+
+  it("renders standardized empty state", () => {
+    render(<EmptyDashboardState title="No records" description="Create one to start." />);
+    expect(screen.getByText("No records")).toBeTruthy();
+    expect(screen.getByText("Create one to start.")).toBeTruthy();
   });
 });

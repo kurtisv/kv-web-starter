@@ -17,11 +17,19 @@ const DEMOS = [
   { slug: "dashboard",      label: "Dashboard",         description: "Admin — premium-saas" },
 ];
 
+const COMPONENT_DEMO = {
+  slug: "components",
+  label: "Components",
+  description: "Playground — composants metier",
+  accent: "#10b981",
+  themeLabel: "Component system",
+};
+
 export default function DemoIndexPage() {
   return (
     <main className="mx-auto max-w-5xl px-6 py-16">
       <Badge className="mb-6">Demo Gallery</Badge>
-      <h1 className="text-4xl font-semibold tracking-tight">9 styles de projets</h1>
+      <h1 className="text-4xl font-semibold tracking-tight">10 styles de projets</h1>
       <p className="mt-4 max-w-2xl text-muted-foreground">
         Chaque demo montre un theme visuel distinct et une logique produit realiste.
         Un seul boilerplate, plusieurs identites.
@@ -49,6 +57,21 @@ export default function DemoIndexPage() {
             </Link>
           );
         })}
+        <Link href={`/demo/${COMPONENT_DEMO.slug}`} className="group block">
+          <Card className="h-full transition-shadow hover:shadow-md">
+            <div className="h-2 w-full" style={{ background: COMPONENT_DEMO.accent }} />
+            <CardHeader className="pt-4">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-base">{COMPONENT_DEMO.label}</CardTitle>
+                <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-foreground transition-colors" />
+              </div>
+              <CardDescription>{COMPONENT_DEMO.description}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Badge variant="outline" size="sm">{COMPONENT_DEMO.themeLabel}</Badge>
+            </CardContent>
+          </Card>
+        </Link>
       </div>
     </main>
   );

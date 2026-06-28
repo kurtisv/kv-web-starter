@@ -10,6 +10,8 @@ import { Badge } from "@/components/ui/badge";
 import { PropertyCard, type PropertyItem } from "@/components/real-estate/property-card";
 import { MortgageCalculator } from "@/components/real-estate/mortgage-calculator";
 import { AgentProfileCard } from "@/components/real-estate/agent-profile-card";
+import { PropertySearchBar } from "@/components/real-estate/property-search-bar";
+import { NeighborhoodScoreCard, type NeighborhoodScoreCardProps } from "@/components/real-estate/neighborhood-score-card";
 
 const properties: PropertyItem[] = [
   {
@@ -88,6 +90,48 @@ const stats = [
   { value: "98%",  label: "Clients satisfaits" },
 ];
 
+const neighborhoods: NeighborhoodScoreCardProps[] = [
+  {
+    name: "Marais — Bastille",
+    district: "Paris 3e / 11e",
+    overallScore: 9.2,
+    avgPricePerSqm: "12 400 €/m²",
+    criteria: [
+      { label: "Transports", score: 9.5 },
+      { label: "Commerces & restaurants", score: 9.8 },
+      { label: "Ecoles", score: 8.4 },
+      { label: "Parcs & espaces verts", score: 6.2 },
+      { label: "Securite", score: 8.1 },
+    ],
+  },
+  {
+    name: "Nation — Vincennes",
+    district: "Paris 12e / Val-de-Marne",
+    overallScore: 8.4,
+    avgPricePerSqm: "8 200 €/m²",
+    criteria: [
+      { label: "Transports", score: 8.8 },
+      { label: "Commerces & restaurants", score: 7.9 },
+      { label: "Ecoles", score: 8.6 },
+      { label: "Parcs & espaces verts", score: 9.1 },
+      { label: "Securite", score: 8.5 },
+    ],
+  },
+  {
+    name: "Montrouge — Malakoff",
+    district: "Hauts-de-Seine",
+    overallScore: 7.8,
+    avgPricePerSqm: "6 800 €/m²",
+    criteria: [
+      { label: "Transports", score: 7.4 },
+      { label: "Commerces & restaurants", score: 7.6 },
+      { label: "Ecoles", score: 8.2 },
+      { label: "Parcs & espaces verts", score: 7.9 },
+      { label: "Securite", score: 8.8 },
+    ],
+  },
+];
+
 export default function DemoRealEstatePage() {
   return (
     <div data-theme="real-estate">
@@ -121,9 +165,16 @@ export default function DemoRealEstatePage() {
 
       <StatsSection stats={stats} variant="strip" />
 
+      {/* Search bar */}
+      <section className="border-b bg-background">
+        <div className="mx-auto max-w-6xl px-6 py-8">
+          <PropertySearchBar />
+        </div>
+      </section>
+
       {/* PropertyCard grid */}
       <section className="bg-background">
-        <div className="mx-auto max-w-6xl px-6 py-16">
+        <div className="mx-auto max-w-6xl px-6 py-12">
           <div className="mb-8 flex items-center justify-between">
             <div>
               <h2 className="text-2xl font-semibold">Biens disponibles</h2>
@@ -148,6 +199,23 @@ export default function DemoRealEstatePage() {
             <Button variant="outline" size="lg">
               Voir tous les biens <ArrowRight className="size-4" />
             </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Scores de quartier */}
+      <section className="border-y bg-card">
+        <div className="mx-auto max-w-6xl px-6 py-14">
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold">Scores de quartier</h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Transports, commerces, ecoles, parcs et securite — notes sur 10 par secteur.
+            </p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {neighborhoods.map((n) => (
+              <NeighborhoodScoreCard key={n.name} {...n} />
+            ))}
           </div>
         </div>
       </section>

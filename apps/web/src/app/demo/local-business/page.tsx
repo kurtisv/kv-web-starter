@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { BusinessHours, type DaySchedule } from "@/components/local-business/business-hours";
+import { ServicePackageCard } from "@/components/local-business/service-package-card";
+import { LoyaltyStampCard } from "@/components/local-business/loyalty-stamp-card";
 
 const services = [
   { name: "Massage suedois",          duration: "60 min", price: "75€",  description: "Detente profonde, tensions liberees." },
@@ -26,6 +28,47 @@ const features = [
   { icon: <Star className="h-5 w-5" />,   title: "Produits 100% naturels", description: "Huiles essentielles bio, argiles, plantes locales. Rien de synthetique." },
   { icon: <Clock className="h-5 w-5" />,  title: "Flexibilite horaire",    description: "Disponible du lundi au samedi, 9h-19h. Sur rendez-vous uniquement." },
   { icon: <MapPin className="h-5 w-5" />, title: "Acces facile",           description: "Centre-ville, parking gratuit a 100m. Accessible PMR." },
+];
+
+const packages = [
+  {
+    name: "Decouverte",
+    tagline: "Parfait pour commencer.",
+    price: "199€",
+    period: "/3 soins",
+    services: ["3 massages au choix (60 min)", "Bilan bien-etre offert", "Valable 3 mois"],
+  },
+  {
+    name: "Harmonie",
+    tagline: "Notre formule la plus populaire.",
+    price: "349€",
+    period: "/6 soins",
+    savings: "Economisez 101 € vs a la seance",
+    services: [
+      "6 soins au choix (60 ou 90 min)",
+      "Bilan bien-etre offert",
+      "Produits offerts a chaque seance",
+      "Priorite de reservation",
+      "Valable 6 mois",
+    ],
+    featured: true,
+    badge: "Populaire",
+  },
+  {
+    name: "Prestige",
+    tagline: "L'experience complete.",
+    price: "590€",
+    period: "/12 soins",
+    savings: "Economisez 230 € vs a la seance",
+    services: [
+      "12 soins illimites (60, 90 ou 120 min)",
+      "Soin visage premium offert",
+      "Produits bio offerts",
+      "Acces VIP — rendez-vous prioritaire",
+      "Accompagnement nutritionnel",
+      "Valable 12 mois",
+    ],
+  },
 ];
 
 const schedule: DaySchedule[] = [
@@ -121,11 +164,64 @@ export default function DemoLocalBusinessPage() {
         </div>
       </section>
 
+      {/* Forfaits */}
+      <section className="border-y bg-card">
+        <div className="mx-auto max-w-6xl px-6 py-14">
+          <div className="mb-8 text-center">
+            <p className="mb-2 text-sm font-medium uppercase tracking-[0.18em] text-muted-foreground">
+              Forfaits
+            </p>
+            <h2 className="text-2xl font-semibold">Engagez-vous, economisez.</h2>
+            <p className="mx-auto mt-3 max-w-xl text-sm text-muted-foreground">
+              Nos forfaits multi-seances incluent les soins de votre choix a tarif preferentiel.
+            </p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-3">
+            {packages.map((pkg) => (
+              <ServicePackageCard key={pkg.name} {...pkg} />
+            ))}
+          </div>
+        </div>
+      </section>
+
       <TestimonialSection
         eyebrow="Avis clients"
         title="Ils en parlent mieux que nous."
         testimonials={testimonials}
       />
+
+      {/* Carte fidelite */}
+      <section className="border-y bg-background">
+        <div className="mx-auto max-w-6xl px-6 py-14">
+          <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
+            <div>
+              <p className="mb-2 text-sm font-medium uppercase tracking-[0.18em] text-muted-foreground">
+                Fidelite
+              </p>
+              <h2 className="text-2xl font-semibold">Votre 10e soin est offert.</h2>
+              <p className="mt-3 text-sm text-muted-foreground">
+                Chaque visite vous rapproche d&apos;un soin gratuit. A partir du 5e soin, beneficiez aussi
+                d&apos;une remise de 10% sur les produits de l&apos;espace boutique.
+              </p>
+              <ul className="mt-5 grid gap-2 text-sm">
+                {["10e soin offert (valeur jusqu'a 110€)", "Boutique -10% des le 5e soin", "Invitation aux soirees bien-etre", "Cadeaux d'anniversaire surprise"].map((b) => (
+                  <li key={b} className="flex items-center gap-2">
+                    <Star className="h-4 w-4 shrink-0 fill-warning text-warning" />
+                    {b}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <LoyaltyStampCard
+              businessName="L'Oasis de Detente"
+              stampsEarned={7}
+              stampsTotal={10}
+              rewardDescription="Cadeau : 1 soin de votre choix offert (60 min, valeur 75€)"
+              expiresLabel="Valable jusqu'au 31 decembre 2026"
+            />
+          </div>
+        </div>
+      </section>
 
       {/* Infos pratiques + BusinessHours */}
       <section className="border-t bg-card">

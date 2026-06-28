@@ -15,6 +15,12 @@ test("marketing, docs, and public API routes render", async ({ page, request }) 
   await page.goto("/docs/api");
   await expect(page.getByText(/kv web starter api/i).first()).toBeVisible();
 
+  await page.goto("/pricing");
+  await expect(page.getByRole("heading", { name: /base pour vendre/i })).toBeVisible();
+
+  await page.goto("/my-bookings");
+  await expect(page.getByRole("heading", { name: /mes reservations/i })).toBeVisible();
+
   const openapi = await request.get("/api/openapi");
   expect(openapi.ok()).toBe(true);
 

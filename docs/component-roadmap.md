@@ -25,13 +25,13 @@
 ## Medium Term
 
 - [ ] Wire uploads to Supabase, S3, Azure Blob, or another real storage backend
-- [ ] Add e-commerce Prisma models
-- [ ] Add a real pricing page
+- [x] Add e-commerce Prisma models
+- [x] Add a real pricing page
 - [x] Add `ApiUsageChart`
 - [x] Add `RateLimitMeter`
 - [x] Add `RequestLogViewer`
 - [x] Add `AuditLogTimeline`
-- [ ] Add a client "my bookings" page
+- [x] Add a client "my bookings" page
 
 ## Advanced Frontend
 

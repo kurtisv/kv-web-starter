@@ -17,6 +17,7 @@
 
 ## E-commerce
 
+- Prisma models: `Product`, `Inventory`, `Coupon`, `Order`, and `OrderItem`.
 - `VariantSelector`: selectable product options with optional color swatches.
 - `PromoCodeInput`: promo-code capture and validation state.
 - `CheckoutSummary`: order totals with shipping, taxes, and discounts.
@@ -26,3 +27,8 @@
 ## Demo
 
 The `/demo/components` page showcases these components together and should be updated when new business components are added.
+
+## Pages
+
+- `/pricing`: modular pricing page wired to Stripe checkout actions for paid plans.
+- `/my-bookings`: client booking history page with Prisma-backed data and demo fallback.

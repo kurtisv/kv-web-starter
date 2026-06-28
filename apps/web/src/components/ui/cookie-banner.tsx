@@ -77,7 +77,7 @@ export function CookieBanner({ className, onAccept }: CookieBannerProps) {
         <p className="text-sm font-semibold mb-1">Cookies et confidentialite</p>
         <p className="text-xs text-muted-foreground leading-relaxed">
           Nous utilisons des cookies necessaires au fonctionnement du site, ainsi que des
-          cookies analytiques (anonymes) pour ameliorer l'experience.{" "}
+          cookies analytiques (anonymes) pour ameliorer l&apos;experience.{" "}
           <a href="/privacy" className="underline hover:no-underline">
             En savoir plus
           </a>

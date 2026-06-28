@@ -1,7 +1,8 @@
 "use client";
 import * as React from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { Search, X, SlidersHorizontal } from "lucide-react";
+import { Search, X } from "lucide-react";
+import { Select } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 
 export interface FilterGroup {
@@ -102,24 +103,14 @@ export function FilterBar({ filters = [], searchPlaceholder = "Rechercher...", c
       {filters.map((group) => {
         const active = searchParams.get(group.key);
         return (
-          <div key={group.key} className="relative">
-            <select
+          <div key={group.key} className="min-w-36">
+            <Select
               value={active ?? ""}
-              onChange={(e) => handleFilter(group.key, e.target.value)}
-              className={cn(
-                "h-9 border border-border bg-background pl-3 pr-7 text-sm outline-none appearance-none",
-                "transition-colors focus:border-foreground",
-                active ? "border-foreground" : ""
-              )}
-            >
-              <option value="">{group.label}</option>
-              {group.options.map((o) => (
-                <option key={o.value} value={o.value}>
-                  {o.label}
-                </option>
-              ))}
-            </select>
-            <SlidersHorizontal className="pointer-events-none absolute right-2 top-1/2 h-3 w-3 -translate-y-1/2 text-muted-foreground" />
+              onValueChange={(value) => handleFilter(group.key, value)}
+              placeholder={group.label}
+              options={[{ value: "", label: group.label }, ...group.options]}
+              className={cn(active && "border-foreground")}
+            />
           </div>
         );
       })}

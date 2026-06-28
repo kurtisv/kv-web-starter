@@ -5,6 +5,7 @@ import { Download, Mail, Trash2, UserX } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableShell } from "@/components/dashboard-ui/data-table-shell";
 import { StatusBadge } from "@/components/dashboard-ui/status-badge";
 import { FilterBar, type FilterGroup } from "@/components/dashboard-ui/filter-bar";
@@ -94,20 +95,16 @@ export function DashboardDemoUsersCard() {
               {
                 key: "select",
                 header: (
-                  <input
-                    type="checkbox"
+                  <Checkbox
                     checked={selected.size === ALL_USERS.length}
-                    onChange={() => toggleAll(ALL_USERS)}
-                    className="h-3.5 w-3.5 accent-primary"
+                    onCheckedChange={() => toggleAll(ALL_USERS)}
                     aria-label="Tout selectionner"
                   />
                 ),
                 cell: (r) => (
-                  <input
-                    type="checkbox"
+                  <Checkbox
                     checked={selected.has(r.id)}
-                    onChange={() => toggleRow(r.id)}
-                    className="h-3.5 w-3.5 accent-primary"
+                    onCheckedChange={() => toggleRow(r.id)}
                     aria-label={`Selectionner ${r.name}`}
                   />
                 ),

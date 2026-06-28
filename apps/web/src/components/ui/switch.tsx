@@ -71,7 +71,8 @@ export function SwitchField({
   id,
   className,
 }: SwitchFieldProps) {
-  const fieldId = id ?? React.useId();
+  const generatedId = React.useId();
+  const fieldId = id ?? generatedId;
   return (
     <div className={cn("flex items-center justify-between gap-4", className)}>
       <div>

@@ -32,7 +32,10 @@ export function RevealSection({
 
   // Avoid hydration mismatch: only apply Framer Motion after client mount.
   const [mounted, setMounted] = useState(false);
-  useEffect(() => { setMounted(true); }, []);
+  useEffect(() => {
+    const timer = window.setTimeout(() => setMounted(true), 0);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   if (!mounted) {
     return <div ref={ref} className={cn(className)}>{children}</div>;

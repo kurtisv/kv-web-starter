@@ -1,15 +1,15 @@
 import { expect, test } from "@playwright/test";
 
 const DEMO_PAGES = [
-  { slug: "portfolio",      theme: "corporate-classic", heading: /portfolio|projets|developpeur/i },
+  { slug: "portfolio",      theme: "corporate-classic", heading: /produits qui fonctionnent|collaboration/i },
   { slug: "saas",           theme: "premium-saas",      heading: /workflow|plateforme/i },
   { slug: "booking",        theme: "local-business",    heading: /bien.tre|relaxation|soin|prenez/i },
   { slug: "api",            theme: "dark-tech-api",     heading: /api|developer|portal/i },
   { slug: "real-estate",    theme: "real-estate",       heading: /immobilier|investissez/i },
-  { slug: "local-business", theme: "local-business",    heading: /service|local|artisan/i },
-  { slug: "auto-blog",      theme: "luxury-auto",       heading: /automobile|auto|passion/i },
+  { slug: "local-business", theme: "local-business",    heading: /oasis|detente|soins/i },
+  { slug: "auto-blog",      theme: "luxury-auto",       heading: /voiture|compromis|fiches/i },
   { slug: "ecommerce",      theme: "ecommerce-clean",   heading: /boutique|artisan|cuir|collection/i },
-  { slug: "dashboard",      theme: "premium-saas",      heading: /dashboard|tableau|apercu/i },
+  { slug: "dashboard",      theme: "premium-saas",      heading: /vue d'ensemble|utilisateurs/i },
 ] as const;
 
 test("demo index page lists all 9 project types", async ({ page }) => {
@@ -32,7 +32,7 @@ for (const { slug, theme, heading } of DEMO_PAGES) {
     await expect(themeWrapper).toBeVisible();
 
     // Main heading visible
-    await expect(page.getByRole("heading").first()).toBeVisible();
+    await expect(page.getByRole("heading", { name: heading }).first()).toBeVisible();
   });
 }
 

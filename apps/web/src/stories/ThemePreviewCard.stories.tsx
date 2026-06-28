@@ -33,20 +33,22 @@ export const Active: Story = {
   },
 };
 
+function AllThemesRender() {
+  const [selected, setSelected] = useState<ThemeId>("premium-saas");
+  return (
+    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 max-w-2xl">
+      {THEMES.map((themeId) => (
+        <ThemePreviewCard
+          key={themeId}
+          themeId={themeId}
+          active={selected === themeId}
+          onClick={() => setSelected(themeId)}
+        />
+      ))}
+    </div>
+  );
+}
+
 export const AllThemes: Story = {
-  render: () => {
-    const [selected, setSelected] = useState<ThemeId>("premium-saas");
-    return (
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 max-w-2xl">
-        {THEMES.map((themeId) => (
-          <ThemePreviewCard
-            key={themeId}
-            themeId={themeId}
-            active={selected === themeId}
-            onClick={() => setSelected(themeId)}
-          />
-        ))}
-      </div>
-    );
-  },
+  render: () => <AllThemesRender />,
 };

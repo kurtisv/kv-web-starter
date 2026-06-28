@@ -6,7 +6,6 @@ import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { ShoppingCart, Trash2, X } from "lucide-react";
 
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/components/providers/cart-provider";
 import { formatPrice } from "@/components/ecommerce/price-display";

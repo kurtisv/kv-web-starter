@@ -9,7 +9,6 @@ import { MarketingPageShell } from "@/components/marketing/page-shell";
 import { EndpointList } from "@/components/api-portal/endpoint-row";
 import { CodeTabsBlock } from "@/components/api-portal/code-tabs-block";
 import { ScopePill } from "@/components/api-portal/scope-pill";
-import { HttpMethodBadge } from "@/components/api-portal/http-method-badge";
 import type { EndpointDef, CodeTab } from "@/components/api-portal";
 
 export const metadata: Metadata = {

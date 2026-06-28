@@ -3,12 +3,9 @@ import * as React from "react";
 import { Check, Minus } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-interface CheckboxProps {
+interface CheckboxProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "onChange"> {
   checked?: boolean | "indeterminate";
   onCheckedChange?: (checked: boolean) => void;
-  disabled?: boolean;
-  id?: string;
-  className?: string;
 }
 
 export function Checkbox({
@@ -17,9 +14,11 @@ export function Checkbox({
   disabled,
   id,
   className,
+  ...props
 }: CheckboxProps) {
   return (
     <button
+      {...props}
       type="button"
       role="checkbox"
       id={id}
@@ -63,7 +62,8 @@ export function CheckboxField({
   id,
   className,
 }: CheckboxFieldProps) {
-  const fieldId = id ?? React.useId();
+  const generatedId = React.useId();
+  const fieldId = id ?? generatedId;
   return (
     <label
       htmlFor={fieldId}

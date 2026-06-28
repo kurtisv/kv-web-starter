@@ -1,4 +1,5 @@
 import path from "path";
+import type { RuleSetRule } from "webpack";
 import type { StorybookConfig } from "@storybook/react-webpack5";
 
 const config: StorybookConfig = {
@@ -25,7 +26,8 @@ const config: StorybookConfig = {
 
     config.module = config.module ?? { rules: [] };
     config.module.rules = [
-      ...(config.module.rules ?? []).filter((r: any) => {
+      ...(config.module.rules ?? []).filter((r: RuleSetRule | "...") => {
+        if (r === "...") return true;
         const t = r?.test?.toString() ?? "";
         return !t.includes("tsx?") && !t.includes("ts|tsx");
       }),

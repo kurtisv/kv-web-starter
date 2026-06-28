@@ -46,7 +46,9 @@ export function DatePicker({
   const triggerRef = React.useRef<HTMLButtonElement>(null);
 
   React.useEffect(() => {
-    if (value) setViewDate(value);
+    if (!value) return;
+    const timer = window.setTimeout(() => setViewDate(value), 0);
+    return () => window.clearTimeout(timer);
   }, [value]);
 
   React.useEffect(() => {

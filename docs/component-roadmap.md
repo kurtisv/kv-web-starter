@@ -43,8 +43,6 @@
 - [x] Add `Product3DViewer`
 - [x] Add mobile performance mode
 
-## Current Audit Notes
+## Remaining Audit Notes
 
-- Native selects and checkboxes still remain in `apps/web/src/app/dashboard/availability/page.tsx`.
-- Those controls live inside server-action forms that post plain `FormData`; replacing them cleanly should be done with a dedicated client form wrapper or hidden inputs.
 - Demo-data fallbacks still exist in dashboard API keys, API usage, customers, availability, bookings, services, and staff pages.

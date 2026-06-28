@@ -10,6 +10,7 @@ export interface SelectOption {
 }
 
 interface SelectProps {
+  id?: string;
   value?: string;
   onValueChange?: (value: string) => void;
   options: SelectOption[];
@@ -19,6 +20,7 @@ interface SelectProps {
 }
 
 export function Select({
+  id,
   value,
   onValueChange,
   options,
@@ -73,6 +75,7 @@ export function Select({
   return (
     <div ref={ref} className={cn("relative", className)}>
       <button
+        id={id}
         ref={triggerRef}
         type="button"
         role="combobox"

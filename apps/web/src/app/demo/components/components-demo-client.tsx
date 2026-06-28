@@ -24,6 +24,7 @@ import {
   PromoCodeInput,
   VariantSelector,
 } from "@/components/ecommerce";
+import { Product3DViewer } from "@/components/3d";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field } from "@/components/ui/form";
@@ -137,6 +138,18 @@ export function ComponentsDemoClient() {
           </div>
         </CardContent>
       </Card>
+
+      <section className="grid gap-4" aria-labelledby="components-3d-heading">
+        <div>
+          <h2 id="components-3d-heading" className="text-3xl font-semibold tracking-normal">
+            3D
+          </h2>
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
+            Scenes produit interactives avec degradation mobile integree.
+          </p>
+        </div>
+        <Product3DViewer />
+      </section>
 
       <AdminFormDrawer
         open={drawerOpen}

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { AlertCircle, Bell, BellOff, CheckCircle2, Info, X, XCircle } from "lucide-react";
+import { AlertCircle, Bell, BellOff, CheckCircle2, Info, X, XCircle, type LucideIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import {
@@ -10,7 +10,7 @@ import {
   type NotificationVariant,
 } from "@/components/providers/notifications-provider";
 
-const ICONS: Record<NotificationVariant, React.ElementType> = {
+const ICONS: Record<NotificationVariant, LucideIcon> = {
   success: CheckCircle2,
   error:   XCircle,
   warning: AlertCircle,

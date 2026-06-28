@@ -29,6 +29,14 @@
 - `OrderStatusTimeline`: customer-facing order progress tracker.
 - `CustomerOrderTable`: compact order history table.
 
+## 3D
+
+- Dependencies: Three.js, React Three Fiber, and Drei.
+- `SceneCanvas`: shared WebGL shell with lighting, controls, and mobile/reduced-motion performance mode.
+- `FloatingModel`: reusable animated product primitive.
+- `ParticleBackground`: lightweight point-field scene background with lower mobile density.
+- `Product3DViewer`: composed product scene for demo and commerce pages.
+
 ## Demo
 
 The `/demo/components` page showcases these components together and should be updated when new business components are added.

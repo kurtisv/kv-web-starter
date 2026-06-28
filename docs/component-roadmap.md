@@ -35,13 +35,13 @@
 
 ## Advanced Frontend
 
-- [ ] Add `components/3d`
-- [ ] Install Three.js, React Three Fiber, and Drei
-- [ ] Add `SceneCanvas`
-- [ ] Add `FloatingModel`
-- [ ] Add `ParticleBackground`
-- [ ] Add `Product3DViewer`
-- [ ] Add mobile performance mode
+- [x] Add `components/3d`
+- [x] Install Three.js, React Three Fiber, and Drei
+- [x] Add `SceneCanvas`
+- [x] Add `FloatingModel`
+- [x] Add `ParticleBackground`
+- [x] Add `Product3DViewer`
+- [x] Add mobile performance mode
 
 ## Current Audit Notes
 

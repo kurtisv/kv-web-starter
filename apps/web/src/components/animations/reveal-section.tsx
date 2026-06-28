@@ -27,28 +27,58 @@ export function RevealSection({
   once = true,
   threshold = 0.12,
 }: RevealSectionProps) {
+  // Always render <motion.div> so the ref never changes between renders.
+  // If we switch between <div> and <motion.div>, framer-motion's useInView
+  // keeps observing the OLD unmounted element and inView stays false forever
+  // — that is what locks sections at opacity:0 and makes the page look blank.
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once, amount: threshold });
 
-  // Avoid hydration mismatch: only apply Framer Motion after client mount.
-  const [mounted, setMounted] = useState(false);
+  // Three-value flag:
+  //   null           — not yet measured (SSR + hydration): show content, no animation
+  //   "above-fold"   — was visible at mount time: show content, no animation
+  //   "below-fold"   — was off-screen at mount: apply scroll-in animation
+  const [startPos, setStartPos] = useState<null | "above-fold" | "below-fold">(null);
+  // When we snap a below-fold element to "hidden", use duration:0 for that one
+  // transition so users never see a flash of content vanishing.
+  const [snapTransition, setSnapTransition] = useState(false);
+
   useEffect(() => {
-    const timer = window.setTimeout(() => setMounted(true), 0);
-    return () => window.clearTimeout(timer);
+    const el = ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      setStartPos("above-fold");
+    } else {
+      // Snap hidden instantly so content doesn't flash before disappearing
+      setSnapTransition(true);
+      setStartPos("below-fold");
+      // One rAF later, restore normal transition timing for the scroll-in animation
+      const id = requestAnimationFrame(() => setSnapTransition(false));
+      return () => cancelAnimationFrame(id);
+    }
   }, []);
 
-  if (!mounted) {
-    return <div ref={ref} className={cn(className)}>{children}</div>;
-  }
+  // Compute the target animation state:
+  // • not measured yet, or above fold → keep content visible at all times
+  // • below fold → hide until inView fires
+  const animate =
+    startPos === "below-fold" ? (inView ? "visible" : "hidden") : "visible";
 
   return (
     <motion.div
       ref={ref}
       className={cn(className)}
       variants={REVEAL_VARIANTS[variant]}
-      initial="hidden"
-      animate={inView ? "visible" : "hidden"}
-      transition={{ duration, delay, ease: EASE[ease] }}
+      // initial={false} = don't run the initial animation on mount;
+      // content stays in whatever state `animate` says from the first render.
+      initial={false}
+      animate={animate}
+      transition={
+        snapTransition
+          ? { duration: 0 }
+          : { duration, delay, ease: EASE[ease] }
+      }
     >
       {children}
     </motion.div>

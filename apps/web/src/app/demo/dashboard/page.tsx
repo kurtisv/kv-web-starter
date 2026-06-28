@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { CreditCard, TrendingUp, Users, AlertCircle, UserPlus, Trash2 } from "lucide-react";
 

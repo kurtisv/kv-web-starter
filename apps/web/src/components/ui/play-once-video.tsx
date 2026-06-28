@@ -128,6 +128,10 @@ export function PlayOnceVideo({
       playsInline
       preload="none"
       className={cn("w-full", className)}
+      onError={() => {
+        setCheckedSrc(src);
+        setCheckedAvailable(false);
+      }}
     />
   );
 }

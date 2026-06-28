@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowRight, BarChart2, Lock, Zap, Globe, Clock, Shield } from "lucide-react";
 import { HeroSection } from "@/components/sections/hero-section";
@@ -151,11 +153,11 @@ export default function DemoSaaSPage() {
           </div>
 
           <div className="grid gap-6 lg:grid-cols-2">
-            <div>
+            <div className="min-w-0">
               <p className="mb-3 text-sm font-medium">UsageQuotaCard</p>
               <UsageQuotaCard items={quotaItems} />
             </div>
-            <div>
+            <div className="min-w-0">
               <p className="mb-3 text-sm font-medium">PlanComparisonTable</p>
               <PlanComparisonTable
                 features={comparisonFeatures}

@@ -72,11 +72,11 @@ test("/demo/booking — CancelBookingDialog opens and closes", async ({ page }) 
   await cancelBtn.scrollIntoViewIfNeeded();
   await expect(cancelBtn).toBeVisible();
   await cancelBtn.click();
-  await expect(page.getByRole("alertdialog").or(page.getByRole("dialog"))).toBeVisible();
+  await expect(page.locator('[role="dialog"][aria-modal="true"]')).toBeVisible();
   await expect(page.getByText(/annuler.*r.servation|annulation/i).first()).toBeVisible();
-  const closeBtn = page.getByRole("button", { name: /fermer|annuler|non/i }).first();
+  const closeBtn = page.locator('[role="dialog"][aria-modal="true"]').getByRole("button", { name: /garder/i });
   await closeBtn.click();
-  await expect(page.getByRole("alertdialog").or(page.getByRole("dialog"))).not.toBeVisible();
+  await expect(page.locator('[role="dialog"][aria-modal="true"]')).not.toBeVisible();
 });
 
 test("/demo/booking — RescheduleBookingDialog opens", async ({ page }) => {
@@ -85,7 +85,7 @@ test("/demo/booking — RescheduleBookingDialog opens", async ({ page }) => {
   await btn.scrollIntoViewIfNeeded();
   await expect(btn).toBeVisible();
   await btn.click();
-  await expect(page.getByRole("dialog")).toBeVisible();
+  await expect(page.locator('[role="dialog"][aria-modal="true"]')).toBeVisible();
   await expect(page.getByText(/replanifier|nouvelle date/i).first()).toBeVisible();
 });
 
@@ -106,7 +106,7 @@ test("/demo/saas — SubscriptionStatusCard variants visible", async ({ page }) 
   await expect(page.getByText("Composants SaaS inclus").first()).toBeVisible();
   await expect(page.getByText(/abonnement actif|actif/i).first()).toBeVisible();
   await expect(page.getByText(/essai|trialing|en cours d.essai/i).first()).toBeVisible();
-  await expect(page.getByText(/paiement.chou|past.due/i).first()).toBeVisible();
+  await expect(page.getByText(/paiement.?echu|past.due/i).first()).toBeVisible();
 });
 
 test("/demo/saas — UsageQuotaCard bars visible", async ({ page }) => {
@@ -141,21 +141,21 @@ test("/demo/api — EndpointList and CodeTabsBlock visible", async ({ page }) =>
 
 test("/demo/api — ApiUsageChart and RateLimitMeter visible", async ({ page }) => {
   await page.goto("/demo/api");
-  await expect(page.getByText("ApiUsageChart").first()).toBeVisible();
-  await expect(page.getByText("RateLimitMeter").first()).toBeVisible();
+  await expect(page.getByText(/usage mensuel/i).first()).toBeVisible();
+  await expect(page.getByText(/rate.?limit/i).first()).toBeVisible();
   await expect(page.getByText(/Quota mensuel/i).first()).toBeVisible();
 });
 
 test("/demo/api — RequestLogViewer entries visible", async ({ page }) => {
   await page.goto("/demo/api");
-  await expect(page.getByText("RequestLogViewer").first()).toBeVisible();
+  await expect(page.getByText(/journal des requ/i).first()).toBeVisible();
   await expect(page.getByText(/\/v1\/process/i).first()).toBeVisible();
   await expect(page.getByText("202").first()).toBeVisible();
 });
 
 test("/demo/api — WebhookTester send button visible", async ({ page }) => {
   await page.goto("/demo/api");
-  await expect(page.getByText("WebhookTester").first()).toBeVisible();
+  await expect(page.getByText(/webhook tester/i).first()).toBeVisible();
   const sendBtn = page.getByRole("button", { name: /envoyer|send/i }).first();
   await sendBtn.scrollIntoViewIfNeeded();
   await expect(sendBtn).toBeVisible();
@@ -164,7 +164,7 @@ test("/demo/api — WebhookTester send button visible", async ({ page }) => {
 test("/demo/api — ScopePill and ApiKeyDisplay visible", async ({ page }) => {
   await page.goto("/demo/api");
   await expect(page.getByText(/data:read/i).first()).toBeVisible();
-  await expect(page.getByText("ApiKeyDisplay").first()).toBeVisible();
+  await expect(page.getByText(/cles.{0,5}acc/i).first()).toBeVisible();
 });
 
 // ---------------------------------------------------------------------------
@@ -197,7 +197,7 @@ test("/demo/ecommerce — VariantSelector selection changes state", async ({ pag
 
 test("/demo/ecommerce — PromoCodeInput accepts valid code", async ({ page }) => {
   await page.goto("/demo/ecommerce");
-  const input = page.getByPlaceholder(/code promo|promo code/i);
+  const input = page.getByLabel("Code promo");
   await input.scrollIntoViewIfNeeded();
   await input.fill("ETE30");
   await page.getByRole("button", { name: /appliquer|apply/i }).click();

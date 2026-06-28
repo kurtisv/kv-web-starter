@@ -104,6 +104,10 @@
   --hero-from: #4c1d95;
   --hero-to: #2e1065;
   --hero-text: #faf5ff;
+  /* Semantic colors darkened for contrast on lavender card (#ede9fe) */
+  --success: #166534;
+  --destructive: #b91c1c;
+  --warning: #92400e;
 }
 
 /* ============================================================
@@ -183,6 +187,10 @@
   --hero-from: #0369a1;
   --hero-to: #0c4a6e;
   --hero-text: #f0f9ff;
+  /* Semantic colors darkened for contrast on sky-blue card (#e0f2fe) */
+  --success: #166534;
+  --destructive: #b91c1c;
+  --warning: #92400e;
 }
 
 /* ============================================================
@@ -274,6 +282,13 @@
    ============================================================ */
 body {
   background: var(--background);
+  color: var(--foreground);
+}
+
+/* Re-establish foreground inheritance at theme root so bare h1/h2/p/code
+   elements inside dark themes (dark-tech-api, luxury-auto) don't inherit
+   the body's light-mode color (#18181b) and become invisible on dark bg. */
+[data-theme] {
   color: var(--foreground);
 }
 

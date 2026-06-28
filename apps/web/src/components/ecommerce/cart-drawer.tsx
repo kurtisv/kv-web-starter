@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ShoppingCart, Trash2, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 import { useCart } from "@/components/providers/cart-provider";
 import { formatPrice } from "@/components/ecommerce/price-display";
 import { QuantityStepper } from "@/components/ecommerce/quantity-stepper";
@@ -14,6 +15,7 @@ import { QuantityStepper } from "@/components/ecommerce/quantity-stepper";
 export function CartDrawer() {
   const { items, subtotalCents, drawerOpen, setDrawerOpen, remove, updateQuantity, clear } =
     useCart();
+  const { toast } = useToast();
 
   const close = () => setDrawerOpen(false);
 
@@ -117,7 +119,10 @@ export function CartDrawer() {
                           <button
                             type="button"
                             aria-label="Retirer"
-                            onClick={() => remove(item.id)}
+                            onClick={() => {
+                              remove(item.id);
+                              toast.info("Article retire", item.name);
+                            }}
                             className="ml-auto text-muted-foreground transition-colors hover:text-destructive"
                           >
                             <Trash2 className="h-3.5 w-3.5" />
@@ -141,14 +146,24 @@ export function CartDrawer() {
                   Livraison et taxes calculees a la commande.
                 </p>
                 <div className="grid gap-2">
-                  <Button className="w-full" onClick={close}>
+                  <Button
+                    className="w-full"
+                    onClick={() => {
+                      toast.info("Checkout pret", "Branche Stripe Checkout pour finaliser la commande.");
+                      close();
+                    }}
+                  >
                     Passer la commande
                   </Button>
                   <Button
                     variant="ghost"
                     size="sm"
                     className="w-full text-muted-foreground"
-                    onClick={() => { clear(); close(); }}
+                    onClick={() => {
+                      clear();
+                      toast.success("Panier vide");
+                      close();
+                    }}
                   >
                     Vider le panier
                   </Button>

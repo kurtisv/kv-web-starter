@@ -14,7 +14,7 @@
 
 ## Short Term
 
-- [ ] Wire toasts into all important actions
+- [x] Wire toasts into all important actions
 - [x] Add Storybook stories for the new components
 - [x] Add Vitest tests for critical components
 - [x] Add Playwright tests for booking, e-commerce, and API portal flows

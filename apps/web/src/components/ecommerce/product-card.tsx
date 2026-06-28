@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { CartContext } from "@/components/providers/cart-provider";
 import { PriceDisplay } from "@/components/ecommerce/price-display";
 import { RatingStars } from "@/components/ecommerce/rating-stars";
+import { useToast } from "@/components/ui/use-toast";
 
 export interface ProductItem {
   id: string;
@@ -41,6 +42,7 @@ export function ProductCard({
   className,
 }: ProductCardProps) {
   const cartCtx = React.useContext(CartContext);
+  const { toast } = useToast();
   const [added, setAdded] = React.useState(false);
 
   function handleAddToCart(e: React.MouseEvent) {
@@ -60,6 +62,7 @@ export function ProductCard({
     }
 
     setAdded(true);
+    toast.success("Produit ajoute", product.name);
     setTimeout(() => setAdded(false), 1200);
   }
 

@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useToast } from "@/components/ui/use-toast";
 
 // ---------------------------------------------------------------------------
 // Profile section
@@ -174,6 +175,7 @@ async function mockUpload(file: File): Promise<{ url: string }> {
 }
 
 export function SettingsMediaSection() {
+  const { toast } = useToast();
   const [queueItems, setQueueItems] = React.useState<QueueItem[]>([]);
   const [mediaItems, setMediaItems] = React.useState<MediaItem[]>([]);
 
@@ -199,7 +201,9 @@ export function SettingsMediaSection() {
           sizeMb: file.size / 1024 / 1024,
         },
       ]);
+      toast.success("Fichier ajoute", file.name);
     } catch (err) {
+      toast.error("Upload echoue", err instanceof Error ? err.message : file.name);
       setQueueItems((prev) =>
         prev.map((q) =>
           q.file === file
@@ -218,6 +222,7 @@ export function SettingsMediaSection() {
     setMediaItems((prev) => {
       const item = prev.find((m) => m.id === id);
       if (item?.src?.startsWith("blob:")) URL.revokeObjectURL(item.src);
+      if (item) toast.info("Media retire", item.name);
       return prev.filter((m) => m.id !== id);
     });
   }

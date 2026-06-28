@@ -5,19 +5,27 @@ import { Tag } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
 
 interface PromoCodeInputProps {
   onApply?: (code: string) => Promise<boolean> | boolean;
 }
 
 export function PromoCodeInput({ onApply }: PromoCodeInputProps) {
+  const { toast } = useToast();
   const [code, setCode] = React.useState("");
   const [state, setState] = React.useState<"idle" | "valid" | "invalid">("idle");
 
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();
     const ok = await onApply?.(code.trim());
-    setState(ok === false ? "invalid" : "valid");
+    if (ok === false) {
+      setState("invalid");
+      toast.error("Code invalide", code.trim());
+      return;
+    }
+    setState("valid");
+    toast.success("Code applique", code.trim().toUpperCase());
   };
 
   return (

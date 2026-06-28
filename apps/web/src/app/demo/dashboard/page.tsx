@@ -1,20 +1,32 @@
 import * as React from "react";
-import { CreditCard, TrendingUp, Users, AlertCircle } from "lucide-react";
+import { CreditCard, TrendingUp, Users, AlertCircle, UserPlus, Trash2 } from "lucide-react";
 
 import { DashboardShell, DashboardHeader, DashboardContent, DashboardPageHeader } from "@/components/dashboard-ui/dashboard-shell";
 import { MetricCard, MetricGrid } from "@/components/dashboard-ui/metric-card";
 import { ActivityFeed } from "@/components/dashboard-ui/activity-feed";
+import { AuditLogTimeline, type AuditLogItem } from "@/components/dashboard-ui/audit-log-timeline";
+import { EmptyDashboardState } from "@/components/dashboard-ui/empty-dashboard-state";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { NotificationBell } from "@/components/ui/notification-bell";
 import { DashboardDemoUsersCard } from "./dashboard-demo-client";
+import { DashboardDemoActions } from "./dashboard-demo-actions";
 
 const activity = [
-  { id: "a1", message: "Nouvel abonnement Pro — Alice Dupont",          timestamp: "Il y a 2h",    variant: "success"     as const },
-  { id: "a2", message: "Echec de paiement — David Lopez",              timestamp: "Il y a 4h",    variant: "destructive" as const },
-  { id: "a3", message: "Compte David Lopez suspendu automatiquement",  timestamp: "Il y a 4h",    variant: "warning"     as const },
-  { id: "a4", message: "Export CSV declenche par admin",               timestamp: "Hier 16h30",   variant: "default"     as const },
-  { id: "a5", message: "Mise a jour v2.4.1 deployee",                  timestamp: "Hier 10h00",   variant: "success"     as const },
+  { id: "a1", message: "Nouvel abonnement Pro — Alice Dupont",         timestamp: "Il y a 2h",  variant: "success"     as const },
+  { id: "a2", message: "Echec de paiement — David Lopez",             timestamp: "Il y a 4h",  variant: "destructive" as const },
+  { id: "a3", message: "Compte David Lopez suspendu automatiquement", timestamp: "Il y a 4h",  variant: "warning"     as const },
+  { id: "a4", message: "Export CSV declenche par admin",              timestamp: "Hier 16h30", variant: "default"     as const },
+  { id: "a5", message: "Mise a jour v2.4.1 deployee",                 timestamp: "Hier 10h00", variant: "success"     as const },
+];
+
+const auditLog: AuditLogItem[] = [
+  { id: "al1", action: "Utilisateur supprime",   actor: "admin@app.io",   createdAt: "28 juin, 09:14", variant: "warning",  description: "Compte david@ex.com supprime apres inactivite." },
+  { id: "al2", action: "Permission modifiee",    actor: "admin@app.io",   createdAt: "27 juin, 16:30", variant: "info",     description: "Role 'editor' accorde a claire@ex.com." },
+  { id: "al3", action: "Export CSV declenche",   actor: "felix@ex.com",   createdAt: "27 juin, 11:45", variant: "info" },
+  { id: "al4", action: "Connexion suspecte",     actor: "systeme",        createdAt: "26 juin, 23:12", variant: "warning",  description: "Tentative depuis une IP inconnue — bloquee." },
+  { id: "al5", action: "Abonnement mis a jour",  actor: "alice@ex.com",   createdAt: "26 juin, 14:00", variant: "success",  description: "Passage de Starter a Pro." },
 ];
 
 const sidebarNav = [
@@ -27,17 +39,17 @@ const sidebarNav = [
 
 function Sidebar() {
   return (
-    <div className="flex flex-col h-full">
-      <div className="h-14 border-b flex items-center px-5 font-semibold text-sm tracking-tight">
+    <div className="flex h-full flex-col">
+      <div className="flex h-14 items-center border-b px-5 text-sm font-semibold tracking-tight">
         AdminPro
       </div>
       <nav className="flex-1 px-3 py-4">
         {sidebarNav.map((item) => (
           <div
             key={item.label}
-            className={`flex items-center px-3 py-2 text-sm cursor-pointer mb-0.5 transition-colors ${
+            className={`mb-0.5 flex cursor-pointer items-center px-3 py-2 text-sm transition-colors ${
               item.active
-                ? "bg-primary/10 text-primary font-medium"
+                ? "bg-primary/10 font-medium text-primary"
                 : "text-muted-foreground hover:bg-muted hover:text-foreground"
             }`}
           >
@@ -47,7 +59,7 @@ function Sidebar() {
       </nav>
       <div className="border-t p-4">
         <div className="text-xs text-muted-foreground">Connecte en tant que</div>
-        <div className="text-sm font-medium mt-0.5">admin@monsaas.io</div>
+        <div className="mt-0.5 text-sm font-medium">admin@monsaas.io</div>
       </div>
     </div>
   );
@@ -101,13 +113,12 @@ export default function DemoDashboardPage() {
             />
           </MetricGrid>
 
+          {/* Users table */}
           <div className="grid gap-6 lg:grid-cols-[1fr_300px]">
-            {/* Users table — FilterBar + StatusBadge + BulkActionBar */}
             <React.Suspense fallback={<div className="h-64 animate-pulse bg-muted" />}>
               <DashboardDemoUsersCard />
             </React.Suspense>
 
-            {/* Activity feed */}
             <Card>
               <CardHeader>
                 <CardTitle className="text-base">Activite recente</CardTitle>
@@ -116,6 +127,53 @@ export default function DemoDashboardPage() {
                 <ActivityFeed items={activity} />
               </CardContent>
             </Card>
+          </div>
+
+          {/* ConfirmDialog + EntityDrawer showcase */}
+          <div className="mt-8 border-t pt-8">
+            <div className="mb-3 flex items-center justify-between">
+              <p className="text-sm font-medium">Dialogs et drawers</p>
+              <div className="flex gap-2">
+                <Badge variant="outline" size="sm" className="font-mono text-[10px]">ConfirmDialog</Badge>
+                <Badge variant="outline" size="sm" className="font-mono text-[10px]">EntityDrawer</Badge>
+              </div>
+            </div>
+            <p className="mb-4 text-xs text-muted-foreground max-w-lg">
+              ConfirmDialog pour les actions destructives. EntityDrawer pour afficher et modifier le detail
+              d'une entite sans quitter la page.
+            </p>
+            <DashboardDemoActions />
+          </div>
+
+          {/* AuditLogTimeline */}
+          <div className="mt-8 border-t pt-8">
+            <div className="mb-4 flex items-center gap-3">
+              <p className="text-sm font-medium">AuditLogTimeline</p>
+              <Badge variant="outline" size="sm" className="font-mono text-[10px]">server</Badge>
+            </div>
+            <AuditLogTimeline items={auditLog} />
+          </div>
+
+          {/* EmptyDashboardState */}
+          <div className="mt-8 border-t pt-8">
+            <div className="mb-4 flex items-center gap-3">
+              <p className="text-sm font-medium">EmptyDashboardState</p>
+              <Badge variant="outline" size="sm" className="font-mono text-[10px]">server</Badge>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <EmptyDashboardState
+                title="Aucun utilisateur"
+                description="Invitez des membres pour commencer a collaborer."
+                icon={UserPlus}
+                actionLabel="Inviter un membre"
+                onAction={() => {}}
+              />
+              <EmptyDashboardState
+                title="Aucune commande"
+                description="Les commandes apparaitront ici une fois que vos clients auront effectue un achat."
+                icon={Trash2}
+              />
+            </div>
           </div>
         </DashboardContent>
       </DashboardShell>

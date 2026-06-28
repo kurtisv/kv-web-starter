@@ -7,14 +7,18 @@ import { StatsSection } from "@/components/sections/stats-section";
 import { CTASection } from "@/components/sections/cta-section";
 import { Button } from "@/components/ui/button";
 import { MetricCard, MetricGrid } from "@/components/dashboard-ui/metric-card";
+import { SubscriptionStatusCard } from "@/components/saas/subscription-status-card";
+import { UsageQuotaCard } from "@/components/saas/usage-quota-card";
+import { PlanComparisonTable } from "@/components/saas/plan-comparison-table";
+import type { PlanFeature } from "@/components/saas/plan-comparison-table";
 
 const features = [
-  { icon: <Zap className="h-5 w-5" />, title: "Ultra rapide", description: "Traitement en moins de 200ms. Cache intelligent sur toutes les requêtes." },
-  { icon: <Lock className="h-5 w-5" />, title: "Securite enterprise", description: "SOC2, chiffrement AES-256, audit logs complets et SSO disponible." },
-  { icon: <BarChart2 className="h-5 w-5" />, title: "Analytics intégré", description: "Tableaux de bord en temps reel. Export CSV/JSON a tout moment." },
-  { icon: <Globe className="h-5 w-5" />, title: "Multi-region", description: "Deploy dans 12 regions. Failover automatique sous 30 secondes." },
-  { icon: <Clock className="h-5 w-5" />, title: "99.99% uptime", description: "SLA garanti. Incidents publics en temps reel sur status.votresaas.com." },
-  { icon: <Shield className="h-5 w-5" />, title: "RGPD ready", description: "Hébergement EU, DPA disponible, droit a l'oubli automatisé." },
+  { icon: <Zap className="h-5 w-5" />,     title: "Ultra rapide",        description: "Traitement en moins de 200ms. Cache intelligent sur toutes les requetes." },
+  { icon: <Lock className="h-5 w-5" />,     title: "Securite enterprise",  description: "SOC2, chiffrement AES-256, audit logs complets et SSO disponible." },
+  { icon: <BarChart2 className="h-5 w-5" />, title: "Analytics integre",  description: "Tableaux de bord en temps reel. Export CSV/JSON a tout moment." },
+  { icon: <Globe className="h-5 w-5" />,    title: "Multi-region",        description: "Deploy dans 12 regions. Failover automatique sous 30 secondes." },
+  { icon: <Clock className="h-5 w-5" />,    title: "99.99% uptime",       description: "SLA garanti. Incidents publics en temps reel sur status.votresaas.com." },
+  { icon: <Shield className="h-5 w-5" />,   title: "RGPD ready",          description: "Hebergement EU, DPA disponible, droit a l'oubli automatise." },
 ];
 
 const plans = [
@@ -23,7 +27,7 @@ const plans = [
     price: "0€",
     period: "/mois",
     description: "Parfait pour tester.",
-    features: ["5 000 requêtes/mois", "1 utilisateur", "Support communaute", "API REST"],
+    features: ["5 000 requetes/mois", "1 utilisateur", "Support communaute", "API REST"],
     cta: "Commencer",
     ctaHref: "/login",
   },
@@ -31,8 +35,8 @@ const plans = [
     name: "Pro",
     price: "49€",
     period: "/mois",
-    description: "Pour les équipes en croissance.",
-    features: ["100 000 requêtes/mois", "10 utilisateurs", "Support prioritaire", "API REST + Webhooks", "Analytics avances"],
+    description: "Pour les equipes en croissance.",
+    features: ["100 000 requetes/mois", "10 utilisateurs", "Support prioritaire", "API REST + Webhooks", "Analytics avances"],
     cta: "Essai 14 jours",
     ctaHref: "/login",
     featured: true,
@@ -42,17 +46,36 @@ const plans = [
     name: "Enterprise",
     price: "Sur mesure",
     description: "Pour les grandes organisations.",
-    features: ["requêtes illimitees", "Utilisateurs illimites", "SLA garanti", "Support dedie 24/7", "SSO + SAML", "Audit logs"],
+    features: ["requetes illimitees", "Utilisateurs illimites", "SLA garanti", "Support dedie 24/7", "SSO + SAML", "Audit logs"],
     cta: "Nous contacter",
     ctaHref: "/contact",
   },
 ];
 
 const stats = [
-  { value: "12k+", label: "Clients actifs" },
+  { value: "12k+",   label: "Clients actifs" },
   { value: "99.99%", label: "Uptime SLA" },
-  { value: "180ms", label: "Latence moyenne" },
-  { value: "4.9/5", label: "Note clients" },
+  { value: "180ms",  label: "Latence moyenne" },
+  { value: "4.9/5",  label: "Note clients" },
+];
+
+const comparisonFeatures: PlanFeature[] = [
+  { label: "Requetes/mois",      starter: "5 000",     pro: "100 000",   enterprise: "Illimite" },
+  { label: "Utilisateurs",       starter: "1",         pro: "10",        enterprise: "Illimite" },
+  { label: "API REST",           starter: true,        pro: true,        enterprise: true },
+  { label: "Webhooks",           starter: false,       pro: true,        enterprise: true },
+  { label: "Analytics avances",  starter: false,       pro: true,        enterprise: true },
+  { label: "Support prioritaire",starter: false,       pro: true,        enterprise: true },
+  { label: "SSO / SAML",        starter: false,       pro: false,       enterprise: true },
+  { label: "SLA garanti",        starter: false,       pro: false,       enterprise: true },
+  { label: "Audit logs",         starter: false,       pro: false,       enterprise: true },
+];
+
+const quotaItems = [
+  { label: "Requetes API",      used: 78420,  limit: 100000 },
+  { label: "Utilisateurs actifs", used: 7,    limit: 10 },
+  { label: "Stockage",          used: 3200,   limit: 5000, unit: " Mo" },
+  { label: "Webhooks envoyes",  used: 12400,  limit: 50000 },
 ];
 
 export default function DemoSaaSPage() {
@@ -62,37 +85,93 @@ export default function DemoSaaSPage() {
         variant="centered"
         eyebrow="Nouveau — V3 disponible"
         title={<>La plateforme qui <span className="text-primary">simplifie</span> votre workflow.</>}
-        description="Gagnez 10h/semaine. Intégrez en 5 minutes. Sans carte de credit pour commencer."
+        description="Gagnez 10h/semaine. Integrez en 5 minutes. Sans carte de credit pour commencer."
         actions={
           <>
-            <Button size="xl" variant="default">
-              <Link href="/login" className="flex items-center gap-2">Essai gratuit 14 jours <ArrowRight className="size-4" /></Link>
+            <Button size="xl" variant="default" asChild>
+              <Link href="/login">Essai gratuit 14 jours <ArrowRight className="size-4" /></Link>
             </Button>
-            <Button size="xl" variant="soft">
+            <Button size="xl" variant="soft" asChild>
               <Link href="/demo">Voir la demo</Link>
             </Button>
           </>
         }
         media={
-          <div className="border rounded-xl bg-card shadow-lg p-6 text-left">
-            <p className="text-xs text-muted-foreground mb-3 uppercase tracking-wide font-medium">Apercu dashboard</p>
+          <div className="rounded-xl border bg-card p-6 text-left shadow-lg">
+            <p className="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              Apercu dashboard
+            </p>
             <MetricGrid>
-              <MetricCard label="MRR" value="€24,890" trend={{ value: "+12% ce mois", direction: "up" }} />
-              <MetricCard label="Utilisateurs actifs" value="1,247" trend={{ value: "+8% cette semaine", direction: "up" }} />
-              <MetricCard label="Churn rate" value="1.2%" trend={{ value: "-0.3%", direction: "down" }} />
-              <MetricCard label="Uptime" value="99.99%" trend={{ value: "Stable", direction: "neutral" }} />
+              <MetricCard label="MRR"               value="24 890 €"  trend={{ value: "+12% ce mois",      direction: "up" }} />
+              <MetricCard label="Utilisateurs actifs" value="1 247"  trend={{ value: "+8% cette semaine",  direction: "up" }} />
+              <MetricCard label="Churn rate"         value="1.2%"    trend={{ value: "-0.3%",              direction: "down" }} />
+              <MetricCard label="Uptime"             value="99.99%"  trend={{ value: "Stable",             direction: "neutral" }} />
             </MetricGrid>
           </div>
         }
       />
 
       <StatsSection stats={stats} variant="strip" />
-      <FeatureGrid eyebrow="Fonctionnalites" title="Tout ce dont vous avez besoin." features={features} columns={3} variant="cards" />
+      <FeatureGrid
+        eyebrow="Fonctionnalites"
+        title="Tout ce dont vous avez besoin."
+        features={features}
+        columns={3}
+        variant="cards"
+      />
+
+      {/* Subscription + Usage components */}
+      <section className="border-y bg-muted/20">
+        <div className="mx-auto max-w-6xl px-6 py-16">
+          <h2 className="mb-2 text-2xl font-semibold">Composants SaaS inclus</h2>
+          <p className="mb-10 max-w-xl text-sm text-muted-foreground">
+            Gestion d&apos;abonnement, quotas d&apos;usage et comparatif de plans — prets a brancher sur votre backend.
+          </p>
+
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 mb-10">
+            <SubscriptionStatusCard
+              plan="Pro"
+              status="active"
+              renewalDate="15 juillet 2026"
+              onUpgrade={() => {}}
+              onCancel={() => {}}
+            />
+            <SubscriptionStatusCard
+              plan="Starter"
+              status="trialing"
+              trialEndsAt="30 juin 2026"
+              onUpgrade={() => {}}
+            />
+            <SubscriptionStatusCard
+              plan="Pro"
+              status="past_due"
+              onUpgrade={() => {}}
+              onCancel={() => {}}
+            />
+          </div>
+
+          <div className="grid gap-6 lg:grid-cols-2">
+            <div>
+              <p className="mb-3 text-sm font-medium">UsageQuotaCard</p>
+              <UsageQuotaCard items={quotaItems} />
+            </div>
+            <div>
+              <p className="mb-3 text-sm font-medium">PlanComparisonTable</p>
+              <PlanComparisonTable
+                features={comparisonFeatures}
+                onSelect={() => {}}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
       <PricingSection eyebrow="Tarifs" title="Simple et transparent." plans={plans} />
+
       <CTASection
         variant="dark"
-        title="Prêt à simplifier votre workflow ?"
-        description="Rejoignez 12 000 équipes qui gagnent 10h/semaine."
+        title="Pret a simplifier votre workflow ?"
+        description="Rejoignez 12 000 equipes qui gagnent 10h/semaine."
         actions={
           <Button size="lg" className="theme-hero-btn-primary">
             Commencer maintenant <ArrowRight className="size-4" />

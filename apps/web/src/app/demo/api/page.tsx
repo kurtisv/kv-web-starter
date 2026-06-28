@@ -12,14 +12,18 @@ import { EndpointList } from "@/components/api-portal/endpoint-row";
 import { CodeTabsBlock } from "@/components/api-portal/code-tabs-block";
 import { ScopePill } from "@/components/api-portal/scope-pill";
 import { ApiKeyDisplay } from "@/components/api-portal/api-key-display";
+import { ApiUsageChart, type ApiUsagePoint } from "@/components/api-portal/api-usage-chart";
+import { RateLimitMeter } from "@/components/api-portal/rate-limit-meter";
+import { RequestLogViewer, type RequestLogEntry } from "@/components/api-portal/request-log-viewer";
+import { WebhookTester } from "@/components/api-portal/webhook-tester";
 import type { EndpointDef, CodeTab } from "@/components/api-portal";
 
 const endpoints: EndpointDef[] = [
-  { method: "GET",    path: "/v1/data",        auth: false, description: "Liste paginee des ressources" },
-  { method: "POST",   path: "/v1/process",     auth: true,  description: "Lancer un traitement asynchrone" },
-  { method: "GET",    path: "/v1/status/:id",  auth: true,  description: "Statut et logs d'un job" },
-  { method: "DELETE", path: "/v1/data/:id",    auth: true,  description: "Supprimer une entree" },
-  { method: "PATCH",  path: "/v1/data/:id",    auth: true,  description: "Mise a jour partielle" },
+  { method: "GET",    path: "/v1/data",       auth: false, description: "Liste paginee des ressources" },
+  { method: "POST",   path: "/v1/process",    auth: true,  description: "Lancer un traitement asynchrone" },
+  { method: "GET",    path: "/v1/status/:id", auth: true,  description: "Statut et logs d'un job" },
+  { method: "DELETE", path: "/v1/data/:id",   auth: true,  description: "Supprimer une entree" },
+  { method: "PATCH",  path: "/v1/data/:id",   auth: true,  description: "Mise a jour partielle" },
 ];
 
 const codeTabs: CodeTab[] = [
@@ -51,6 +55,24 @@ print(r.json())`,
 ];
 
 const scopes = ["data:read", "data:write", "jobs:read", "jobs:execute", "admin:*"];
+
+const usageData: ApiUsagePoint[] = [
+  { label: "21 juin", calls: 18200, errors: 42 },
+  { label: "22 juin", calls: 24100, errors: 18 },
+  { label: "23 juin", calls: 19800, errors: 31 },
+  { label: "24 juin", calls: 31200, errors: 55 },
+  { label: "25 juin", calls: 28700, errors: 24 },
+  { label: "26 juin", calls: 35100, errors: 67 },
+  { label: "27 juin", calls: 41300, errors: 39 },
+];
+
+const requestLog: RequestLogEntry[] = [
+  { id: "req-1", method: "GET",    path: "/v1/data",      status: 200, durationMs: 42,  createdAt: "Il y a 1 min" },
+  { id: "req-2", method: "POST",   path: "/v1/process",   status: 202, durationMs: 128, createdAt: "Il y a 3 min" },
+  { id: "req-3", method: "GET",    path: "/v1/status/x7", status: 200, durationMs: 19,  createdAt: "Il y a 5 min" },
+  { id: "req-4", method: "DELETE", path: "/v1/data/abc",  status: 404, durationMs: 8,   createdAt: "Il y a 8 min" },
+  { id: "req-5", method: "PATCH",  path: "/v1/data/def",  status: 200, durationMs: 61,  createdAt: "Il y a 12 min" },
+];
 
 const plans = [
   {
@@ -84,11 +106,11 @@ const plans = [
   },
 ];
 
-const stats = [
-  { value: "99.9%", label: "Uptime" },
-  { value: "80ms",  label: "Latence p50" },
-  { value: "2M+",   label: "Req/jour" },
-  { value: "ISO 27001", label: "Certification" },
+const apiStats = [
+  { value: "99.9%",      label: "Uptime" },
+  { value: "80ms",       label: "Latence p50" },
+  { value: "2M+",        label: "Req/jour" },
+  { value: "ISO 27001",  label: "Certification" },
 ];
 
 export default function DemoAPIPage() {
@@ -112,18 +134,20 @@ export default function DemoAPIPage() {
         media={<CodeTabsBlock tabs={codeTabs} className="text-xs" />}
       />
 
-      <StatsSection stats={stats} variant="strip" />
+      <StatsSection stats={apiStats} variant="strip" />
 
       {/* Endpoints */}
-      <section className="bg-background border-y">
+      <section className="border-y bg-background">
         <div className="mx-auto max-w-4xl px-6 py-16">
           <div className="mb-2 flex items-center gap-3">
             <h2 className="text-2xl font-semibold">Endpoints</h2>
             <Badge variant="outline" size="sm">REST JSON</Badge>
           </div>
-          <p className="text-muted-foreground mb-8 text-sm">
-            Base URL:{" "}
-            <code className="font-mono bg-muted px-1.5 py-0.5 text-xs">https://api.dataapi.io</code>
+          <p className="mb-8 text-sm text-muted-foreground">
+            Base URL :{" "}
+            <code className="bg-muted px-1.5 py-0.5 font-mono text-xs">
+              https://api.dataapi.io
+            </code>
           </p>
           <EndpointList endpoints={endpoints} />
           <div className="mt-6 text-right">
@@ -136,14 +160,14 @@ export default function DemoAPIPage() {
         </div>
       </section>
 
-      {/* Developer portal preview */}
-      <section className="bg-card border-b">
+      {/* Developer portal preview — all API components */}
+      <section className="border-b bg-card">
         <div className="mx-auto max-w-4xl px-6 py-14">
           <div className="mb-8 flex items-center justify-between">
             <div>
               <h3 className="text-xl font-semibold">Portail developpeur integre</h3>
               <p className="mt-1 text-sm text-muted-foreground">
-                Gestion des cles, scopes et usage — directement dans le dashboard.
+                Gestion des cles, scopes, usage et webhooks — directement dans le dashboard.
               </p>
             </div>
             <Button variant="outline" size="sm" asChild>
@@ -151,12 +175,12 @@ export default function DemoAPIPage() {
             </Button>
           </div>
 
-          <div className="grid gap-6 lg:grid-cols-2">
-            {/* API key preview */}
+          {/* Keys + Scopes */}
+          <div className="grid gap-4 lg:grid-cols-2 mb-6">
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
-                  Cle d&apos;acces
+                <CardTitle className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                  Cles d&apos;acces
                 </CardTitle>
               </CardHeader>
               <CardContent className="grid gap-4">
@@ -171,10 +195,9 @@ export default function DemoAPIPage() {
               </CardContent>
             </Card>
 
-            {/* Scopes preview */}
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
+                <CardTitle className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
                   Permissions (scopes)
                 </CardTitle>
               </CardHeader>
@@ -189,6 +212,46 @@ export default function DemoAPIPage() {
                 </p>
               </CardContent>
             </Card>
+          </div>
+
+          {/* Rate limit + Usage chart */}
+          <div className="grid gap-4 lg:grid-cols-2 mb-6">
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                  Rate limit
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <RateLimitMeter used={78} limit={100} label="Quota mensuel" />
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                  Usage mensuel
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ApiUsageChart data={usageData} />
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Request log */}
+          <div className="mb-6">
+            <p className="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              Journal des requetes
+            </p>
+            <RequestLogViewer entries={requestLog} />
+          </div>
+
+          {/* Webhook tester */}
+          <div>
+            <p className="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              Webhook tester
+            </p>
+            <WebhookTester />
           </div>
         </div>
       </section>

@@ -7,6 +7,8 @@ import { StatsSection } from "@/components/sections/stats-section";
 import { CTASection } from "@/components/sections/cta-section";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { SkillsGrid, type SkillCategory } from "@/components/portfolio/skills-grid";
+import { Timeline, type TimelineItem } from "@/components/portfolio/timeline";
 
 const projects = [
   {
@@ -16,7 +18,13 @@ const projects = [
     href: "#",
     image: (
       <div className="relative h-full w-full">
-        <Image src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&q=80&auto=format&fit=crop" alt="E-commerce platform" fill className="object-cover" sizes="(max-width: 640px) 100vw, 50vw" />
+        <Image
+          src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&q=80&auto=format&fit=crop"
+          alt="E-commerce platform"
+          fill
+          className="object-cover"
+          sizes="(max-width: 640px) 100vw, 50vw"
+        />
       </div>
     ),
   },
@@ -27,7 +35,13 @@ const projects = [
     href: "#",
     image: (
       <div className="relative h-full w-full">
-        <Image src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80&auto=format&fit=crop" alt="SaaS dashboard" fill className="object-cover" sizes="(max-width: 640px) 100vw, 50vw" />
+        <Image
+          src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80&auto=format&fit=crop"
+          alt="SaaS dashboard"
+          fill
+          className="object-cover"
+          sizes="(max-width: 640px) 100vw, 50vw"
+        />
       </div>
     ),
   },
@@ -38,18 +52,30 @@ const projects = [
     href: "#",
     image: (
       <div className="relative h-full w-full">
-        <Image src="https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=800&q=80&auto=format&fit=crop" alt="Geocoding API" fill className="object-cover" sizes="(max-width: 640px) 100vw, 50vw" />
+        <Image
+          src="https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=800&q=80&auto=format&fit=crop"
+          alt="Geocoding API"
+          fill
+          className="object-cover"
+          sizes="(max-width: 640px) 100vw, 50vw"
+        />
       </div>
     ),
   },
   {
-    title: "App de Réservations",
+    title: "App de Reservations",
     description: "Systeme de prise de rendez-vous avec confirmation email et calendrier.",
     tags: ["Next.js", "Prisma", "Resend"],
     href: "#",
     image: (
       <div className="relative h-full w-full">
-        <Image src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80&auto=format&fit=crop" alt="Booking app" fill className="object-cover" sizes="(max-width: 640px) 100vw, 50vw" />
+        <Image
+          src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80&auto=format&fit=crop"
+          alt="Booking app"
+          fill
+          className="object-cover"
+          sizes="(max-width: 640px) 100vw, 50vw"
+        />
       </div>
     ),
   },
@@ -62,14 +88,58 @@ const stats = [
   { value: "100%", label: "Remote" },
 ];
 
+const skillCategories: SkillCategory[] = [
+  {
+    label: "Frontend",
+    skills: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
+  },
+  {
+    label: "Backend",
+    skills: ["Node.js", "PostgreSQL", "Prisma", "REST API", "GraphQL"],
+  },
+  {
+    label: "Infrastructure",
+    skills: ["Docker", "Vercel", "Supabase", "Redis", "GitHub Actions"],
+  },
+  {
+    label: "Outils",
+    skills: ["Figma", "Storybook", "Vitest", "Playwright", "Linear"],
+  },
+];
+
+const experience: TimelineItem[] = [
+  {
+    period: "2024 — present",
+    title: "Developpeur Full Stack senior",
+    company: "Freelance — Paris",
+    description: "Missions SaaS et e-commerce pour des startups et ETI. Stack Next.js / Supabase / Stripe.",
+    tags: ["Next.js", "Supabase", "Stripe"],
+    current: true,
+  },
+  {
+    period: "2022 — 2024",
+    title: "Lead Frontend",
+    company: "TechCo SAS — Lyon",
+    description: "Architecture d'une plateforme B2B en React + TypeScript. 40k utilisateurs actifs.",
+    tags: ["React", "TypeScript", "GraphQL"],
+  },
+  {
+    period: "2020 — 2022",
+    title: "Developpeur Full Stack",
+    company: "Agence Numerique — Bordeaux",
+    description: "Developpement de sites e-commerce et d'applications web sur mesure.",
+    tags: ["Vue.js", "Laravel", "MySQL"],
+  },
+];
+
 export default function DemoPortfolioPage() {
   return (
     <div data-theme="corporate-classic">
       <HeroSection
         variant="split"
-        eyebrow="Développeur Full Stack"
+        eyebrow="Developpeur Full Stack"
         title="Je construis des produits qui fonctionnent."
-        description="Spécialisé Next.js, TypeScript et APIs. Je livre des applications rapides, accessibles et maintenables. Disponible pour missions freelance."
+        description="Specialise Next.js, TypeScript et APIs. Je livre des applications rapides, accessibles et maintenables. Disponible pour missions freelance."
         actions={
           <>
             <Button asChild size="lg">
@@ -94,7 +164,7 @@ export default function DemoPortfolioPage() {
               </div>
               <div>
                 <p className="font-semibold">Alex Morin</p>
-                <p className="text-sm text-muted-foreground">Développeur Full Stack · Paris</p>
+                <p className="text-sm text-muted-foreground">Developpeur Full Stack — Paris</p>
               </div>
             </div>
             <div className="flex flex-col gap-2">
@@ -118,6 +188,15 @@ export default function DemoPortfolioPage() {
 
       <StatsSection stats={stats} variant="strip" />
 
+      {/* Skills */}
+      <section className="border-b bg-muted/20">
+        <div className="mx-auto max-w-6xl px-6 py-14">
+          <h2 className="mb-8 text-xl font-semibold">Competences</h2>
+          <SkillsGrid categories={skillCategories} />
+        </div>
+      </section>
+
+      {/* Projects */}
       <div id="projets">
         <ProjectShowcase
           eyebrow="Projets"
@@ -127,13 +206,23 @@ export default function DemoPortfolioPage() {
         />
       </div>
 
+      {/* Experience timeline */}
+      <section className="border-y bg-muted/20">
+        <div className="mx-auto max-w-3xl px-6 py-14">
+          <h2 className="mb-10 text-xl font-semibold">Parcours</h2>
+          <Timeline items={experience} />
+        </div>
+      </section>
+
       <CTASection
         variant="border"
-        title="Interessé par une collaboration ?"
-        description="Je suis disponible pour des missions freelance de 1 à 6 mois. Prenons 30 minutes pour discuter de votre projet."
+        title="Interesse par une collaboration ?"
+        description="Je suis disponible pour des missions freelance de 1 a 6 mois. Prenons 30 minutes pour discuter de votre projet."
         actions={
           <Button asChild size="lg">
-            <Link href="mailto:hello@kurtisv.dev">Envoyer un email <ArrowRight className="size-4" /></Link>
+            <Link href="mailto:hello@alexmorin.dev">
+              Envoyer un email <ArrowRight className="size-4" />
+            </Link>
           </Button>
         }
       />

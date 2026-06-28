@@ -9,14 +9,22 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { ServicePicker, type ServiceOption } from "@/components/booking/service-picker";
+import { StaffPicker, type StaffOption } from "@/components/booking/staff-picker";
 import { BookingSummaryCard } from "@/components/booking/booking-summary-card";
 import { TimeSlotGridPreview } from "./booking-preview";
+import { BookingDemoActions } from "./booking-demo-actions";
 
 const SERVICES: ServiceOption[] = [
   { id: "massage-relax",   name: "Massage relaxant",      durationMin: 60, priceCents: 7500,  description: "Decontraction musculaire profonde" },
   { id: "massage-sport",   name: "Massage therapeutique", durationMin: 90, priceCents: 11000, description: "Cible les tensions et douleurs chroniques" },
   { id: "reflexologie",    name: "Reflexologie",          durationMin: 45, priceCents: 6000,  description: "Stimulation des zones reflexes" },
   { id: "soin-visage",     name: "Soin visage",           durationMin: 60, priceCents: 8500,  description: "Hydratation et eclat de la peau" },
+];
+
+const STAFF: StaffOption[] = [
+  { id: "staff-1", name: "Sophie Bertin", role: "Massotherapeute" },
+  { id: "staff-2", name: "Lucie Morel",   role: "Reflexologue" },
+  { id: "staff-3", name: "Pierre Duval",  role: "Massotherapeute" },
 ];
 
 const testimonials = [
@@ -26,13 +34,13 @@ const testimonials = [
 ];
 
 const steps = [
-  { icon: <CalendarDays className="h-5 w-5" />, title: "Choisissez un creneau", description: "Selectionnez le service, la date et l'heure qui vous conviennent." },
+  { icon: <CalendarDays className="h-5 w-5" />, title: "Choisissez un creneau", description: "Selectionnez le service, l'intervenant, la date et l'heure." },
   { icon: <CheckCircle2 className="h-5 w-5" />, title: "Confirmez et payez", description: "Paiement securise par Stripe. Remboursement garanti jusqu'a 24h avant." },
   { icon: <Clock className="h-5 w-5" />, title: "Recevez votre confirmation", description: "Email de confirmation + rappel 24h avant votre rendez-vous." },
 ];
 
 const DEMO_SERVICE = SERVICES[0]!;
-const DEMO_STAFF = { id: "staff-1", name: "Sophie Bertin" };
+const DEMO_STAFF = STAFF[0]!;
 
 export default function DemoBookingPage() {
   return (
@@ -54,12 +62,9 @@ export default function DemoBookingPage() {
         }
         media={
           <div className="border bg-card p-5">
-            <div className="mb-3 flex items-center justify-between">
-              <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Choisir un service
-              </p>
-              <Badge variant="outline" size="sm">ServicePicker</Badge>
-            </div>
+            <p className="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              Choisir un service
+            </p>
             <ServicePicker
               services={SERVICES.slice(0, 3)}
               selectedId="massage-relax"
@@ -79,14 +84,12 @@ export default function DemoBookingPage() {
       />
 
       {/* Booking components showcase */}
-      <section id="services" className="bg-background border-b">
+      <section id="services" className="border-b bg-background">
         <div className="mx-auto max-w-6xl px-6 py-16">
-          <div className="mb-2 flex items-center gap-3">
-            <h2 className="text-2xl font-semibold">Composants de reservation</h2>
-          </div>
-          <p className="mb-10 text-sm text-muted-foreground max-w-xl">
-            Tous les composants du flux de reservation sont inclus — service, creneaux, recapitulatif.
-            Reliez-les a votre base de donnees et le formulaire fonctionne immediatement.
+          <h2 className="mb-2 text-2xl font-semibold">Composants de reservation</h2>
+          <p className="mb-10 max-w-xl text-sm text-muted-foreground">
+            Tous les composants du flux sont inclus. Reliez-les a votre base de donnees et
+            le formulaire fonctionne immediatement.
           </p>
 
           <div className="grid gap-6 lg:grid-cols-3">
@@ -129,19 +132,46 @@ export default function DemoBookingPage() {
               </Button>
             </div>
           </div>
+
+          {/* StaffPicker */}
+          <div className="mt-8 border-t pt-8">
+            <div className="mb-3 flex items-center gap-2">
+              <p className="text-sm font-medium">StaffPicker</p>
+              <Badge variant="outline" size="sm" className="font-mono text-[10px]">server</Badge>
+            </div>
+            <p className="mb-4 text-xs text-muted-foreground max-w-md">
+              Affiche les intervenants disponibles avec avatar, nom et role.
+              Disparait automatiquement s'il n'y a qu'un seul intervenant.
+            </p>
+            <StaffPicker
+              staff={STAFF}
+              selectedId="staff-1"
+              formId="demo-staff-form"
+            />
+          </div>
+
+          {/* CancelBookingDialog + RescheduleBookingDialog */}
+          <div className="mt-8 border-t pt-8">
+            <p className="mb-4 text-sm font-medium">Actions post-reservation</p>
+            <p className="mb-6 text-xs text-muted-foreground max-w-md">
+              Dialogs de gestion de reservation : annulation avec avertissement destructif,
+              replanification avec selecteur de date et creneaux.
+            </p>
+            <BookingDemoActions serviceName={DEMO_SERVICE.name} />
+          </div>
         </div>
       </section>
 
       {/* Static service cards */}
-      <section className="bg-muted/20 border-b">
+      <section className="border-b bg-muted/20">
         <div className="mx-auto max-w-6xl px-6 py-14">
-          <h2 className="text-xl font-semibold mb-6">Nos services</h2>
+          <h2 className="mb-6 text-xl font-semibold">Nos services</h2>
           <div className="grid gap-4 sm:grid-cols-2">
             {SERVICES.map((s) => (
               <Card key={s.id} className="flex items-center justify-between p-5">
                 <div>
                   <p className="font-semibold">{s.name}</p>
-                  <p className="text-sm text-muted-foreground mt-0.5">{s.durationMin} min</p>
+                  <p className="mt-0.5 text-sm text-muted-foreground">{s.durationMin} min</p>
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="text-base font-semibold">

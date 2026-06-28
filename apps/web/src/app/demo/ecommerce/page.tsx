@@ -1,3 +1,6 @@
+"use client";
+
+import * as React from "react";
 import { ArrowRight, RotateCcw, Shield, ShoppingCart, Tag, Truck } from "lucide-react";
 
 import { HeroSection } from "@/components/sections/hero-section";
@@ -5,10 +8,15 @@ import { FeatureGrid } from "@/components/sections/feature-grid";
 import { CTASection } from "@/components/sections/cta-section";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ProductCard, type ProductItem } from "@/components/ecommerce/product-card";
 import { CheckoutSteps } from "@/components/ecommerce/checkout-steps";
 import { PriceDisplay } from "@/components/ecommerce/price-display";
 import { RatingStars } from "@/components/ecommerce/rating-stars";
+import { PromoCodeInput } from "@/components/ecommerce/promo-code-input";
+import { VariantSelector } from "@/components/ecommerce/variant-selector";
+import { OrderStatusTimeline, type OrderStatusStep } from "@/components/ecommerce/order-status-timeline";
+import { CustomerOrderTable, type CustomerOrder } from "@/components/ecommerce/customer-order-table";
 
 const products: ProductItem[] = [
   {
@@ -75,12 +83,42 @@ const products: ProductItem[] = [
 ];
 
 const trust = [
-  { icon: <Truck className="h-5 w-5" />, title: "Livraison gratuite", description: "Des 60 EUR d'achat. Livraison en 48h garantie." },
-  { icon: <RotateCcw className="h-5 w-5" />, title: "Retours gratuits", description: "30 jours pour changer d'avis. Sans condition." },
-  { icon: <Shield className="h-5 w-5" />, title: "Paiement securise", description: "3D Secure, Stripe. Vos donnees restent privees." },
+  { icon: <Truck className="h-5 w-5" />,    title: "Livraison gratuite",  description: "Des 60 EUR d'achat. Livraison en 48h garantie." },
+  { icon: <RotateCcw className="h-5 w-5" />, title: "Retours gratuits",   description: "30 jours pour changer d'avis. Sans condition." },
+  { icon: <Shield className="h-5 w-5" />,    title: "Paiement securise",  description: "3D Secure, Stripe. Vos donnees restent privees." },
+];
+
+const orderSteps: OrderStatusStep[] = [
+  { id: "confirmed", label: "Commande confirmee",  description: "Paiement accepte" },
+  { id: "preparing", label: "En preparation",       description: "Mise en stock" },
+  { id: "shipped",   label: "Expediee",             description: "Suivi en ligne disponible" },
+  { id: "delivered", label: "Livree",               description: "Colis recu" },
+];
+
+const orders: CustomerOrder[] = [
+  { id: "o1", number: "#1042", date: "24 juin 2026", status: "shipped",   totalCents: 22800 },
+  { id: "o2", number: "#1039", date: "18 juin 2026", status: "paid",      totalCents: 7900  },
+  { id: "o3", number: "#1031", date: "5 juin 2026",  status: "cancelled", totalCents: 4500  },
+];
+
+const colorOptions = [
+  { value: "noir",   label: "Noir" },
+  { value: "marron", label: "Marron" },
+  { value: "tan",    label: "Tan", disabled: false },
+  { value: "creme",  label: "Creme", disabled: true },
+];
+
+const sizeOptions = [
+  { value: "s",  label: "S" },
+  { value: "m",  label: "M" },
+  { value: "l",  label: "L" },
+  { value: "xl", label: "XL", disabled: true },
 ];
 
 export default function DemoEcommercePage() {
+  const [selectedColor, setSelectedColor] = React.useState("marron");
+  const [selectedSize, setSelectedSize] = React.useState("m");
+
   return (
     <div data-theme="ecommerce-clean">
       <HeroSection
@@ -102,7 +140,9 @@ export default function DemoEcommercePage() {
           <div className="border bg-muted/30 p-6 text-center">
             <div className="text-4xl font-semibold text-primary">-30%</div>
             <p className="mt-1 text-sm text-muted-foreground">sur toute la collection sacs</p>
-            <p className="mt-1 text-xs text-muted-foreground">Jusqu&apos;au 31 aout — code : ETE30</p>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Jusqu&apos;au 31 aout — code : ETE30
+            </p>
             <Button size="sm" className="mt-4">Profiter de l&apos;offre</Button>
           </div>
         }
@@ -127,14 +167,14 @@ export default function DemoEcommercePage() {
         </div>
       </section>
 
-      {/* List layout — same ProductCard, layout="list" prop */}
+      {/* List layout */}
       <section className="border-y bg-muted/30">
         <div className="mx-auto max-w-6xl px-6 py-14">
           <div className="mb-6 flex items-center gap-3">
             <h2 className="text-xl font-semibold">Vue liste</h2>
             <Badge variant="outline" size="sm" className="font-mono">layout=&quot;list&quot;</Badge>
           </div>
-          <div className="grid gap-3 max-w-2xl">
+          <div className="grid max-w-2xl gap-3">
             {products.slice(0, 3).map((p) => (
               <ProductCard key={p.id} product={p} layout="list" />
             ))}
@@ -142,35 +182,93 @@ export default function DemoEcommercePage() {
         </div>
       </section>
 
-      {/* PriceDisplay + RatingStars showcase */}
-      <section className="bg-background border-b">
+      {/* Variant + Promo composants */}
+      <section className="border-b bg-background">
         <div className="mx-auto max-w-6xl px-6 py-14">
-          <h2 className="mb-8 text-xl font-semibold">Composants de prix et notation</h2>
-          <div className="grid gap-8 sm:grid-cols-2">
-            <div className="grid gap-4">
-              <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">PriceDisplay</p>
-              <div className="grid gap-3">
-                <div className="flex items-center gap-4 border p-3">
-                  <span className="w-24 text-xs text-muted-foreground">size=&quot;sm&quot;</span>
-                  <PriceDisplay priceCents={4900} originalPriceCents={6900} size="sm" />
-                </div>
-                <div className="flex items-center gap-4 border p-3">
-                  <span className="w-24 text-xs text-muted-foreground">size=&quot;md&quot;</span>
-                  <PriceDisplay priceCents={14900} originalPriceCents={19900} size="md" />
-                </div>
-                <div className="flex items-center gap-4 border p-3">
-                  <span className="w-24 text-xs text-muted-foreground">size=&quot;lg&quot;</span>
-                  <PriceDisplay priceCents={28900} size="lg" />
-                </div>
-              </div>
-            </div>
-            <div className="grid gap-4">
-              <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">RatingStars</p>
-              <div className="grid gap-3">
-                {([5, 4.5, 4.2, 3.5, 2] as const).map((r) => (
-                  <div key={r} className="flex items-center gap-4 border p-3">
+          <h2 className="mb-8 text-xl font-semibold">Composants produit</h2>
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {/* VariantSelector */}
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                  VariantSelector
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="grid gap-4">
+                <VariantSelector
+                  label="Couleur"
+                  value={selectedColor}
+                  options={colorOptions}
+                  onChange={setSelectedColor}
+                />
+                <VariantSelector
+                  label="Taille"
+                  value={selectedSize}
+                  options={sizeOptions}
+                  onChange={setSelectedSize}
+                />
+              </CardContent>
+            </Card>
+
+            {/* PriceDisplay */}
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                  PriceDisplay
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="grid gap-3">
+                {(["sm", "md", "lg"] as const).map((size) => (
+                  <div key={size} className="flex items-center gap-3 border p-2">
+                    <span className="w-10 text-xs text-muted-foreground font-mono">{size}</span>
+                    <PriceDisplay priceCents={14900} originalPriceCents={19900} size={size} />
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+
+            {/* RatingStars */}
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                  RatingStars
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="grid gap-3">
+                {[5, 4.5, 4.2, 3.5, 2].map((r) => (
+                  <div key={r} className="flex items-center gap-3 border p-2">
                     <span className="w-8 text-xs text-muted-foreground">{r}</span>
                     <RatingStars rating={r} reviewCount={Math.round(r * 27)} />
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* PromoCodeInput */}
+      <section className="border-b bg-muted/20">
+        <div className="mx-auto max-w-6xl px-6 py-12">
+          <div className="grid gap-8 sm:grid-cols-2">
+            <div>
+              <p className="mb-3 text-sm font-medium">PromoCodeInput</p>
+              <p className="mb-4 text-xs text-muted-foreground">
+                Essayez avec le code <code className="font-mono bg-muted px-1">ETE30</code> (simulation).
+              </p>
+              <PromoCodeInput
+                onApply={(code) => {
+                  return code.toUpperCase() === "ETE30";
+                }}
+              />
+            </div>
+            <div>
+              <p className="mb-3 text-sm font-medium">CheckoutSteps</p>
+              <div className="grid gap-4">
+                {([0, 2, 4] as const).map((step) => (
+                  <div key={step}>
+                    <p className="mb-1.5 text-xs font-mono text-muted-foreground">step {step}</p>
+                    <CheckoutSteps currentStep={step} />
                   </div>
                 ))}
               </div>
@@ -179,29 +277,29 @@ export default function DemoEcommercePage() {
         </div>
       </section>
 
-      {/* Trust signals */}
+      {/* OrderStatusTimeline + CustomerOrderTable */}
+      <section className="border-b bg-background">
+        <div className="mx-auto max-w-6xl px-6 py-14">
+          <h2 className="mb-8 text-xl font-semibold">Suivi et historique</h2>
+          <div className="grid gap-8 lg:grid-cols-2">
+            <div>
+              <p className="mb-3 text-sm font-medium">OrderStatusTimeline</p>
+              <OrderStatusTimeline steps={orderSteps} currentStep="shipped" />
+            </div>
+            <div>
+              <p className="mb-3 text-sm font-medium">CustomerOrderTable</p>
+              <CustomerOrderTable orders={orders} />
+            </div>
+          </div>
+        </div>
+      </section>
+
       <FeatureGrid
         features={trust}
         columns={3}
         variant="icon-left"
         className="border-y bg-muted/30"
       />
-
-      {/* Checkout steps demo */}
-      <section className="mx-auto max-w-2xl px-6 py-14">
-        <h2 className="mb-2 text-center text-xl font-semibold">Flux de commande</h2>
-        <p className="mb-8 text-center text-sm text-muted-foreground">
-          Stepper a 5 etapes, etape courante configurable via prop.
-        </p>
-        <div className="grid gap-6">
-          {([0, 1, 2, 3, 4] as const).map((step) => (
-            <div key={step} className="grid gap-2">
-              <p className="text-xs text-muted-foreground font-mono">currentStep={step}</p>
-              <CheckoutSteps currentStep={step} />
-            </div>
-          ))}
-        </div>
-      </section>
 
       <CTASection
         variant="muted"

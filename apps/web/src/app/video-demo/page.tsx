@@ -14,12 +14,13 @@ export default function VideoDemoPage() {
           src="/videos/launch-reel.mp4"
           className="w-full"
           threshold={0.1}
+          fallback="Launch reel missing. Run pnpm video:render:reel before shipping cinematic assets."
         />
       </section>
 
       {/* Background hero — decorative loop + HTML text on top */}
       <VideoHeroSection
-        videoSrc="/videos/hero-background.mp4"
+        videoSrc="/videos/themes/premium-saas-bg.mp4"
         variant="background"
         overlayOpacity={0.45}
         title="Un boilerplate. 9 identites de projet."

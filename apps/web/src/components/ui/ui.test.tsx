@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-import { Badge, Button, Card, CardContent, Combobox, Input, MultiSelect, Select, Table, TableBody, TableCell, TableRow } from ".";
+import { Badge, Button, Card, CardContent, Combobox, Input, MultiSelect, PlayOnceVideo, Select, Table, TableBody, TableCell, TableRow } from ".";
 
 describe("ui primitives", () => {
   it("renders common primitives", () => {
@@ -91,5 +91,23 @@ describe("keyboard accessibility", () => {
     fireEvent.keyDown(search, { key: "Enter" });
 
     expect(onValuesChange).toHaveBeenCalledWith(["api"]);
+  });
+});
+
+describe("PlayOnceVideo", () => {
+  it("does not attach a missing generated video as a video src", async () => {
+    const fetchMock = vi.fn(async () => new Response(null, { status: 404 }));
+    vi.stubGlobal("fetch", fetchMock);
+
+    render(<PlayOnceVideo src="/videos/launch-reel.mp4" fallback="Missing reel" />);
+
+    expect(await screen.findByText("Missing reel")).toBeTruthy();
+    expect(document.querySelector('video[src="/videos/launch-reel.mp4"]')).toBeNull();
+    expect(fetchMock).toHaveBeenCalledWith(
+      expect.any(URL),
+      expect.objectContaining({ method: "HEAD" })
+    );
+
+    vi.unstubAllGlobals();
   });
 });

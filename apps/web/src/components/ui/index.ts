@@ -17,6 +17,7 @@ export * from "./label";
 export * from "./loading-state";
 export * from "./multi-select";
 export * from "./phone-input";
+export * from "./play-once-video";
 export * from "./radio-group";
 export * from "./select";
 export * from "./sheet";

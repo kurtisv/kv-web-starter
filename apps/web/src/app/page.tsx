@@ -276,10 +276,10 @@ export default function Home() {
       <main>
 
         {/* Hero — AnimatedHero handles word-by-word reveal on mount */}
-        {/* hero-background.mp4 is a text-free seamless-loop Remotion render (HeroBackground, premium-saas theme) */}
+        {/* premium-saas-bg.mp4 is versioned so the homepage never depends on generated local renders. */}
         <section className="theme-hero relative overflow-hidden">
           <video
-            src="/videos/hero-background.mp4"
+            src="/videos/themes/premium-saas-bg.mp4"
             autoPlay
             muted
             loop
@@ -356,6 +356,7 @@ export default function Home() {
                     src="/videos/launch-reel.mp4"
                     className="w-full"
                     threshold={0.6}
+                    fallback="Launch reel missing. Run pnpm video:render:reel before shipping cinematic assets."
                   />
                 </div>
               </div>

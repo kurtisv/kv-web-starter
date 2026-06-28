@@ -63,14 +63,14 @@
   --foreground: #0f172a;
   --card: #ffffff;
   --card-foreground: #0f172a;
-  --muted: #f1f5f9;
+  --muted: #e2e8f0;
   --muted-foreground: #64748b;
   --border: #e2e8f0;
   --input: #e2e8f0;
   --ring: #2563eb;
   --primary: #1e40af;
   --primary-foreground: #ffffff;
-  --secondary: #f1f5f9;
+  --secondary: #e8eef5;
   --secondary-foreground: #0f172a;
   --accent: #dbeafe;
   --accent-foreground: #1e40af;
@@ -87,16 +87,16 @@
 [data-theme="premium-saas"] {
   --background: #ffffff;
   --foreground: #0f172a;
-  --card: #f9f8ff;
+  --card: #ede9fe;
   --card-foreground: #0f172a;
-  --muted: #f5f3ff;
+  --muted: #ddd6fe;
   --muted-foreground: #6b7280;
-  --border: #ede9fe;
+  --border: #c4b5fd;
   --input: #e2e8f0;
   --ring: #7c3aed;
   --primary: #7c3aed;
   --primary-foreground: #ffffff;
-  --secondary: #f5f3ff;
+  --secondary: #ede9fe;
   --secondary-foreground: #5b21b6;
   --accent: #ddd6fe;
   --accent-foreground: #5b21b6;
@@ -138,18 +138,18 @@
    Cream + warm green + soft coral — massage, restaurant, services locaux
    ============================================================ */
 [data-theme="local-business"] {
-  --background: #fefce8;
+  --background: #fef9f0;
   --foreground: #292524;
-  --card: #fffbeb;
+  --card: #ffffff;
   --card-foreground: #292524;
-  --muted: #fef9c3;
+  --muted: #fde68a;
   --muted-foreground: #78716c;
-  --border: #d6d3d1;
-  --input: #d6d3d1;
+  --border: #d4b483;
+  --input: #d4b483;
   --ring: #65a30d;
   --primary: #4d7c0f;
   --primary-foreground: #ffffff;
-  --secondary: #f7fee7;
+  --secondary: #fef3c7;
   --secondary-foreground: #3f6212;
   --accent: #fb923c;
   --accent-foreground: #ffffff;
@@ -166,16 +166,16 @@
 [data-theme="real-estate"] {
   --background: #ffffff;
   --foreground: #0f172a;
-  --card: #f7fafe;
+  --card: #e0f2fe;
   --card-foreground: #0f172a;
-  --muted: #f0f9ff;
+  --muted: #bae6fd;
   --muted-foreground: #475569;
-  --border: #bae6fd;
+  --border: #7dd3fc;
   --input: #e2e8f0;
   --ring: #0284c7;
   --primary: #0284c7;
   --primary-foreground: #ffffff;
-  --secondary: #f0f9ff;
+  --secondary: #e0f2fe;
   --secondary-foreground: #0369a1;
   --accent: #b45309;
   --accent-foreground: #ffffff;
@@ -192,9 +192,9 @@
 [data-theme="ecommerce-clean"] {
   --background: #ffffff;
   --foreground: #111827;
-  --card: #fff8f5;
+  --card: #fff0e8;
   --card-foreground: #111827;
-  --muted: #f9fafb;
+  --muted: #f0f2f4;
   --muted-foreground: #6b7280;
   --border: #e5e7eb;
   --input: #e5e7eb;

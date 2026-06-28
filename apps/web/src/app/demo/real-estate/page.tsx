@@ -151,7 +151,7 @@ export default function DemoRealEstatePage() {
       </section>
 
       {/* MortgageCalculator + AgentProfileCard */}
-      <section className="border-y bg-muted/20">
+      <section className="border-y bg-card">
         <div className="mx-auto max-w-6xl px-6 py-14">
           <h2 className="mb-8 text-xl font-semibold">Outils et conseillers</h2>
           <div className="grid gap-6 lg:grid-cols-2">

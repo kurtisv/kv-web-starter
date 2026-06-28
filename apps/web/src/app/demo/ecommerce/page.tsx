@@ -168,7 +168,7 @@ export default function DemoEcommercePage() {
       </section>
 
       {/* List layout */}
-      <section className="border-y bg-muted/30">
+      <section className="border-y bg-card">
         <div className="mx-auto max-w-6xl px-6 py-14">
           <div className="mb-6 flex items-center gap-3">
             <h2 className="text-xl font-semibold">Vue liste</h2>
@@ -248,7 +248,7 @@ export default function DemoEcommercePage() {
       </section>
 
       {/* PromoCodeInput */}
-      <section className="border-b bg-muted/20">
+      <section className="border-b bg-card">
         <div className="mx-auto max-w-6xl px-6 py-12">
           <div className="grid gap-8 sm:grid-cols-2">
             <div>
@@ -298,7 +298,7 @@ export default function DemoEcommercePage() {
         features={trust}
         columns={3}
         variant="icon-left"
-        className="border-y bg-muted/30"
+        className="border-y bg-card"
       />
 
       <CTASection

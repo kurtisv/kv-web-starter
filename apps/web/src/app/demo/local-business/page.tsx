@@ -86,7 +86,7 @@ export default function DemoLocalBusinessPage() {
         features={features}
         columns={3}
         variant="icon-left"
-        className="border-y bg-muted/30"
+        className="border-y bg-card"
       />
 
       <section id="services" className="bg-background">
@@ -128,7 +128,7 @@ export default function DemoLocalBusinessPage() {
       />
 
       {/* Infos pratiques + BusinessHours */}
-      <section className="border-t bg-muted/30">
+      <section className="border-t bg-card">
         <div className="mx-auto max-w-6xl px-6 py-12">
           <div className="grid gap-10 lg:grid-cols-2">
             {/* Contact info */}

@@ -80,7 +80,7 @@ export default function DemoBookingPage() {
         features={steps}
         columns={3}
         variant="icon-left"
-        className="border-y bg-muted/30"
+        className="border-y bg-card"
       />
 
       {/* Booking components showcase */}
@@ -163,7 +163,7 @@ export default function DemoBookingPage() {
       </section>
 
       {/* Static service cards */}
-      <section className="border-b bg-muted/20">
+      <section className="border-b bg-card">
         <div className="mx-auto max-w-6xl px-6 py-14">
           <h2 className="mb-6 text-xl font-semibold">Nos services</h2>
           <div className="grid gap-4 sm:grid-cols-2">

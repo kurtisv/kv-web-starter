@@ -189,7 +189,7 @@ export default function DemoPortfolioPage() {
       <StatsSection stats={stats} variant="strip" />
 
       {/* Skills */}
-      <section className="border-b bg-muted/20">
+      <section className="border-b bg-card">
         <div className="mx-auto max-w-6xl px-6 py-14">
           <h2 className="mb-8 text-xl font-semibold">Competences</h2>
           <SkillsGrid categories={skillCategories} />
@@ -207,7 +207,7 @@ export default function DemoPortfolioPage() {
       </div>
 
       {/* Experience timeline */}
-      <section className="border-y bg-muted/20">
+      <section className="border-y bg-card">
         <div className="mx-auto max-w-3xl px-6 py-14">
           <h2 className="mb-10 text-xl font-semibold">Parcours</h2>
           <Timeline items={experience} />

@@ -14,6 +14,7 @@ import { CaseStudyCard, type CaseStudyCardProps } from "@/components/portfolio/c
 import { ProcessSteps, type ProcessStep } from "@/components/portfolio/process-steps";
 import { FilterableProjects, type ProjectItem } from "@/components/portfolio/filterable-projects";
 import { ContactForm } from "@/components/portfolio/contact-form";
+import { Portfolio3DVisual } from "@/components/3d";
 
 /* ── Data ─────────────────────────────────────────── */
 
@@ -253,6 +254,37 @@ export default function DemoPortfolioPage() {
           </div>
         }
       />
+
+      {/* 3D Visual */}
+      <section className="border-b bg-card">
+        <div className="mx-auto max-w-6xl px-6 py-14">
+          <div className="grid gap-8 lg:grid-cols-[1fr_360px] lg:items-center">
+            <div>
+              <p className="mb-2 text-sm font-medium uppercase tracking-[0.18em] text-muted-foreground">3D & Animation</p>
+              <h2 className="text-2xl font-semibold">Front-end haute fidelite.</h2>
+              <p className="mt-3 text-sm text-muted-foreground">
+                Scenes Three.js integrees directement dans Next.js App Router. Rendu adaptatif :
+                haute fidelite sur desktop, mode performance sur mobile. Aucune bibliotheque externe lourde
+                cote serveur.
+              </p>
+              <ul className="mt-5 grid gap-2 text-sm">
+                {[
+                  "React Three Fiber + Drei",
+                  "Degradation automatique mobile (DPR, antialiasing, particules)",
+                  "Reduced-motion respecte",
+                  "Lazy-loaded via React.Suspense",
+                ].map((item) => (
+                  <li key={item} className="flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <Portfolio3DVisual />
+          </div>
+        </div>
+      </section>
 
       {/* Etudes de cas */}
       <section id="etudes" className="border-b bg-background">

@@ -24,7 +24,13 @@ import {
   PromoCodeInput,
   VariantSelector,
 } from "@/components/ecommerce";
-import { Product3DViewer } from "@/components/3d";
+import {
+  Product3DViewer,
+  PhoneMockup3D,
+  WebsiteShowcase3D,
+  Car3DPreview,
+  Portfolio3DVisual,
+} from "@/components/3d";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field } from "@/components/ui/form";
@@ -139,16 +145,29 @@ export function ComponentsDemoClient() {
         </CardContent>
       </Card>
 
-      <section className="grid gap-4" aria-labelledby="components-3d-heading">
+      <section className="grid gap-6" aria-labelledby="components-3d-heading">
         <div>
           <h2 id="components-3d-heading" className="text-3xl font-semibold tracking-normal">
             3D
           </h2>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
-            Scenes produit interactives avec degradation mobile integree.
+            Cinq scenes interactives : produit, telephone, laptop, voiture, visuel abstrait.
+            Degradation mobile automatique (DPR, particules, antialiasing).
           </p>
         </div>
-        <Product3DViewer />
+
+        {/* Row 1 */}
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Product3DViewer />
+          <Portfolio3DVisual />
+        </div>
+
+        {/* Row 2 */}
+        <div className="grid gap-4 sm:grid-cols-3">
+          <PhoneMockup3D />
+          <WebsiteShowcase3D />
+          <Car3DPreview color="#1d4ed8" label="Voiture 3D" />
+        </div>
       </section>
 
       <AdminFormDrawer

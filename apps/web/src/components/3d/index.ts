@@ -2,3 +2,8 @@ export * from "./floating-model";
 export * from "./particle-background";
 export * from "./product-3d-viewer";
 export * from "./scene-canvas";
+export * from "./phone-mockup-3d";
+export * from "./website-showcase-3d";
+export * from "./car-3d-preview";
+export * from "./portfolio-3d-visual";
+export * from "./fallback-visual";

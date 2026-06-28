@@ -9,6 +9,7 @@ import { FeaturedArticleCard } from "@/components/auto-blog/featured-article-car
 import { ArticleCard } from "@/components/auto-blog/article-card";
 import { CarSpecComparison, type CarSpec } from "@/components/auto-blog/car-spec-comparison";
 import { AutoBlogCarGrid } from "./auto-blog-client";
+import { Car3DPreview } from "@/components/3d";
 
 const stats = [
   { value: "420+", label: "Fiches voitures" },
@@ -177,6 +178,22 @@ export default function DemoAutoBlogPage() {
               <ArticleCard key={a.title} {...a} />
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Apercu 3D */}
+      <section className="border-b bg-card">
+        <div className="mx-auto max-w-6xl px-6 py-14">
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold">Experience 3D</h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Modele interactif — faites pivoter. Degradation automatique sur mobile.
+            </p>
+          </div>
+          <Car3DPreview
+            color="#c0392b"
+            label="Porsche 911 GT3 — Rendu 3D"
+          />
         </div>
       </section>
 

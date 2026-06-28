@@ -4,10 +4,11 @@ This guide explains how to hand off this project to a client or new developer.
 
 ## What they receive
 
-- A fully functional Next.js application in demo/local mode
+- A fully functional Next.js 16 application in demo/local mode
 - 9 preset demo pages (booking, SaaS, e-commerce, dashboard, real estate,
-  local business, portfolio, API portal, auto blog)
-- A component library with 60+ UI components
+  local business, portfolio, API portal, auto blog) + `/demo/components` playground
+- A component library with 100+ UI and business components
+- 5 Three.js / R3F 3D scene components with CSS fallbacks
 - Adapter architecture for storage, email, and payments
 - Documentation in `docs/`
 
@@ -85,7 +86,11 @@ data from your database or a headless CMS.
 **Dashboard** — replace metric values and activity feed with live queries from
 your database using `lib/db.ts` (Prisma).
 
-**Real estate** — replace `DEMO_PROPERTIES`, `DEMO_AGENTS` with real listings.
+**Real estate** — replace `DEMO_PROPERTIES`, `DEMO_AGENTS` with real listings. `PropertySearchBar` and `NeighborhoodScoreCard` accept your own data via props.
+
+**Portfolio** — swap the `projects`, `techStack`, `experience`, and `testimonials` arrays. `FilterableProjects` derives its filter tags automatically from the tags on each project. The `ContactForm` uses the email adapter — set `EMAIL_PROVIDER=resend` and `RESEND_API_KEY` for real sends.
+
+**Auto blog** — replace the article and car arrays at the top of `page.tsx`. `CarSpecComparison` takes an array of car objects with any spec rows you define.
 
 ## What NOT to change
 

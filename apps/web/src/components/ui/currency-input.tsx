@@ -33,8 +33,11 @@ export function CurrencyInput({
 
   // Sync external value changes
   React.useEffect(() => {
-    if (value != null) setRaw(String(value));
-    else setRaw("");
+    const timer = window.setTimeout(() => {
+      if (value != null) setRaw(String(value));
+      else setRaw("");
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, [value]);
 
   const symbol = React.useMemo(() => {

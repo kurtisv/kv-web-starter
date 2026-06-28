@@ -55,7 +55,6 @@ export function MultiSelect({
 
   React.useEffect(() => {
     if (open) {
-      setSearch("");
       setTimeout(() => searchRef.current?.focus(), 10);
     }
   }, [open]);
@@ -87,7 +86,12 @@ export function MultiSelect({
         disabled={disabled}
         aria-haspopup="listbox"
         aria-expanded={open}
-        onClick={() => setOpen((o) => !o)}
+        onClick={() => {
+          setOpen((o) => {
+            if (!o) setSearch("");
+            return !o;
+          });
+        }}
         className={cn(
           "flex min-h-10 w-full flex-wrap items-center gap-1 border border-border bg-background px-2 py-1.5 text-sm",
           "outline-none transition-colors focus:border-foreground",

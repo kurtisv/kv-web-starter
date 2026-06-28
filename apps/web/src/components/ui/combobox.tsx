@@ -57,7 +57,6 @@ export function Combobox({
 
   React.useEffect(() => {
     if (open) {
-      setSearch("");
       setTimeout(() => searchRef.current?.focus(), 10);
     }
   }, [open]);
@@ -117,7 +116,12 @@ export function Combobox({
         disabled={disabled}
         aria-haspopup="listbox"
         aria-expanded={open}
-        onClick={() => setOpen((o) => !o)}
+        onClick={() => {
+          setOpen((o) => {
+            if (!o) setSearch("");
+            return !o;
+          });
+        }}
         className={cn(
           "flex h-10 w-full items-center justify-between border border-border bg-background px-3 text-sm outline-none",
           "transition-colors focus:border-foreground",

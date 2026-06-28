@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import { signInWithCredentials, signInWithGitHub } from "@/app/actions/auth";
@@ -12,6 +11,7 @@ import { Form, FormField, FormMessage, FormBanner } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AnimatedFormFields } from "@/components/animations/animated-form-fields";
+import { zodFormResolver } from "@/lib/zod-form-resolver";
 
 const credentialsSchema = z.object({
   email: z.string().email("Email invalide"),
@@ -40,7 +40,7 @@ export function LoginForm({
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<CredentialsFormData>({
-    resolver: zodResolver(credentialsSchema),
+    resolver: zodFormResolver(credentialsSchema),
     defaultValues: {
       email: demoEmail,
       password: demoPassword ?? "",

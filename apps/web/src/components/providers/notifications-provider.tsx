@@ -58,8 +58,11 @@ export function NotificationsProvider({ children }: { children: React.ReactNode 
   const [hydrated, setHydrated] = React.useState(false);
 
   React.useEffect(() => {
-    setNotifications(loadFromStorage());
-    setHydrated(true);
+    const timer = window.setTimeout(() => {
+      setNotifications(loadFromStorage());
+      setHydrated(true);
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, []);
 
   React.useEffect(() => {

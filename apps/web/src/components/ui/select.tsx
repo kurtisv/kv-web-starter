@@ -30,6 +30,7 @@ export function Select({
   const [focused, setFocused] = React.useState(-1);
   const ref = React.useRef<HTMLDivElement>(null);
   const triggerRef = React.useRef<HTMLButtonElement>(null);
+  const listboxId = React.useId();
 
   const selected = options.find((o) => o.value === value);
 
@@ -76,6 +77,7 @@ export function Select({
         role="combobox"
         aria-expanded={open}
         aria-haspopup="listbox"
+        aria-controls={listboxId}
         disabled={disabled}
         onClick={() => {
           setOpen((o) => !o);
@@ -100,6 +102,7 @@ export function Select({
 
       {open && (
         <div
+          id={listboxId}
           role="listbox"
           className="absolute z-50 mt-1 w-full border border-border bg-background shadow-md"
         >

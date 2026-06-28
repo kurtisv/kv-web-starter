@@ -28,7 +28,8 @@ export function RadioGroup({
   name,
   className,
 }: RadioGroupProps) {
-  const groupName = name ?? React.useId();
+  const generatedName = React.useId();
+  const groupName = name ?? generatedName;
 
   if (variant === "card") {
     return (

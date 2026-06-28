@@ -31,13 +31,8 @@ import { CTASection } from "@/components/sections/cta-section";
 import { THEME_META } from "@/design-system/tokens";
 import { PROJECT_PRESETS } from "@/config/project-presets";
 
-function DemoThumbnail({ slug, accent, dark }: { slug: string; accent: string; dark: boolean }) {
-  const bg = dark ? "#1a1a2e" : "#f9fafb";
-  const line = dark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.06)";
-  const line2 = dark ? "rgba(255,255,255,0.14)" : "rgba(0,0,0,0.11)";
-  const af = accent + "33";
-
-  const Nav = () => (
+function DemoThumbnailNav({ accent, line, line2 }: { accent: string; line: string; line2: string }) {
+  return (
     <div className="flex h-6 shrink-0 items-center gap-2 border-b px-3" style={{ borderColor: line }}>
       <div className="h-1.5 w-8 rounded-full" style={{ background: accent }} />
       <div className="ml-auto flex gap-2">
@@ -45,10 +40,17 @@ function DemoThumbnail({ slug, accent, dark }: { slug: string; accent: string; d
       </div>
     </div>
   );
+}
+
+function DemoThumbnail({ slug, accent, dark }: { slug: string; accent: string; dark: boolean }) {
+  const bg = dark ? "#1a1a2e" : "#f9fafb";
+  const line = dark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.06)";
+  const line2 = dark ? "rgba(255,255,255,0.14)" : "rgba(0,0,0,0.11)";
+  const af = accent + "33";
 
   if (slug === "portfolio") return (
     <div className="flex h-36 flex-col overflow-hidden" style={{ background: bg }}>
-      <Nav />
+      <DemoThumbnailNav accent={accent} line={line} line2={line2} />
       <div className="px-3 pt-2">
         <div className="h-3 w-28 rounded" style={{ background: line2 }} />
         <div className="mt-1 h-2 w-20 rounded" style={{ background: line }} />
@@ -67,7 +69,7 @@ function DemoThumbnail({ slug, accent, dark }: { slug: string; accent: string; d
 
   if (slug === "saas") return (
     <div className="flex h-36 flex-col overflow-hidden" style={{ background: bg }}>
-      <Nav />
+      <DemoThumbnailNav accent={accent} line={line} line2={line2} />
       <div className="flex flex-1 gap-2 px-3 pt-3 pb-3">
         {[false, true, false].map((feat, i) => (
           <div key={i} className="flex flex-1 flex-col gap-1 rounded border p-2"
@@ -83,7 +85,7 @@ function DemoThumbnail({ slug, accent, dark }: { slug: string; accent: string; d
 
   if (slug === "booking") return (
     <div className="flex h-36 flex-col overflow-hidden" style={{ background: bg }}>
-      <Nav />
+      <DemoThumbnailNav accent={accent} line={line} line2={line2} />
       <div className="px-3 pt-2">
         <div className="h-2 w-16 rounded" style={{ background: line2 }} />
       </div>
@@ -115,7 +117,7 @@ function DemoThumbnail({ slug, accent, dark }: { slug: string; accent: string; d
 
   if (slug === "real-estate") return (
     <div className="flex h-36 flex-col overflow-hidden" style={{ background: bg }}>
-      <Nav />
+      <DemoThumbnailNav accent={accent} line={line} line2={line2} />
       <div className="grid grid-cols-2 gap-1.5 px-3 pt-2 pb-2 flex-1">
         {[af, line, line, af].map((c, i) => (
           <div key={i} className="flex flex-col overflow-hidden rounded">
@@ -130,7 +132,7 @@ function DemoThumbnail({ slug, accent, dark }: { slug: string; accent: string; d
 
   if (slug === "local-business") return (
     <div className="flex h-36 flex-col overflow-hidden" style={{ background: bg }}>
-      <Nav />
+      <DemoThumbnailNav accent={accent} line={line} line2={line2} />
       <div className="mx-3 mt-2 flex items-center justify-center overflow-hidden rounded" style={{ background: af, height: 52 }}>
         <div className="h-4 w-24 rounded" style={{ background: accent + "80" }} />
       </div>
@@ -172,7 +174,7 @@ function DemoThumbnail({ slug, accent, dark }: { slug: string; accent: string; d
 
   if (slug === "ecommerce") return (
     <div className="flex h-36 flex-col overflow-hidden" style={{ background: bg }}>
-      <Nav />
+      <DemoThumbnailNav accent={accent} line={line} line2={line2} />
       <div className="grid grid-cols-3 gap-1.5 px-3 pt-2 pb-2 flex-1">
         {[af, line, af, line, line, af].map((c, i) => (
           <div key={i} className="flex flex-col overflow-hidden rounded" style={{ background: line }}>
@@ -190,7 +192,7 @@ function DemoThumbnail({ slug, accent, dark }: { slug: string; accent: string; d
   // dashboard (default)
   return (
     <div className="flex h-36 flex-col overflow-hidden" style={{ background: bg }}>
-      <Nav />
+      <DemoThumbnailNav accent={accent} line={line} line2={line2} />
       <div className="flex gap-1.5 px-3 pt-2">
         {[accent, line2, line2, line2].map((c, i) => (
           <div key={i} className="flex-1 rounded p-1.5" style={{ background: i === 0 ? af : line }}>
@@ -328,7 +330,7 @@ export default function Home() {
                 Tout comprendre<br />en un coup d&apos;oeil.
               </h2>
               <p className="mx-auto mt-5 max-w-xl text-base leading-7 text-white/55">
-                Themes, modules, stack technique — la reponse complete au "c'est quoi exactement ?"
+                Themes, modules, stack technique — la reponse complete au &quot;c&apos;est quoi exactement ?&quot;
                 en 12 secondes chrono.
               </p>
             </RevealSection>

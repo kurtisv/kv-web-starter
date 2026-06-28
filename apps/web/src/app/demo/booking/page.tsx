@@ -141,7 +141,7 @@ export default function DemoBookingPage() {
             </div>
             <p className="mb-4 text-xs text-muted-foreground max-w-md">
               Affiche les intervenants disponibles avec avatar, nom et role.
-              Disparait automatiquement s'il n'y a qu'un seul intervenant.
+              Disparait automatiquement s&apos;il n&apos;y a qu&apos;un seul intervenant.
             </p>
             <StaffPicker
               staff={STAFF}

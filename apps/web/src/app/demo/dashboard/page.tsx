@@ -142,7 +142,7 @@ export default function DemoDashboardPage() {
             </div>
             <p className="mb-4 text-xs text-muted-foreground max-w-lg">
               ConfirmDialog pour les actions destructives. EntityDrawer pour afficher et modifier le detail
-              d'une entite sans quitter la page.
+              d&apos;une entite sans quitter la page.
             </p>
             <DashboardDemoActions />
           </div>

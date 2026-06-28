@@ -1,180 +1,96 @@
-# Architecture — kv-web-starter
+# Architecture
 
-## Vue d'ensemble
-
-kv-web-starter est un monorepo pnpm avec une architecture modulaire. Chaque module encapsule sa logique metier, ses tests, et ses types. Les pages Next.js sont intentionnellement minces — elles deleguent a `lib/` et `modules/`.
-
-## Arborescence annotee
+## Monorepo structure
 
 ```
 kv-web-starter/
   apps/
-    web/                           Application Next.js principale
-      src/
-        app/                       Routing Next.js App Router
-          api/
-            auth/[...nextauth]/    Handler Auth.js (OAuth callbacks, JWT)
-            v1/                    API publique versionnee
-              demo/                Endpoint de demonstration (reference)
-            webhooks/stripe/       Webhook Stripe (verification signature)
-            health/                Health check endpoint
-            openapi/               Spec OpenAPI (Scalar UI)
-          dashboard/               Pages protegees (OWNER/ADMIN uniquement)
-          booking/                 Flux de reservation public
-          pricing/                 Page tarifs
-          login/                   Page connexion + formulaire client
-          actions/                 Server Actions (auth, billing, booking, api-keys)
-        components/
-          ui/                      Primitives UI legeres (pas de Radix complet)
-          marketing/               Composants pages publiques
-          dashboard/               Composants dashboard (sidebar, mobile-nav, header)
-          providers/               Providers React (toast)
-        design-system/
-          tokens.ts                Constantes de design (breakpoints, spacing, typography)
-        lib/
-          auth.config.ts           Config NextAuth edge-safe (pour middleware)
-          auth.ts                  Config NextAuth complete (adapter Prisma + providers)
-          auth-host.ts             Helper trustHost (multi-env)
-          dashboard-auth.ts        Guard OWNER/ADMIN + bootstrap organisation
-          dashboard-auth-rules.ts  Fonctions pures pour les regles d'acces
-          db.ts                    Singleton Prisma avec PrismaPg adapter
-          env.ts                   Schema Zod variables d'environnement
-          billing/stripe.ts        Instance Stripe (null si non configure)
-          security/api-keys.ts     Hashing et validation API keys
-          proxy.ts                 Proxy pour tests locaux
-          utils.ts                 cn() et autres helpers
-        modules/                   Logique metier par domaine
-          api-portal/
-            access.ts              Auth des requetes API (demo + database)
-            db-access.ts           Queries Prisma pour l'API portal
-            management.ts          CRUD cles API (creation, revocation)
-            rate-limit.ts          Rate limiting Upstash sliding window
-            usage.ts               Tracking usage API
-            index.ts               Re-exports publics du module
-          billing/
-            checkout.ts            Schema plan + helper priceId
-            entitlements.ts        hasPlanEntitlement(), planRanks
-            webhook.ts             Parsing events Stripe (subscription lifecycle)
-            index.ts               Re-exports publics du module
-          booking/
-            availability.ts        generateBookingSlots() — calcul creneaux
-            reservation.ts         Creation et validation reservations
-            management.ts          CRUD services, staff, disponibilites
-            index.ts               Re-exports publics du module
-          cms/
-            sanity-schemas.ts      Schemas Sanity (actifs si FEATURE_CMS=true)
-            index.ts               Re-exports publics du module
-        i18n/
-          config.ts                Locales, defaultLocale, helpers
-          messages.ts              Aggregateur messages
-          messages/en.ts           Traductions anglaises
-          messages/fr.ts           Traductions francaises
-          request.ts               next-intl getRequestConfig
-        emails/                    Templates React Email
-          booking-confirmation.tsx
-          contact-confirmation.tsx
-        middleware.ts              Security headers + auth guard /dashboard/*
+    web/                  Next.js 14 app (App Router)
   packages/
-    types/                         Types partages @kv/types
-      src/index.ts                 BillablePlan, CheckoutPlan, RoleType...
-  prisma/
-    schema.prisma                  Schema PostgreSQL unique
-    seed.ts                        Donnees initiales (services, staff demo)
-    migrations/                    Historique migrations SQL
-  .claude/
-    skills/                        Procedures AI reutilisables
-    agents/                        Configs agents specialises
-  .github/
-    workflows/
-      ci.yml                       Lint + typecheck + tests + e2e
-      security.yml                 Audit dependances
-      codeql.yml                   Analyse securite statique
-  docs/
-    ARCHITECTURE.md                Ce fichier
-    QA-CHECKLIST.md                Checklist qualite avant livraison
-    decisions/                     ADRs (Architecture Decision Records)
-  scripts/
-    create-new-project.ps1         Clone le boilerplate pour un nouveau projet
+    db/                   Prisma schema + client
+  docs/                   Documentation
+  .env.example            Environment variable template
 ```
 
-## Flux d'authentification
+## App structure (apps/web/src/)
 
 ```
-Request -> middleware.ts
-           |
-           +-- JWT valide? Non --> redirect /login
-           |
-           +-- Oui --> SecurityHeaders injectes --> Response
-                       |
-                       (Si /dashboard/*)
-                       |
-                       Page Server Component
-                       |
-                       requireDashboardAccess()
-                       |
-                       +-- Membership OWNER/ADMIN? Oui --> { userId, organizationId, role }
-                       |
-                       +-- Premier user en dev / email bootstrap? --> Upsert OWNER
-                       |
-                       +-- Non --> redirect /dashboard?error=forbidden
+app/                      Next.js App Router pages
+  (marketing)/            Public landing, pricing, about
+  dashboard/              Protected admin dashboard
+  demo/                   Demo pages (9 presets, no auth required)
+  api/                    API route handlers
+components/
+  ui/                     Base design system (Button, Card, Badge, ...)
+  sections/               Page-level sections (Hero, Features, CTA, ...)
+  dashboard-ui/           Dashboard-specific components
+  animations/             Framer Motion wrappers
+  booking/                Booking flow components
+  saas/                   SaaS-specific components
+  real-estate/            Real estate components
+  local-business/         Local business components
+  portfolio/              Portfolio components
+  3d/                     Three.js / R3F scene components
+lib/
+  storage/                Storage adapter (local | supabase | azure | s3 | r2)
+  email/                  Email adapter (console | resend)
+  payments/               Payments adapter (mock | stripe)
+  integrations/           Provider config + integration status checker
+  auth.ts                 Auth.js (NextAuth v5) configuration
+  db.ts                   Prisma client singleton
+  env.ts                  Typed env validation (Zod)
+  data.ts                 Mock/demo data
 ```
 
-## Flux API publique
+## Adapter pattern
+
+Every external service is hidden behind an adapter interface.
 
 ```
-Request GET /api/v1/* 
-  -> authenticateApiRequest()
-     |
-     +-- Demo keys (env.API_DEMO_KEYS)? -> access.source = "demo"
-     |
-     +-- Bearer token -> prefix lookup -> hash compare -> access.source = "database"
-     |
-     +-- Invalide -> 401
-  -> hasPlanEntitlement() (si endpoint le requiert) -> 402 si insuffisant
-  -> limitApiRequest() (Upstash) -> 429 si depasse
-  -> Logique metier
-  -> ApiUsage.create() (async, non-bloquant)
-  -> Response { data: ... }
+lib/storage/index.ts      -> getStorageAdapter() -> LocalStorageAdapter   (default)
+                                                 -> SupabaseStorageAdapter
+                                                 -> AzureBlobStorageAdapter
+                                                 -> S3StorageAdapter
+                                                 -> R2StorageAdapter
+
+lib/email/index.ts        -> getEmailAdapter()   -> ConsoleEmailAdapter   (default)
+                                                 -> ResendEmailAdapter
+
+lib/payments/index.ts     -> getPaymentsAdapter()-> MockPaymentsAdapter   (default)
+                                                 -> StripePaymentsAdapter
 ```
 
-## Decisions techniques
+The factory picks the right adapter based on STORAGE_PROVIDER, EMAIL_PROVIDER,
+and PAYMENTS_PROVIDER env vars. Each adapter can be swapped without touching
+any page or component code.
 
-Voir `docs/decisions/` pour les ADRs complets.
+## Demo mode
 
-| Decision | Choix | Alternatives ecartees |
-|---|---|---|
-| Session strategy | JWT | Database sessions |
-| Prisma adapter | PrismaPg (driver natif pg) | Prisma standard (via connection string) |
-| Feature flags | Variables d'environnement | Table DB, fichier JSON |
-| Rate limiting | Upstash Redis (edge-compatible) | Redis conventionnel, middleware IP ban |
-| Emails | Resend + React Email | Nodemailer, SendGrid |
-| UI components | Minimal custom (pas de Radix complet) | shadcn/ui complet, Chakra, MUI |
-| i18n | next-intl (EN/FR) | next-i18next, react-i18next |
-| Monorepo | pnpm workspaces | Turborepo, Nx |
+When external services are not configured, the app runs in demo mode:
+- Storage: files saved to public/uploads/
+- Email: messages logged to stdout
+- Payments: checkout redirects immediately to the success URL
+- Database: mock data from lib/data.ts
 
-## Conventions de code
+Demo mode is the default. No env vars are required to run the app locally.
+Check live status at /dashboard/settings/integrations.
 
-### Server vs Client components
-- **Par defaut : Server Component.** Ne pas ajouter `"use client"` sans raison.
-- **Client Component si** : hooks React (useState, useEffect, usePathname), events browser, acces `window`/`document`.
-- **Server Actions** : dans `app/actions/<domaine>.ts`, importees dans les composants client via `await action(formData)`.
+## Theme system
 
-### Nommage
-- Fonctions exportees : camelCase pour fonctions pures, PascalCase pour composants
-- Fichiers : kebab-case (`api-key-form.tsx`, `rate-limit.ts`)
-- Types : PascalCase (`BillablePlan`, `SubscriptionEntitlement`)
+Nine preset themes in app/globals.css using CSS custom properties on
+[data-theme="..."] selectors. Each demo page wraps its content in a
+<div data-theme="preset-name">.
 
-### Tests
-- Tests unitaires colocaux : `fichier.test.ts` a cote de `fichier.ts`
-- Tests E2E dans `apps/web/tests/e2e/`
-- Pas de mock de la base de donnees pour les modules DB — tester avec vraie DB
+Preset names: premium-saas, luxury-auto, local-business, real-estate,
+ecommerce-clean, dark-tech-api, corporate-classic.
 
-## Extension du boilerplate
+## Authentication
 
-Pour un nouveau projet base sur ce boilerplate :
-```powershell
-pnpm create:new
-# Demande: Name (slug du projet), Destination (chemin), AppName (affichage)
-```
+Auth.js (NextAuth v5) with credentials provider (demo login) and optional
+GitHub OAuth. Dashboard routes protected by middleware.ts.
 
-Le script copie le boilerplate, renomme le package et la DB dans le .env.example.
+## Database
+
+Prisma ORM with PostgreSQL. Schema in packages/db/prisma/schema.prisma.
+The Prisma client is a singleton (lib/db.ts). Works without a database
+using mock data from lib/data.ts.

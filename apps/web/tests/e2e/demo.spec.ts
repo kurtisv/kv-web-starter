@@ -12,12 +12,13 @@ const DEMO_PAGES = [
   { slug: "dashboard",      theme: "premium-saas",      heading: /vue d'ensemble|utilisateurs/i },
 ] as const;
 
-test("demo index page lists all 9 project types", async ({ page }) => {
+test("demo index page lists all 10 project types", async ({ page }) => {
   await page.goto("/demo");
-  await expect(page.getByRole("heading", { name: /9 styles/i })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /10 styles/i })).toBeVisible();
   for (const { slug } of DEMO_PAGES) {
     await expect(page.locator(`a[href="/demo/${slug}"]`)).toBeVisible();
   }
+  await expect(page.locator(`a[href="/demo/components"]`)).toBeVisible();
 });
 
 for (const { slug, theme, heading } of DEMO_PAGES) {
@@ -37,9 +38,17 @@ for (const { slug, theme, heading } of DEMO_PAGES) {
 }
 
 test("all demo pages return 200", async ({ request }) => {
-  const paths = ["/demo", ...DEMO_PAGES.map((d) => `/demo/${d.slug}`)];
+  const paths = ["/demo", ...DEMO_PAGES.map((d) => `/demo/${d.slug}`), "/demo/components"];
   for (const path of paths) {
     const res = await request.get(path);
     expect(res.status(), `${path} should return 200`).toBe(200);
   }
+});
+
+test("/demo/components loads the component playground", async ({ page }) => {
+  await page.goto("/demo/components");
+  await expect(page.getByRole("heading", { name: /composants metier/i })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Dashboard/Admin" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "API portal" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "E-commerce" })).toBeVisible();
 });

@@ -5,3 +5,8 @@ export * from "./product-card";
 export * from "./cart-button";
 export * from "./cart-drawer";
 export * from "./checkout-steps";
+export * from "./variant-selector";
+export * from "./promo-code-input";
+export * from "./checkout-summary";
+export * from "./order-status-timeline";
+export * from "./customer-order-table";

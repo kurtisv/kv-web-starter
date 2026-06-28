@@ -15,11 +15,11 @@
 ## Short Term
 
 - [ ] Wire toasts into all important actions
-- [ ] Add Storybook stories for the new components
-- [ ] Add Vitest tests for critical components
-- [ ] Add Playwright tests for booking, e-commerce, and API portal flows
-- [ ] Create `/demo/components`
-- [ ] Create short documentation for each component
+- [x] Add Storybook stories for the new components
+- [x] Add Vitest tests for critical components
+- [x] Add Playwright tests for booking, e-commerce, and API portal flows
+- [x] Create `/demo/components`
+- [x] Create short documentation for each component
 - [ ] Verify keyboard accessibility
 
 ## Medium Term
@@ -27,10 +27,10 @@
 - [ ] Wire uploads to Supabase, S3, Azure Blob, or another real storage backend
 - [ ] Add e-commerce Prisma models
 - [ ] Add a real pricing page
-- [ ] Add `ApiUsageChart`
-- [ ] Add `RateLimitMeter`
-- [ ] Add `RequestLogViewer`
-- [ ] Add `AuditLogTimeline`
+- [x] Add `ApiUsageChart`
+- [x] Add `RateLimitMeter`
+- [x] Add `RequestLogViewer`
+- [x] Add `AuditLogTimeline`
 - [ ] Add a client "my bookings" page
 
 ## Advanced Frontend

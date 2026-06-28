@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 import type { StorageAdapter, StorageProvider } from "./types";
 
 export type { StorageAdapter, StoredFile, StorageProvider } from "./types";

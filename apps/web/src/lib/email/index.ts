@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 import type { EmailAdapter, EmailProvider } from "./types";
 
 export type { EmailAdapter, EmailMessage, EmailResult, EmailProvider } from "./types";

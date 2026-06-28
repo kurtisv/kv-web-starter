@@ -16,6 +16,9 @@ import { ApiUsageChart, type ApiUsagePoint } from "@/components/api-portal/api-u
 import { RateLimitMeter } from "@/components/api-portal/rate-limit-meter";
 import { RequestLogViewer, type RequestLogEntry } from "@/components/api-portal/request-log-viewer";
 import { WebhookTester } from "@/components/api-portal/webhook-tester";
+import { ApiStatusCard, type StatusService } from "@/components/api-portal/api-status-card";
+import { WebhookEventList, type WebhookEvent } from "@/components/api-portal/webhook-event-list";
+import { ApiDemoOnboarding } from "./api-demo-onboarding";
 import type { EndpointDef, CodeTab } from "@/components/api-portal";
 
 const endpoints: EndpointDef[] = [
@@ -111,6 +114,20 @@ const apiStats = [
   { value: "80ms",       label: "Latence p50" },
   { value: "2M+",        label: "Req/jour" },
   { value: "ISO 27001",  label: "Certification" },
+];
+
+const statusServices: StatusService[] = [
+  { name: "API REST",       status: "operational", uptimePct: 99.98 },
+  { name: "Webhooks",       status: "operational", uptimePct: 99.95 },
+  { name: "Dashboard",      status: "operational", uptimePct: 99.99 },
+  { name: "Auth service",   status: "operational", uptimePct: 100.00 },
+];
+
+const webhookEvents: WebhookEvent[] = [
+  { id: "wh-1", type: "data.created",   url: "https://your-app.com/webhooks", status: "delivered", statusCode: 200, durationMs: 142, createdAt: "Il y a 2 min" },
+  { id: "wh-2", type: "job.completed",  url: "https://your-app.com/webhooks", status: "delivered", statusCode: 200, durationMs: 89,  createdAt: "Il y a 5 min" },
+  { id: "wh-3", type: "data.updated",   url: "https://your-app.com/webhooks", status: "failed",    statusCode: 500, durationMs: 30,  createdAt: "Il y a 8 min" },
+  { id: "wh-4", type: "job.failed",     url: "https://your-app.com/webhooks", status: "delivered", statusCode: 200, durationMs: 205, createdAt: "Il y a 15 min" },
 ];
 
 export default function DemoAPIPage() {
@@ -253,6 +270,21 @@ export default function DemoAPIPage() {
             </p>
             <WebhookTester />
           </div>
+        </div>
+      </section>
+
+      {/* Status + Onboarding + Webhook events */}
+      <section className="border-b bg-background">
+        <div className="mx-auto max-w-4xl px-6 py-14">
+          <h3 className="mb-2 text-xl font-semibold">Observabilite et onboarding</h3>
+          <p className="mb-8 text-sm text-muted-foreground">
+            Statut systeme en temps reel, historique webhook et guide de demarrage — inclus dans le portail.
+          </p>
+          <div className="grid gap-6 lg:grid-cols-2 mb-6">
+            <ApiStatusCard services={statusServices} overallStatus="operational" />
+            <ApiDemoOnboarding />
+          </div>
+          <WebhookEventList events={webhookEvents} />
         </div>
       </section>
 

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, CalendarDays, CheckCircle2, Clock } from "lucide-react";
+import { ArrowRight, CalendarDays, CheckCircle2, Clock, History, Mail } from "lucide-react";
 
 import { HeroSection } from "@/components/sections/hero-section";
 import { FeatureGrid } from "@/components/sections/feature-grid";
@@ -11,6 +11,9 @@ import { Card } from "@/components/ui/card";
 import { ServicePicker, type ServiceOption } from "@/components/booking/service-picker";
 import { StaffPicker, type StaffOption } from "@/components/booking/staff-picker";
 import { BookingSummaryCard } from "@/components/booking/booking-summary-card";
+import { BookingStatusTimeline } from "@/components/booking/booking-status-timeline";
+import { ClientBookingHistory, type BookingHistoryItem } from "@/components/booking/client-booking-history";
+import { BookingReminderPreview } from "@/components/booking/booking-reminder-preview";
 import { TimeSlotGridPreview } from "./booking-preview";
 import { BookingDemoActions } from "./booking-demo-actions";
 
@@ -42,6 +45,13 @@ const steps = [
 const DEMO_SERVICE = SERVICES[0]!;
 const DEMO_STAFF = STAFF[0]!;
 
+const BOOKING_HISTORY: BookingHistoryItem[] = [
+  { id: "bk-1", service: "Massage relaxant", staff: "Sophie Bertin", date: "2026-07-15", time: "14h00", priceCents: 7500, status: "upcoming" },
+  { id: "bk-2", service: "Reflexologie",      staff: "Lucie Morel",   date: "2026-06-10", time: "10h30", priceCents: 6000, status: "completed" },
+  { id: "bk-3", service: "Soin visage",        staff: "Sophie Bertin", date: "2026-05-22", time: "15h00", priceCents: 8500, status: "completed" },
+  { id: "bk-4", service: "Massage sport",      staff: "Pierre Duval",  date: "2026-04-08", time: "11h00", priceCents: 11000, status: "cancelled" },
+];
+
 export default function DemoBookingPage() {
   return (
     <div data-theme="local-business">
@@ -58,6 +68,11 @@ export default function DemoBookingPage() {
             <Button asChild variant="outline" size="lg">
               <Link href="#services">Voir les services</Link>
             </Button>
+            <div className="flex flex-wrap gap-2 pt-1">
+              {["Booking en ligne", "Paiement Stripe-ready", "Rappels auto", "Historique client"].map((b) => (
+                <Badge key={b} variant="outline" size="sm" className="font-normal">{b}</Badge>
+              ))}
+            </div>
           </>
         }
         media={
@@ -188,6 +203,68 @@ export default function DemoBookingPage() {
       </section>
 
       <TestimonialSection eyebrow="Temoignages" title="Ce que disent nos clients." testimonials={testimonials} />
+
+      {/* Post-booking components */}
+      <section className="border-t bg-background">
+        <div className="mx-auto max-w-6xl px-6 py-16">
+          <h2 className="mb-2 text-2xl font-semibold">Suivi et historique</h2>
+          <p className="mb-10 max-w-xl text-sm text-muted-foreground">
+            Apres la reservation : timeline de statut, historique client et rappel email — tous inclus.
+          </p>
+
+          <div className="grid gap-8 lg:grid-cols-3">
+            {/* Status timeline */}
+            <div>
+              <div className="mb-3 flex items-center gap-2">
+                <History className="h-4 w-4 text-muted-foreground" />
+                <p className="text-sm font-medium">BookingStatusTimeline</p>
+                <Badge variant="outline" size="sm" className="font-mono text-[10px]">server</Badge>
+              </div>
+              <BookingStatusTimeline status="reminded" />
+            </div>
+
+            {/* Reminder email preview */}
+            <div>
+              <div className="mb-3 flex items-center gap-2">
+                <Mail className="h-4 w-4 text-muted-foreground" />
+                <p className="text-sm font-medium">BookingReminderPreview</p>
+                <Badge variant="outline" size="sm" className="font-mono text-[10px]">server</Badge>
+              </div>
+              <BookingReminderPreview
+                serviceName={DEMO_SERVICE.name}
+                staffName={DEMO_STAFF.name}
+                date="Mardi 15 juillet 2026"
+                time="14h00"
+              />
+            </div>
+
+            {/* Booking history */}
+            <div>
+              <div className="mb-3 flex items-center gap-2">
+                <CalendarDays className="h-4 w-4 text-muted-foreground" />
+                <p className="text-sm font-medium">ClientBookingHistory</p>
+                <Badge variant="outline" size="sm" className="font-mono text-[10px]">server</Badge>
+              </div>
+              <ClientBookingHistory items={BOOKING_HISTORY} />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* My bookings CTA */}
+      <section className="border-y bg-muted/30">
+        <div className="mx-auto max-w-6xl px-6 py-10 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>
+            <p className="font-semibold">Espace client inclus</p>
+            <p className="text-sm text-muted-foreground">Vos clients gerent leurs RDV depuis /my-bookings — annulation, report, historique.</p>
+          </div>
+          <Button asChild variant="outline">
+            <Link href="/my-bookings">
+              Voir l&apos;espace client <ArrowRight className="size-4" />
+            </Link>
+          </Button>
+        </div>
+      </section>
 
       <CTASection
         variant="muted"

@@ -36,6 +36,7 @@ export function MultiSelect({
   const [search, setSearch] = React.useState("");
   const ref = React.useRef<HTMLDivElement>(null);
   const searchRef = React.useRef<HTMLInputElement>(null);
+  const listboxId = React.useId();
 
   React.useEffect(() => {
     if (!open) return;
@@ -86,6 +87,7 @@ export function MultiSelect({
         disabled={disabled}
         aria-haspopup="listbox"
         aria-expanded={open}
+        aria-controls={listboxId}
         onClick={() => {
           setOpen((o) => {
             if (!o) setSearch("");
@@ -131,6 +133,7 @@ export function MultiSelect({
 
       {open && (
         <div
+          id={listboxId}
           role="listbox"
           aria-multiselectable="true"
           className="absolute z-50 mt-1 w-full border border-border bg-background shadow-md"
@@ -142,6 +145,12 @@ export function MultiSelect({
               ref={searchRef}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" && filtered[0]) {
+                  event.preventDefault();
+                  toggle(filtered[0].value);
+                }
+              }}
               placeholder={searchPlaceholder}
               className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
             />

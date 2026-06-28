@@ -31,6 +31,7 @@ export function Select({
   const ref = React.useRef<HTMLDivElement>(null);
   const triggerRef = React.useRef<HTMLButtonElement>(null);
   const listboxId = React.useId();
+  const activeOptionId = focused >= 0 ? `${listboxId}-option-${focused}` : undefined;
 
   const selected = options.find((o) => o.value === value);
 
@@ -78,6 +79,7 @@ export function Select({
         aria-expanded={open}
         aria-haspopup="listbox"
         aria-controls={listboxId}
+        aria-activedescendant={activeOptionId}
         disabled={disabled}
         onClick={() => {
           setOpen((o) => !o);
@@ -110,6 +112,7 @@ export function Select({
             {options.map((opt, i) => (
               <div
                 key={opt.value}
+                id={`${listboxId}-option-${i}`}
                 role="option"
                 aria-selected={opt.value === value}
                 onClick={() => {

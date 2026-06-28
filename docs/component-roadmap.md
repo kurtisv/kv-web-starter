@@ -20,7 +20,7 @@
 - [x] Add Playwright tests for booking, e-commerce, and API portal flows
 - [x] Create `/demo/components`
 - [x] Create short documentation for each component
-- [ ] Verify keyboard accessibility
+- [x] Verify keyboard accessibility
 
 ## Medium Term
 

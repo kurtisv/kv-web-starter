@@ -38,6 +38,7 @@ export function Combobox({
   const ref = React.useRef<HTMLDivElement>(null);
   const searchRef = React.useRef<HTMLInputElement>(null);
   const triggerRef = React.useRef<HTMLButtonElement>(null);
+  const listboxId = React.useId();
 
   React.useEffect(() => {
     if (!open) return;
@@ -80,16 +81,18 @@ export function Combobox({
     });
   }
 
+  const chooseOption = React.useCallback((opt: ComboboxOption) => {
+    onValueChange?.(opt.value);
+    setOpen(false);
+    triggerRef.current?.focus();
+  }, [onValueChange]);
+
   const renderOption = (opt: ComboboxOption) => (
     <div
       key={opt.value}
       role="option"
       aria-selected={opt.value === value}
-      onClick={() => {
-        onValueChange?.(opt.value);
-        setOpen(false);
-        triggerRef.current?.focus();
-      }}
+      onClick={() => chooseOption(opt)}
       className="flex cursor-pointer items-center gap-2 px-3 py-2 text-sm hover:bg-muted"
     >
       <Check
@@ -116,6 +119,7 @@ export function Combobox({
         disabled={disabled}
         aria-haspopup="listbox"
         aria-expanded={open}
+        aria-controls={listboxId}
         onClick={() => {
           setOpen((o) => {
             if (!o) setSearch("");
@@ -140,6 +144,7 @@ export function Combobox({
 
       {open && (
         <div
+          id={listboxId}
           role="listbox"
           className="absolute z-50 mt-1 w-full border border-border bg-background shadow-md"
         >
@@ -149,6 +154,12 @@ export function Combobox({
               ref={searchRef}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" && filtered[0]) {
+                  event.preventDefault();
+                  chooseOption(filtered[0]);
+                }
+              }}
               placeholder={searchPlaceholder}
               className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
             />

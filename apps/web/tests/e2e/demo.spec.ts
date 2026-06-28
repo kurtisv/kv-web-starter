@@ -382,6 +382,178 @@ test("/demo/auto-blog — stats visible", async ({ page }) => {
 });
 
 // ---------------------------------------------------------------------------
+// /demo/auto-blog — lot 4-6 additions
+// ---------------------------------------------------------------------------
+
+test("/demo/auto-blog — FeaturedArticleCard visible", async ({ page }) => {
+  await page.goto("/demo/auto-blog");
+  await expect(page.getByText("Essai de la semaine").first()).toBeVisible();
+  await expect(page.getByText(/Porsche 911 GT3/i).first()).toBeVisible();
+  await expect(page.getByText(/9\.4\/10/i).first()).toBeVisible();
+});
+
+test("/demo/auto-blog — ArticleCard grid (3 articles) visible", async ({ page }) => {
+  await page.goto("/demo/auto-blog");
+  await page.getByText("Derniers articles").scrollIntoViewIfNeeded();
+  await expect(page.getByText("Derniers articles").first()).toBeVisible();
+  await expect(page.getByText(/M3 vs C63/i).first()).toBeVisible();
+  await expect(page.getByText(/Electriques vs thermiques/i).first()).toBeVisible();
+  await expect(page.getByText(/pneus sport/i).first()).toBeVisible();
+});
+
+test("/demo/auto-blog — CarSpecComparison table visible", async ({ page }) => {
+  await page.goto("/demo/auto-blog");
+  await page.getByText("Comparatif technique").scrollIntoViewIfNeeded();
+  await expect(page.getByText("Comparatif technique").first()).toBeVisible();
+  await expect(page.getByText("M4 CSL").first()).toBeVisible();
+  await expect(page.getByText("296 GTB").first()).toBeVisible();
+  await expect(page.getByText("Puissance").first()).toBeVisible();
+  await expect(page.getByText("0-100 km/h").first()).toBeVisible();
+});
+
+test("/demo/auto-blog — Car3DPreview canvas visible on desktop", async ({ page }) => {
+  await page.goto("/demo/auto-blog");
+  const viewer = page.getByTestId("car-3d-preview");
+  await viewer.scrollIntoViewIfNeeded();
+  await expect(viewer).toBeVisible();
+  await expect(viewer.locator("canvas").first()).toBeVisible();
+});
+
+// ---------------------------------------------------------------------------
+// /demo/real-estate — lot 4 additions
+// ---------------------------------------------------------------------------
+
+test("/demo/real-estate — PropertySearchBar visible with selects", async ({ page }) => {
+  await page.goto("/demo/real-estate");
+  const form = page.locator("form").first();
+  await form.scrollIntoViewIfNeeded();
+  await expect(form.getByPlaceholder(/ville|quartier/i).first()).toBeVisible();
+  await expect(form.getByRole("button", { name: /type de bien|tous les biens/i })).toBeVisible();
+  await expect(form.getByRole("button", { name: /rechercher/i })).toBeVisible();
+});
+
+test("/demo/real-estate — NeighborhoodScoreCard grid visible", async ({ page }) => {
+  await page.goto("/demo/real-estate");
+  await page.getByText("Scores de quartier").scrollIntoViewIfNeeded();
+  await expect(page.getByText("Scores de quartier").first()).toBeVisible();
+  await expect(page.getByText("Marais").first()).toBeVisible();
+  await expect(page.getByText("Transports").first()).toBeVisible();
+  await expect(page.getByText(/12 400/i).first()).toBeVisible();
+});
+
+// ---------------------------------------------------------------------------
+// /demo/local-business — lot 4 additions
+// ---------------------------------------------------------------------------
+
+test("/demo/local-business — ServicePackageCard forfaits visible", async ({ page }) => {
+  await page.goto("/demo/local-business");
+  await page.getByText("Engagez-vous").scrollIntoViewIfNeeded();
+  await expect(page.getByText("Decouverte").first()).toBeVisible();
+  await expect(page.getByText("Harmonie").first()).toBeVisible();
+  await expect(page.getByText("Prestige").first()).toBeVisible();
+  await expect(page.getByText("Populaire").first()).toBeVisible();
+  await expect(page.getByText("349€").first()).toBeVisible();
+});
+
+test("/demo/local-business — LoyaltyStampCard visible", async ({ page }) => {
+  await page.goto("/demo/local-business");
+  await page.getByText("Votre 10e soin").scrollIntoViewIfNeeded();
+  await expect(page.getByText("Carte fidelite").first()).toBeVisible();
+  await expect(page.getByText(/7\/10 soins|Plus que 3/i).first()).toBeVisible();
+});
+
+// ---------------------------------------------------------------------------
+// /demo/portfolio — lot 5-6 additions
+// ---------------------------------------------------------------------------
+
+test("/demo/portfolio — CaseStudyCard with metrics visible", async ({ page }) => {
+  await page.goto("/demo/portfolio");
+  await page.getByText("Etudes de cas").scrollIntoViewIfNeeded();
+  await expect(page.getByText("Etudes de cas").first()).toBeVisible();
+  await expect(page.getByText("StartupFinance").first()).toBeVisible();
+  await expect(page.getByText("-68%").first()).toBeVisible();
+  await expect(page.getByText("40k").first()).toBeVisible();
+});
+
+test("/demo/portfolio — FilterableProjects grid and filter buttons visible", async ({ page }) => {
+  await page.goto("/demo/portfolio");
+  await page.getByText("Tous les projets").scrollIntoViewIfNeeded();
+  await expect(page.getByText("Tous les projets").first()).toBeVisible();
+  await expect(page.getByRole("button", { name: /Tous \(\d+\)/i })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Next.js" })).toBeVisible();
+  const count = await page.locator(".group.h-full.overflow-hidden").count();
+  expect(count).toBeGreaterThanOrEqual(4);
+});
+
+test("/demo/portfolio — FilterableProjects filter interaction", async ({ page }) => {
+  await page.goto("/demo/portfolio");
+  await page.getByText("Tous les projets").scrollIntoViewIfNeeded();
+  await page.getByRole("button", { name: "Docker" }).click();
+  await page.waitForTimeout(300);
+  const cards = page.locator(".group.h-full.overflow-hidden");
+  const count = await cards.count();
+  expect(count).toBeGreaterThanOrEqual(1);
+  expect(count).toBeLessThan(6);
+});
+
+test("/demo/portfolio — TechStackCloud with level dots visible", async ({ page }) => {
+  await page.goto("/demo/portfolio");
+  await page.getByText("Competences techniques").scrollIntoViewIfNeeded();
+  await expect(page.getByText("Competences techniques").first()).toBeVisible();
+  await expect(page.getByText("Next.js").first()).toBeVisible();
+  await expect(page.getByText("Infra & Outils").first()).toBeVisible();
+});
+
+test("/demo/portfolio — ProcessSteps visible", async ({ page }) => {
+  await page.goto("/demo/portfolio");
+  await page.getByText("Comment je travaille").scrollIntoViewIfNeeded();
+  await expect(page.getByText("Comment je travaille").first()).toBeVisible();
+  await expect(page.getByText("Decouverte").first()).toBeVisible();
+  await expect(page.getByText("Architecture").first()).toBeVisible();
+  await expect(page.getByText("Livraison").first()).toBeVisible();
+});
+
+test("/demo/portfolio — ContactForm renders and validates", async ({ page }) => {
+  await page.goto("/demo/portfolio");
+  await page.getByText("Parlons de votre projet").scrollIntoViewIfNeeded();
+  await expect(page.getByLabel("Nom")).toBeVisible();
+  await expect(page.getByLabel("Email")).toBeVisible();
+  await expect(page.getByLabel("Message")).toBeVisible();
+  await expect(page.getByRole("button", { name: /envoyer/i })).toBeVisible();
+});
+
+test("/demo/portfolio — Portfolio3DVisual canvas visible", async ({ page }) => {
+  await page.goto("/demo/portfolio");
+  const viewer = page.getByTestId("portfolio-3d-visual");
+  await viewer.scrollIntoViewIfNeeded();
+  await expect(viewer).toBeVisible();
+  await expect(viewer.locator("canvas").first()).toBeVisible();
+});
+
+// ---------------------------------------------------------------------------
+// /demo/components — lot 6 new 3D viewers
+// ---------------------------------------------------------------------------
+
+test("/demo/components — Phone and Laptop 3D viewers visible", async ({ page }) => {
+  await page.goto("/demo/components");
+  const phone = page.getByTestId("phone-mockup-3d");
+  const laptop = page.getByTestId("website-showcase-3d");
+  await phone.scrollIntoViewIfNeeded();
+  await expect(phone).toBeVisible();
+  await expect(phone.locator("canvas").first()).toBeVisible();
+  await expect(laptop).toBeVisible();
+  await expect(laptop.locator("canvas").first()).toBeVisible();
+});
+
+test("/demo/components — Car3DPreview visible in components demo", async ({ page }) => {
+  await page.goto("/demo/components");
+  const car = page.getByTestId("car-3d-preview");
+  await car.scrollIntoViewIfNeeded();
+  await expect(car).toBeVisible();
+  await expect(car.locator("canvas").first()).toBeVisible();
+});
+
+// ---------------------------------------------------------------------------
 // Mobile viewport
 // ---------------------------------------------------------------------------
 

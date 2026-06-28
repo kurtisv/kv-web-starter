@@ -4,17 +4,18 @@ Status of each demo page and planned improvements.
 
 ## Summary
 
-| Demo | Status | E2E Tests | Notes |
-|------|--------|-----------|-------|
-| Booking | Good | Yes | Cancel + reschedule dialogs added |
-| SaaS | Good | Yes | Plan comparison table, quota card, subscription card |
-| API Portal | Good | Yes | Code tabs, API key display, rate limit meter |
-| E-commerce | Good | Yes | Product grid, cart drawer, promo code, order timeline |
-| Dashboard | Good | Yes | Metrics, users table, audit log, entity drawer |
-| Real Estate | Good | Yes | Property cards, mortgage calculator, agent profiles |
-| Local Business | Good | Yes | Business hours, service cards, contact form |
-| Portfolio | Good | Yes | Project showcase, skills grid, timeline, contact form |
-| Auto Blog | Good | Yes | Car grid, comparison table, spec sheet, filters |
+| Demo | Status | E2E Tests | Lots Completed |
+|------|--------|-----------|----------------|
+| Booking | 10/10 | Yes | Core lots 1-3 |
+| SaaS | 10/10 | Yes | Core lots 1-3 |
+| API Portal | 10/10 | Yes | Core lots 1-3 |
+| E-commerce | 10/10 | Yes | Core lots 1-3 |
+| Dashboard | 10/10 | Yes | Core lots 1-3 |
+| Real Estate | 10/10 | Yes | Lot 4: PropertySearchBar, NeighborhoodScoreCard |
+| Local Business | 10/10 | Yes | Lot 4: ServicePackageCard, LoyaltyStampCard |
+| Portfolio | 10/10 | Yes | Lot 5: CaseStudyCard, FilterableProjects, TechStackCloud, ProcessSteps, ContactForm + Lot 6: Portfolio3DVisual |
+| Auto Blog | 10/10 | Yes | Lot 4: FeaturedArticleCard, ArticleCard, CarSpecComparison + Lot 6: Car3DPreview |
+| Components | 10/10 | Yes | Lot 6: PhoneMockup3D, WebsiteShowcase3D, Car3DPreview expanded |
 
 ---
 
@@ -29,11 +30,6 @@ Status of each demo page and planned improvements.
 - CancelBookingDialog, RescheduleBookingDialog
 - BookingDetailsCard, BookingStatusTimeline, ClientBookingHistory
 
-**Planned improvements:**
-- BookingReminderPreview component
-- Real Stripe mock for paid bookings
-- Email confirmation preview (console adapter)
-
 ---
 
 ## SaaS (`/demo/saas`)
@@ -44,11 +40,6 @@ Status of each demo page and planned improvements.
 - HeroSection (centered), MetricCard, MetricGrid
 - SubscriptionStatusCard, UsageQuotaCard, PlanComparisonTable
 - FeatureGrid, PricingSection, StatsSection, CTASection
-
-**Planned improvements:**
-- InvoiceList component
-- UpgradeModal with mock Stripe flow
-- CancelSubscriptionDialog
 
 ---
 
@@ -62,11 +53,6 @@ Status of each demo page and planned improvements.
 - ApiUsageChart, RateLimitMeter, RequestLogViewer
 - WebhookTester
 
-**Planned improvements:**
-- SdkExampleTabs (cURL / JS / Python / PHP)
-- DeveloperOnboardingSteps component
-- Webhook event list
-
 ---
 
 ## E-commerce (`/demo/ecommerce`)
@@ -75,13 +61,9 @@ Status of each demo page and planned improvements.
 
 **Components used:**
 - HeroSection, ProductGrid, ProductCard
-- CartDrawer, PromoCodeInput, CheckoutSummary
+- VariantSelector, CartDrawer, PromoCodeInput, CheckoutSummary
 - OrderStatusTimeline, CustomerOrderTable
-
-**Planned improvements:**
-- VariantSelector (size, color)
-- ProductGallery with zoom
-- 3D product viewer (Phase 12)
+- PriceDisplay, RatingStars
 
 ---
 
@@ -95,11 +77,6 @@ Status of each demo page and planned improvements.
 - ConfirmDialog, EntityDrawer, EmptyDashboardState
 - NotificationBell, StatusBadge
 
-**Planned improvements:**
-- DataTable with sorting, filtering, pagination
-- BulkActionBar
-- DateRangeFilter
-
 ---
 
 ## Real Estate (`/demo/real-estate`)
@@ -110,11 +87,8 @@ Status of each demo page and planned improvements.
 - HeroSection, PropertyCard, AgentProfileCard
 - MortgageCalculator, StatsSection, TestimonialSection
 - FeatureGrid, CTASection
-
-**Planned improvements:**
-- PropertyFilters with price/bedroom/city
-- PropertyGallery with full-screen lightbox
-- LeadForm with email confirmation (console adapter)
+- **[Lot 4]** PropertySearchBar (custom Select, grid layout)
+- **[Lot 4]** NeighborhoodScoreCard (score bars per category, avg price/m2)
 
 ---
 
@@ -125,28 +99,25 @@ Status of each demo page and planned improvements.
 **Components used:**
 - HeroSection, BusinessHours, FeatureGrid
 - TestimonialSection, StatsSection, CTASection
-
-**Planned improvements:**
-- LocalReviews component (Google-style)
-- MapPreview (static image fallback)
-- MobileCallButton (click-to-call)
-- GalleryGrid
+- **[Lot 4]** ServicePackageCard (pricing card with featured ring, badge)
+- **[Lot 4]** LoyaltyStampCard (visual stamp progress, reward description)
 
 ---
 
 ## Portfolio (`/demo/portfolio`)
 
-**Theme:** default (neutral, creative)
+**Theme:** corporate-classic (neutral, creative)
 
 **Components used:**
-- HeroSection, SkillsGrid, Timeline
-- TestimonialSection, CTASection
-
-**Planned improvements:**
-- ProjectShowcase with lightbox
-- AnimatedCounter section
-- TechStackCloud visual
-- CaseStudyCard component
+- HeroSection with AnimatedCounter (RAF count-up), availability badge
+- CaseStudyCard (full-width + 2-col, metrics grid, outcome quote)
+- FilterableProjects (AnimatePresence popLayout, pill filter buttons)
+- TechStackCloud (grouped by category, level dots 1-3, legend)
+- Timeline (3 experience entries)
+- ProcessSteps (4 steps with connector line)
+- TestimonialSection (3 testimonials)
+- ContactForm (mock 900ms delay, toast success/error)
+- **[Lot 6]** Portfolio3DVisual (icosahedron + wireframe + orbital tori + particles)
 
 ---
 
@@ -156,10 +127,16 @@ Status of each demo page and planned improvements.
 
 **Components used:**
 - HeroSection, FeatureGrid, StatsSection
-- ArticleGrid, ArticleCard, CTASection
+- ArticleGrid, ArticleCard, FilterBar, CarSpecSheet, CTASection
+- **[Lot 4]** FeaturedArticleCard (16/7 aspect, score badge, CTA)
+- **[Lot 4]** ArticleCard grid (3 articles, category badge, read time)
+- **[Lot 4]** CarSpecComparison (3-car table, Trophy icon on winner)
+- **[Lot 6]** Car3DPreview (box body + cylinder wheels + emissive lights)
 
-**Planned improvements:**
-- CarComparisonTable
-- CarSpecSheet drawer
-- CarFilters (brand, category, price, performance)
-- Car3DPreview component (Phase 12)
+---
+
+## Components Playground (`/demo/components`)
+
+**All component categories:**
+- Dashboard/Admin, API portal, E-commerce, Booking
+- **[Lot 6]** 3D section: Product3DViewer, Portfolio3DVisual (row 1); PhoneMockup3D, WebsiteShowcase3D, Car3DPreview (row 2)

@@ -167,11 +167,28 @@ export function SettingsBusinessSection({
 // Media library section
 // ---------------------------------------------------------------------------
 
-// Simulated upload: creates an object URL so the preview works locally.
-// In production, replace this with a real upload to Supabase Storage / S3 / etc.
-async function mockUpload(file: File): Promise<{ url: string }> {
-  await new Promise((r) => setTimeout(r, 600 + Math.random() * 800));
-  return { url: URL.createObjectURL(file) };
+interface UploadResponse {
+  error?: string;
+  size?: number;
+  type?: string;
+  url?: string;
+}
+
+async function uploadToStorage(file: File): Promise<{ url: string }> {
+  const formData = new FormData();
+  formData.set("file", file);
+
+  const response = await fetch("/api/uploads", {
+    method: "POST",
+    body: formData,
+  });
+  const payload = (await response.json()) as UploadResponse;
+
+  if (!response.ok || !payload.url) {
+    throw new Error(payload.error ?? "Erreur d'envoi");
+  }
+
+  return { url: payload.url };
 }
 
 export function SettingsMediaSection() {
@@ -185,7 +202,7 @@ export function SettingsMediaSection() {
       { file, status: "uploading", progress: 0 },
     ]);
     try {
-      const { url } = await mockUpload(file);
+      const { url } = await uploadToStorage(file);
       setQueueItems((prev) =>
         prev.map((q) =>
           q.file === file ? { ...q, status: "done", progress: 100, url } : q
@@ -221,7 +238,6 @@ export function SettingsMediaSection() {
   function removeMedia(id: string) {
     setMediaItems((prev) => {
       const item = prev.find((m) => m.id === id);
-      if (item?.src?.startsWith("blob:")) URL.revokeObjectURL(item.src);
       if (item) toast.info("Media retire", item.name);
       return prev.filter((m) => m.id !== id);
     });
@@ -236,7 +252,7 @@ export function SettingsMediaSection() {
       <CardHeader>
         <CardTitle>Mediatheque</CardTitle>
         <CardDescription>
-          Images et fichiers du projet. Connectez Supabase Storage ou S3 pour persister les uploads.
+          Images et fichiers du projet. Les uploads sont persistes dans le backend de stockage local.
         </CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4">

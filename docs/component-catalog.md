@@ -8,6 +8,11 @@
 - `EmptyDashboardState`: standard empty state for CRUD pages.
 - `AdminFormDrawer`: standardized drawer shell for create/edit forms.
 
+## Media
+
+- `FileDropzone`, `FileUploadQueue`, and `MediaGrid`: settings media library wired to `POST /api/uploads`.
+- Upload backend: local storage adapter writes to `apps/web/public/uploads` and returns public `/uploads/...` URLs.
+
 ## API Portal
 
 - `ApiUsageChart`: compact bar chart for recent API call volume.

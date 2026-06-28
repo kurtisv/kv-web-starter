@@ -24,7 +24,7 @@
 
 ## Medium Term
 
-- [ ] Wire uploads to Supabase, S3, Azure Blob, or another real storage backend
+- [x] Wire uploads to Supabase, S3, Azure Blob, or another real storage backend
 - [x] Add e-commerce Prisma models
 - [x] Add a real pricing page
 - [x] Add `ApiUsageChart`
@@ -48,4 +48,3 @@
 - Native selects and checkboxes still remain in `apps/web/src/app/dashboard/availability/page.tsx`.
 - Those controls live inside server-action forms that post plain `FormData`; replacing them cleanly should be done with a dedicated client form wrapper or hidden inputs.
 - Demo-data fallbacks still exist in dashboard API keys, API usage, customers, availability, bookings, services, and staff pages.
-- `apps/web/src/app/dashboard/settings/settings-client.tsx` still uses a local `mockUpload` until real storage is wired.

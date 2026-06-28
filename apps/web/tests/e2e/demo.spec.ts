@@ -51,4 +51,41 @@ test("/demo/components loads the component playground", async ({ page }) => {
   await expect(page.getByRole("heading", { name: "Dashboard/Admin" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "API portal" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "E-commerce" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "3D", exact: true })).toBeVisible();
+});
+
+test("/demo/components renders the 3D canvas on desktop and mobile", async ({ page }) => {
+  for (const viewport of [
+    { width: 1280, height: 900, name: "desktop" },
+    { width: 390, height: 844, name: "mobile" },
+  ]) {
+    await page.setViewportSize(viewport);
+    await page.goto("/demo/components");
+
+    const viewer = page.getByTestId("product-3d-viewer");
+    const canvas = viewer.locator("canvas").first();
+
+    await viewer.scrollIntoViewIfNeeded();
+    await expect(viewer).toBeVisible();
+    await expect(canvas).toBeVisible();
+    await page.waitForTimeout(600);
+    await page.waitForFunction(() => {
+      const canvas = document.querySelector('[data-testid="product-3d-viewer"] canvas') as HTMLCanvasElement | null;
+      if (!canvas || canvas.width === 0 || canvas.height === 0) return false;
+
+      const sampleWidth = Math.min(canvas.width, 80);
+      const sampleHeight = Math.min(canvas.height, 80);
+      const copy = document.createElement("canvas");
+      copy.width = sampleWidth;
+      copy.height = sampleHeight;
+      const ctx = copy.getContext("2d");
+      if (!ctx) return false;
+
+      ctx.drawImage(canvas, 0, 0, sampleWidth, sampleHeight);
+      const pixels = ctx.getImageData(0, 0, sampleWidth, sampleHeight).data;
+
+      return pixels.some((value) => value > 0);
+    });
+    await viewer.screenshot({ path: `test-results/3d-${viewport.name}.png` });
+  }
 });

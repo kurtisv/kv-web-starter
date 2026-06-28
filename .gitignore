@@ -48,6 +48,8 @@ next-env.d.ts
 
 # generated
 apps/web/src/generated/prisma/
+apps/web/public/uploads/*
+!apps/web/public/uploads/.gitkeep
 
 # video renders (generated assets — not committed, rebuild via pnpm video:render)
 apps/web/public/videos/*.mp4

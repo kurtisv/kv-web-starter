@@ -11,6 +11,7 @@ export * from "./dialog";
 export * from "./dropdown-menu";
 export * from "./empty-state";
 export * from "./form";
+export * from "./form-select";
 export * from "./input";
 export * from "./label";
 export * from "./loading-state";

@@ -10,6 +10,7 @@ import {
 } from "@/app/actions/booking";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { FormCheckbox, FormSelect } from "@/components/ui/form-select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -24,6 +25,11 @@ const weekdays = [
   { value: 5, label: "Vendredi" },
   { value: 6, label: "Samedi" },
 ];
+
+const weekdayOptions = weekdays.map((day) => ({
+  value: String(day.value),
+  label: day.label,
+}));
 
 const DEMO_STAFF_AVAIL = [
   { id: "demo-staff-marie", name: "Marie Tremblay" },
@@ -69,6 +75,10 @@ async function getAvailabilityData() {
 
 export default async function DashboardAvailabilityPage() {
   const { staff, rules, exceptions } = await getAvailabilityData();
+  const staffOptions = staff.map((member) => ({
+    value: member.id,
+    label: member.name,
+  }));
 
   return (
     <main className="grid gap-6 px-6 py-10">
@@ -92,35 +102,23 @@ export default async function DashboardAvailabilityPage() {
             <form action={createAvailabilityRule} className="grid gap-4">
               <div className="grid gap-2">
                 <Label htmlFor="rule-staff">Intervenant</Label>
-                <select
+                <FormSelect
                   id="rule-staff"
                   name="staffId"
-                  className="h-10 border border-border bg-background px-3 text-sm"
+                  options={staffOptions}
+                  placeholder="Choisir un intervenant"
                   required
-                >
-                  <option value="">Choisir un intervenant</option>
-                  {staff.map((member) => (
-                    <option key={member.id} value={member.id}>
-                      {member.name}
-                    </option>
-                  ))}
-                </select>
+                />
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="weekday">Jour de la semaine</Label>
-                <select
+                <FormSelect
                   id="weekday"
                   name="weekday"
-                  className="h-10 border border-border bg-background px-3 text-sm"
                   defaultValue={1}
+                  options={weekdayOptions}
                   required
-                >
-                  {weekdays.map((day) => (
-                    <option key={day.value} value={day.value}>
-                      {day.label}
-                    </option>
-                  ))}
-                </select>
+                />
               </div>
               <div className="grid gap-4 sm:grid-cols-3">
                 <div className="grid gap-2">
@@ -156,19 +154,13 @@ export default async function DashboardAvailabilityPage() {
             <form action={createAvailabilityException} className="grid gap-4">
               <div className="grid gap-2">
                 <Label htmlFor="exception-staff">Intervenant</Label>
-                <select
+                <FormSelect
                   id="exception-staff"
                   name="staffId"
-                  className="h-10 border border-border bg-background px-3 text-sm"
+                  options={staffOptions}
+                  placeholder="Choisir un intervenant"
                   required
-                >
-                  <option value="">Choisir un intervenant</option>
-                  {staff.map((member) => (
-                    <option key={member.id} value={member.id}>
-                      {member.name}
-                    </option>
-                  ))}
-                </select>
+                />
               </div>
               <div className="grid gap-4 sm:grid-cols-3">
                 <div className="grid gap-2">
@@ -184,10 +176,7 @@ export default async function DashboardAvailabilityPage() {
                   <Input id="exceptionEnd" name="endTime" type="time" />
                 </div>
               </div>
-              <label className="flex items-center gap-2 text-sm">
-                <input name="isClosed" type="checkbox" />
-                Ferie toute la journee
-              </label>
+              <FormCheckbox id="create-is-closed" label="Ferie toute la journee" name="isClosed" />
               <Button type="submit">
                 <PlusCircle className="size-4" />
                 Ajouter une exception
@@ -219,34 +208,22 @@ export default async function DashboardAvailabilityPage() {
                     <TableCell>
                       <form id={`rule-${rule.id}`} action={updateAvailabilityRule}>
                         <input type="hidden" name="ruleId" value={rule.id} />
-                        <select
+                        <FormSelect
                           name="staffId"
-                          className="h-10 w-full border border-border bg-background px-3 text-sm"
                           defaultValue={rule.staffId}
+                          options={staffOptions}
                           required
-                        >
-                          {staff.map((member) => (
-                            <option key={member.id} value={member.id}>
-                              {member.name}
-                            </option>
-                          ))}
-                        </select>
+                        />
                       </form>
                     </TableCell>
                     <TableCell>
-                      <select
+                      <FormSelect
                         form={`rule-${rule.id}`}
                         name="weekday"
-                        className="h-10 w-full border border-border bg-background px-3 text-sm"
                         defaultValue={rule.weekday}
+                        options={weekdayOptions}
                         required
-                      >
-                        {weekdays.map((day) => (
-                          <option key={day.value} value={day.value}>
-                            {day.label}
-                          </option>
-                        ))}
-                      </select>
+                      />
                     </TableCell>
                     <TableCell>
                       <div className="grid gap-2 sm:grid-cols-2">
@@ -305,18 +282,12 @@ export default async function DashboardAvailabilityPage() {
                     <TableCell>
                       <form id={`exception-${exception.id}`} action={updateAvailabilityException}>
                         <input type="hidden" name="exceptionId" value={exception.id} />
-                        <select
+                        <FormSelect
                           name="staffId"
-                          className="h-10 w-full border border-border bg-background px-3 text-sm"
                           defaultValue={exception.staffId}
+                          options={staffOptions}
                           required
-                        >
-                          {staff.map((member) => (
-                            <option key={member.id} value={member.id}>
-                              {member.name}
-                            </option>
-                          ))}
-                        </select>
+                        />
                       </form>
                     </TableCell>
                     <TableCell>
@@ -346,15 +317,13 @@ export default async function DashboardAvailabilityPage() {
                     </TableCell>
                     <TableCell>
                       <div className="grid gap-2">
-                        <label className="flex items-center gap-2 text-sm">
-                          <input
-                            form={`exception-${exception.id}`}
-                            name="isClosed"
-                            type="checkbox"
-                            defaultChecked={exception.isClosed}
-                          />
-                          Ferie
-                        </label>
+                        <FormCheckbox
+                          defaultChecked={exception.isClosed}
+                          form={`exception-${exception.id}`}
+                          id={`exception-${exception.id}-closed`}
+                          label="Ferie"
+                          name="isClosed"
+                        />
                         <div className="flex gap-2">
                           <Button form={`exception-${exception.id}`} type="submit" size="sm" variant="secondary">
                             Sauvegarder

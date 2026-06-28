@@ -47,6 +47,36 @@ async function main() {
       priceCents: 12500,
     },
   });
+
+  const product = await prisma.product.upsert({
+    where: { slug: "starter-kit" },
+    update: {},
+    create: {
+      name: "Starter Kit",
+      slug: "starter-kit",
+      description: "Produit de demonstration pour le module e-commerce.",
+      priceCents: 4900,
+    },
+  });
+
+  await prisma.inventory.upsert({
+    where: { productId: product.id },
+    update: { quantity: 25 },
+    create: {
+      productId: product.id,
+      quantity: 25,
+    },
+  });
+
+  await prisma.coupon.upsert({
+    where: { code: "WELCOME10" },
+    update: {},
+    create: {
+      code: "WELCOME10",
+      percentOff: 10,
+      maxRedemptions: 100,
+    },
+  });
 }
 
 main()

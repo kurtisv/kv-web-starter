@@ -10,6 +10,7 @@ export interface SelectOption {
 }
 
 interface SelectProps {
+  id?: string;
   value?: string;
   onValueChange?: (value: string) => void;
   options: SelectOption[];
@@ -19,6 +20,7 @@ interface SelectProps {
 }
 
 export function Select({
+  id,
   value,
   onValueChange,
   options,
@@ -31,6 +33,7 @@ export function Select({
   const ref = React.useRef<HTMLDivElement>(null);
   const triggerRef = React.useRef<HTMLButtonElement>(null);
   const listboxId = React.useId();
+  const activeOptionId = focused >= 0 ? `${listboxId}-option-${focused}` : undefined;
 
   const selected = options.find((o) => o.value === value);
 
@@ -72,12 +75,14 @@ export function Select({
   return (
     <div ref={ref} className={cn("relative", className)}>
       <button
+        id={id}
         ref={triggerRef}
         type="button"
         role="combobox"
         aria-expanded={open}
         aria-haspopup="listbox"
         aria-controls={listboxId}
+        aria-activedescendant={activeOptionId}
         disabled={disabled}
         onClick={() => {
           setOpen((o) => !o);
@@ -110,6 +115,7 @@ export function Select({
             {options.map((opt, i) => (
               <div
                 key={opt.value}
+                id={`${listboxId}-option-${i}`}
                 role="option"
                 aria-selected={opt.value === value}
                 onClick={() => {

@@ -6,6 +6,7 @@ import { Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
+import { useToast } from "@/components/ui/use-toast";
 
 interface WebhookTesterProps {
   defaultUrl?: string;
@@ -13,14 +14,20 @@ interface WebhookTesterProps {
 }
 
 export function WebhookTester({ defaultUrl = "", onSend }: WebhookTesterProps) {
+  const { toast } = useToast();
   const [url, setUrl] = React.useState(defaultUrl);
   const [event, setEvent] = React.useState("booking.created");
   const [sent, setSent] = React.useState(false);
 
   const submit = async (eventObject: React.FormEvent) => {
     eventObject.preventDefault();
-    await onSend?.({ url, event });
-    setSent(true);
+    try {
+      await onSend?.({ url, event });
+      setSent(true);
+      toast.success("Webhook teste", event);
+    } catch (error) {
+      toast.error("Erreur webhook", error instanceof Error ? error.message : "Impossible d'envoyer le test.");
+    }
   };
 
   return (

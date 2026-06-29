@@ -1,5 +1,6 @@
 "use client";
 
+import "@/lib/three-compat"; // suppress upstream R3F/Three.js deprecation noise
 import * as React from "react";
 import { Canvas } from "@react-three/fiber";
 import { Environment, OrbitControls } from "@react-three/drei";

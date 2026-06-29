@@ -60,12 +60,9 @@ function useAutoFit(
 
 // ── The mesh itself (suspends while loading) ──────────────────────────────────
 function GLBMesh({ url, targetSize }: { url: string; targetSize: number }) {
-  const { scene } = useGLTF(url, undefined, undefined, (err) => {
-    // Suppress texture/asset warnings — non-fatal, model still renders
-    if (process.env.NODE_ENV === "development") {
-      console.warn("[GlbSceneViewer] asset load warning:", err);
-    }
-  });
+  // The onError callback silently swallows non-fatal asset warnings
+  // (missing textures, blob URL fetch blocks) — the model still renders.
+  const { scene } = useGLTF(url, undefined, undefined, () => { /* non-fatal */ });
   const { position, scale } = useAutoFit(scene, targetSize);
   return <primitive object={scene} scale={scale} position={position} />;
 }

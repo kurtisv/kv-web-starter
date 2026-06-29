@@ -11,6 +11,8 @@
   --hero-text: #f0f6ff;
   --card: #ffffff;
   --card-foreground: #18181b;
+  --popover: #ffffff;
+  --popover-foreground: #18181b;
   --muted: #f4f4f5;
   --muted-foreground: #71717a;
   --border: #e4e4e7;
@@ -40,6 +42,8 @@
     --foreground: #fafafa;
     --card: #18181b;
     --card-foreground: #fafafa;
+    --popover: #18181b;
+    --popover-foreground: #fafafa;
     --muted: #27272a;
     --muted-foreground: #a1a1aa;
     --border: #3f3f46;
@@ -63,6 +67,8 @@
   --foreground: #0f172a;
   --card: #ffffff;
   --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
   --muted: #e2e8f0;
   --muted-foreground: #475569;
   --border: #e2e8f0;
@@ -89,6 +95,8 @@
   --foreground: #0f172a;
   --card: #ede9fe;
   --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
   --muted: #ddd6fe;
   --muted-foreground: #4b5563;
   --border: #c4b5fd;
@@ -119,6 +127,8 @@
   --foreground: #fafafa;
   --card: #18181b;
   --card-foreground: #fafafa;
+  --popover: #18181b;
+  --popover-foreground: #fafafa;
   --muted: #1c1c1f;
   --muted-foreground: #a1a1aa;
   --border: #27272a;
@@ -146,6 +156,8 @@
   --foreground: #292524;
   --card: #ffffff;
   --card-foreground: #292524;
+  --popover: #ffffff;
+  --popover-foreground: #292524;
   --muted: #fde68a;
   --muted-foreground: #57534e;
   --border: #d4b483;
@@ -172,6 +184,8 @@
   --foreground: #0f172a;
   --card: #e0f2fe;
   --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
   --muted: #bae6fd;
   --muted-foreground: #475569;
   --border: #7dd3fc;
@@ -202,6 +216,8 @@
   --foreground: #111827;
   --card: #fff0e8;
   --card-foreground: #111827;
+  --popover: #ffffff;
+  --popover-foreground: #111827;
   --muted: #f0f2f4;
   --muted-foreground: #4b5563;
   --border: #e5e7eb;
@@ -229,6 +245,8 @@
   --foreground: #f9fafb;
   --card: #0d1929;
   --card-foreground: #f9fafb;
+  --popover: #0d1929;
+  --popover-foreground: #f9fafb;
   --muted: #1f2937;
   --muted-foreground: #9ca3af;
   --border: #374151;
@@ -255,6 +273,8 @@
   --color-foreground: var(--foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);

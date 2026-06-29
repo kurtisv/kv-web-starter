@@ -51,7 +51,5 @@ apps/web/src/generated/prisma/
 apps/web/public/uploads/*
 !apps/web/public/uploads/.gitkeep
 
-# video renders (generated assets — not committed, rebuild via pnpm video:render)
-apps/web/public/videos/*.mp4
-apps/web/public/videos/*.webm
+# video renders — only Remotion temp props excluded; mp4/webm assets are committed
 packages/video/.remotion-props-tmp.json

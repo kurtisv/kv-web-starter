@@ -24,7 +24,7 @@ import {
   PromoCodeInput,
   VariantSelector,
 } from "@/components/ecommerce";
-import { PhoneMockup3D } from "@/components/3d";
+import { PhoneMockup3D, WebsiteShowcase3D } from "@/components/3d";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field } from "@/components/ui/form";
@@ -145,11 +145,18 @@ export function ComponentsDemoClient() {
             3D
           </h2>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
-            Scene telephone interactive. Degradation mobile automatique (DPR, antialiasing).
+            Scenes 3D interactives avec GLB reel ou fallback procedural automatique. Degradation mobile integree.
           </p>
         </div>
-        <div className="max-w-sm">
-          <PhoneMockup3D />
+        <div className="grid gap-6 sm:grid-cols-2">
+          <div>
+            <p className="mb-2 text-sm font-medium text-muted-foreground">Telephone</p>
+            <PhoneMockup3D />
+          </div>
+          <div>
+            <p className="mb-2 text-sm font-medium text-muted-foreground">Laptop</p>
+            <WebsiteShowcase3D />
+          </div>
         </div>
       </section>
 

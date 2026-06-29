@@ -4,15 +4,17 @@
  * Smart3DObject — priority-cascaded 3D renderer.
  *
  * Priority chain (highest → lowest):
- *   1. Real GLB model    — if modelUrl is provided and loads successfully
- *   2. Procedural 3D     — geometry built in Three.js (always available)
- *   3. CSS fallback      — static image/icon (handled inside SafeSceneCanvas
- *                          when WebGL is unavailable; no extra code needed)
+ *   1. Real GLB model    — HEAD-checked before load to avoid error-flash.
+ *                          Tries explicit modelUrl first, then the default
+ *                          slot path (/models/3d/<type>/default.glb).
+ *   2. Procedural 3D     — geometry built in Three.js (always available).
+ *   3. CSS fallback      — static icon rendered by SafeSceneCanvas when
+ *                          WebGL is unavailable; no extra code needed here.
  *
- * Usage — no model yet (procedural only):
+ * Usage — auto-detect GLB slot (procedural if file absent):
  *   <Smart3DObject objectType="car" />
  *
- * Usage — with a real GLB asset, procedural as automatic fallback:
+ * Usage — explicit GLB path with procedural fallback:
  *   <Smart3DObject objectType="car" modelUrl="/models/3d/car/taycan.glb" />
  */
 
@@ -24,41 +26,41 @@ import { ProceduralLaptopFallback } from "./procedural-fallback/procedural-lapto
 import { ProceduralPhoneFallback } from "./procedural-fallback/procedural-phone";
 import { Portfolio3DVisual } from "./portfolio-3d-visual";
 
+// ── Default GLB slot paths ────────────────────────────────────────────────────
+// Drop a .glb here to upgrade from procedural to real model automatically.
+const DEFAULT_MODEL_URLS: Partial<Record<Smart3DType, string>> = {
+  car:    "/models/3d/car/default.glb",
+  laptop: "/models/3d/laptop/default.glb",
+  phone:  "/models/3d/phone/default.glb",
+};
+
 // ── Types ─────────────────────────────────────────────────────────────────────
 export type Smart3DType = "car" | "laptop" | "phone" | "watch" | "generic";
 
-type RenderLayer = "glb" | "procedural";
+type GlbStatus = "checking" | "available" | "unavailable";
 
 export interface Smart3DObjectProps {
-  /** The kind of object — controls which procedural fallback is used. */
   objectType: Smart3DType;
 
   /**
-   * Path to a .glb file served from /public (e.g. "/models/3d/car/taycan.glb").
-   * When provided the viewer tries to load it first.
-   * If the file is missing or the load errors, it silently falls back to procedural.
-   * When omitted, procedural is used directly.
+   * Explicit .glb path. When omitted, Smart3DObject checks the default slot
+   * for this objectType (/models/3d/<type>/default.glb). If neither exists
+   * on the server the procedural scene is shown instantly.
    */
   modelUrl?: string;
 
   className?: string;
   performanceMode?: ScenePerformanceMode;
 
-  // ── GLB-viewer overrides (ignored when using procedural) ──────────────────
-  /** Camera position for the GLB viewer. Defaults to a 3/4 elevated view. */
   cameraPosition?: [number, number, number];
   cameraFov?: number;
   orbitTarget?: [number, number, number];
-  /** Auto-scales the model so its longest axis = this many scene units. */
   modelTargetSize?: number;
   autoRotate?: boolean;
   autoRotateSpeed?: number;
   backgroundColor?: string;
 
-  // ── Procedural-fallback overrides ─────────────────────────────────────────
-  /** Paint colour passed to procedural car / other tinted components. */
   color?: string;
-  /** Caption shown below the canvas (procedural only). */
   label?: string;
 
   "aria-label"?: string;
@@ -67,17 +69,9 @@ export interface Smart3DObjectProps {
 // ── Procedural render map ─────────────────────────────────────────────────────
 function renderProcedural(
   objectType: Smart3DType,
-  props: {
-    className?: string;
-    performanceMode?: ScenePerformanceMode;
-    color?: string;
-    label?: string;
-  }
+  props: Pick<Smart3DObjectProps, "className" | "performanceMode" | "color" | "label">
 ): React.ReactNode {
-  const common = {
-    className: props.className,
-    performanceMode: props.performanceMode,
-  };
+  const common = { className: props.className, performanceMode: props.performanceMode };
   switch (objectType) {
     case "car":
       return <ProceduralCarFallback {...common} color={props.color} label={props.label} />;
@@ -109,24 +103,35 @@ export function Smart3DObject({
   label,
   "aria-label": ariaLabel,
 }: Smart3DObjectProps) {
-  // Start on the highest available layer
-  const [layer, setLayer] = React.useState<RenderLayer>(
-    modelUrl ? "glb" : "procedural"
+  // Resolve the URL to attempt: explicit prop > default slot > none
+  const effectiveUrl = modelUrl ?? DEFAULT_MODEL_URLS[objectType];
+
+  // HEAD-check before mounting the GLB viewer so there's no error-flash when
+  // the file is absent (common on first run / CI without rendered assets).
+  const [glbStatus, setGlbStatus] = React.useState<GlbStatus>(
+    effectiveUrl ? "checking" : "unavailable"
   );
 
-  // If modelUrl changes (e.g. dynamic slot), re-attempt the GLB layer
   React.useEffect(() => {
-    setLayer(modelUrl ? "glb" : "procedural");
-  }, [modelUrl]);
+    if (!effectiveUrl) { setGlbStatus("unavailable"); return; }
 
-  const onGlbError = React.useCallback(() => setLayer("procedural"), []);
+    setGlbStatus("checking");
+    const ctrl = new AbortController();
 
-  if (layer === "glb" && modelUrl) {
+    fetch(effectiveUrl, { method: "HEAD", cache: "no-store", signal: ctrl.signal })
+      .then((r) => setGlbStatus(r.ok ? "available" : "unavailable"))
+      .catch(() => { if (!ctrl.signal.aborted) setGlbStatus("unavailable"); });
+
+    return () => ctrl.abort();
+  }, [effectiveUrl]);
+
+  // Layer 1 — GLB (confirmed available by HEAD check)
+  if (glbStatus === "available" && effectiveUrl) {
     const viewerProps: GlbSceneViewerProps = {
-      modelUrl,
+      modelUrl: effectiveUrl,
       className,
       performanceMode,
-      onError: onGlbError,
+      onError: () => setGlbStatus("unavailable"),
       ...(cameraPosition  !== undefined && { cameraPosition }),
       ...(cameraFov       !== undefined && { cameraFov }),
       ...(orbitTarget     !== undefined && { orbitTarget }),
@@ -139,17 +144,10 @@ export function Smart3DObject({
     return <GlbSceneViewer {...viewerProps} />;
   }
 
-  // Layer 2 — procedural (always works, SafeSceneCanvas adds CSS fallback
-  // automatically if WebGL is unavailable)
+  // Layer 2 — procedural (shown while checking or when GLB unavailable)
   return renderProcedural(objectType, { className, performanceMode, color, label });
 }
 
 // ── Preload helper ────────────────────────────────────────────────────────────
-/**
- * Call at module/page level to warm the GLTF cache before render.
- *   Smart3DObject.preload("car", "/models/3d/car/taycan.glb");
- */
-Smart3DObject.preload = (
-  _objectType: Smart3DType,
-  modelUrl: string
-) => GlbSceneViewer.preload(modelUrl);
+Smart3DObject.preload = (_objectType: Smart3DType, url: string) =>
+  GlbSceneViewer.preload(url);

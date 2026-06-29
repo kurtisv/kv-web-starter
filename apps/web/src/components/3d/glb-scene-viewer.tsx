@@ -61,7 +61,12 @@ function GLBMesh({ url, targetSize }: { url: string; targetSize: number }) {
   return <primitive object={scene} scale={scale} position={position} />;
 }
 
-// ── Progress chip rendered outside the canvas ─────────────────────────────────
+// ── Progress chip + state tracker (rendered outside the canvas) ───────────────
+function useGlbLoadState(): "loading" | "loaded" {
+  const { active } = useProgress();
+  return active ? "loading" : "loaded";
+}
+
 function LoadingChip() {
   const { progress, active } = useProgress();
   if (!active) return null;
@@ -119,9 +124,14 @@ export function GlbSceneViewer({
 }: GlbSceneViewerProps) {
   const mobile = useMobilePerformance(performanceMode);
   const handleError = React.useCallback(() => onError?.(), [onError]);
+  const glbState = useGlbLoadState();
 
   return (
-    <div className={`relative ${className ?? ""}`}>
+    <div
+      className={`relative ${className ?? ""}`}
+      data-testid="glb-viewer"
+      data-glb-state={glbState}
+    >
       <SafeSceneCanvas
         aria-label={ariaLabel}
         performanceMode={performanceMode}

@@ -26,6 +26,8 @@
     "video:render:hero": "powershell.exe -ExecutionPolicy Bypass -NoProfile -File ./scripts/Render-Video.ps1 -Composition HeroIntro",
     "video:render:stats": "powershell.exe -ExecutionPolicy Bypass -NoProfile -File ./scripts/Render-Video.ps1 -Composition StatsCounter",
     "video:render:features": "powershell.exe -ExecutionPolicy Bypass -NoProfile -File ./scripts/Render-Video.ps1 -Composition FeatureReveal",
+    "models:download": "powershell.exe -ExecutionPolicy Bypass -NoProfile -File ./scripts/Download-3D-Models.ps1",
+    "models:download:optimized": "powershell.exe -ExecutionPolicy Bypass -NoProfile -File ./scripts/Download-3D-Models.ps1 -Optimize",
     "format": "prettier --write .",
     "postinstall": "node scripts/patch-next-config.js"
   },

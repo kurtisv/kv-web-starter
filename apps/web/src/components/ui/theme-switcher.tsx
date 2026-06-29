@@ -42,7 +42,7 @@ export function ThemeSwitcher() {
         <div
           role="listbox"
           aria-label="Themes disponibles"
-          className="absolute right-0 top-full z-50 mt-2 w-80 rounded-xl border bg-card p-3 shadow-lg"
+          className="absolute right-0 top-full z-50 mt-2 w-80 rounded-xl border bg-popover p-3 shadow-lg"
         >
           <p className="mb-2 px-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
             Theme

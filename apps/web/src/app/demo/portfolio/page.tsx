@@ -14,7 +14,7 @@ import { CaseStudyCard, type CaseStudyCardProps } from "@/components/portfolio/c
 import { ProcessSteps, type ProcessStep } from "@/components/portfolio/process-steps";
 import { FilterableProjects, type ProjectItem } from "@/components/portfolio/filterable-projects";
 import { ContactForm } from "@/components/portfolio/contact-form";
-import { Portfolio3DVisual } from "@/components/3d";
+
 
 /* ── Data ─────────────────────────────────────────── */
 
@@ -281,7 +281,6 @@ export default function DemoPortfolioPage() {
                 ))}
               </ul>
             </div>
-            <Portfolio3DVisual />
           </div>
         </div>
       </section>

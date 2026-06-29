@@ -34,7 +34,9 @@ class GlbLoadErrorBoundary extends React.Component<
   }
 }
 
-// ── Auto-fit: center + scale model to a target bounding size ─────────────────
+// ── Auto-fit: center model at origin and scale to target bounding size ────────
+// Centering at origin means the orbit pivot is always the geometric center,
+// so every part of the model stays equidistant from the camera as it rotates.
 function useAutoFit(
   scene: THREE.Object3D,
   targetSize: number
@@ -45,10 +47,8 @@ function useAutoFit(
     const center = box.getCenter(new THREE.Vector3());
     const maxDim = Math.max(size.x, size.y, size.z);
     const scale = maxDim > 0 ? targetSize / maxDim : 1;
-    // Shift so the model bottom sits at Y=0 and XZ is centered
-    const groundY = box.min.y * scale;
     return {
-      position: [-center.x * scale, -groundY, -center.z * scale],
+      position: [-center.x * scale, -center.y * scale, -center.z * scale],
       scale,
     };
   }, [scene, targetSize]);
@@ -117,9 +117,11 @@ export function GlbSceneViewer({
   modelUrl,
   className,
   performanceMode = "auto",
-  cameraPosition = [0, 1.4, 4.2],
-  cameraFov = 38,
-  orbitTarget = [0, 0.6, 0],
+  // Camera pulled back so the full model stays in frame at any rotation angle.
+  // Model is centered at origin — orbit target matches.
+  cameraPosition = [0, 0.6, 5.5],
+  cameraFov = 42,
+  orbitTarget = [0, 0, 0],
   modelTargetSize = 2.2,
   autoRotate = true,
   autoRotateSpeed = 0.5,
@@ -130,6 +132,9 @@ export function GlbSceneViewer({
   const mobile = useMobilePerformance(performanceMode);
   const handleError = React.useCallback(() => onError?.(), [onError]);
   const glbState = useGlbLoadState();
+
+  // Shadow sits just below the centered model's bottom edge (targetSize / 2)
+  const shadowY = -(modelTargetSize / 2) - 0.05;
 
   return (
     <div
@@ -156,14 +161,16 @@ export function GlbSceneViewer({
           enableZoom={!mobile}
           autoRotate={autoRotate && !mobile}
           autoRotateSpeed={autoRotateSpeed}
-          minPolarAngle={Math.PI / 4}
-          maxPolarAngle={Math.PI / 1.9}
+          // Allow ~30° overhead to ~150° (slightly past horizontal both ways)
+          // so the model never clips at the top or bottom when orbiting.
+          minPolarAngle={Math.PI / 6}
+          maxPolarAngle={Math.PI * 5 / 6}
         />
 
-        {/* Ground shadow */}
+        {/* Ground shadow under the centered model */}
         {!mobile && (
           <ContactShadows
-            position={[0, -0.01, 0]}
+            position={[0, shadowY, 0]}
             opacity={0.55}
             scale={8}
             blur={2.0}

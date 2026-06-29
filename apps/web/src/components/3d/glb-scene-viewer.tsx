@@ -12,6 +12,10 @@ import * as THREE from "three";
 import { type ScenePerformanceMode, useMobilePerformance } from "./scene-canvas";
 import { SafeSceneCanvas } from "./core/safe-scene-canvas";
 
+// Point useGLTF at the local Draco decoder so Draco-compressed GLBs (e.g.
+// mac-draco.glb) decompress without hitting an external CDN or CSP violation.
+useGLTF.setDecoderPath("/draco-gltf/");
+
 // ── GLB load error boundary ───────────────────────────────────────────────────
 // Catches useGLTF failures so Smart3DObject can fall back to procedural
 // rather than letting SceneErrorBoundary swallow the error into a CSS fallback.

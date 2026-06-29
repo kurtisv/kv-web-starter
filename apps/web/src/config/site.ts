@@ -7,6 +7,7 @@ export const siteConfig = {
   footerTags: ["Next.js", "Prisma", "Stripe", "Auth.js"],
   nav: [
     { href: "/demo",       label: "Démo" },
+    { href: "/showcase",   label: "Composants" },
     { href: "/docs",       label: "Guide" },
     { href: "/services",   label: "Services" },
     { href: "/booking",    label: "Réservation" },

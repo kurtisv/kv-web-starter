@@ -7,3 +7,7 @@ export * from "./website-showcase-3d";
 export * from "./car-3d-preview";
 export * from "./portfolio-3d-visual";
 export * from "./fallback-visual";
+export * from "./core/safe-scene-canvas";
+export * from "./core/scene-quality-provider";
+export { SceneErrorBoundary } from "./core/scene-error-boundary";
+export { useWebGLSupport } from "./core/webgl-guard";

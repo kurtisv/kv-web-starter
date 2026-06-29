@@ -3,7 +3,8 @@
 import * as React from "react";
 import { RoundedBox, ContactShadows } from "@react-three/drei";
 import type { Group } from "three";
-import { SceneCanvas, useMobilePerformance, type ScenePerformanceMode } from "./scene-canvas";
+import { useMobilePerformance, type ScenePerformanceMode } from "./scene-canvas";
+import { SafeSceneCanvas } from "./core/safe-scene-canvas";
 
 // MacBook Pro 16" proportions (355.7 × 248.1 × 16.8 mm)
 // Scene scale: 1 unit ≈ 111 mm
@@ -297,9 +298,10 @@ export function WebsiteShowcase3D({
 
   return (
     <div className={className} data-testid="website-showcase-3d">
-      <SceneCanvas
+      <SafeSceneCanvas
         aria-label="MacBook Pro 3D showcase"
         performanceMode={performanceMode}
+        fallbackType="laptop"
         className="aspect-video min-h-[260px] rounded-none"
       >
         <color attach="background" args={["#0a0c14"]} />
@@ -314,7 +316,7 @@ export function WebsiteShowcase3D({
         <pointLight position={[0, -2, 2]} intensity={0.12} color="#c8d8ff" />
         <hemisphereLight args={["#c8d4ff", "#080812", 0.22]} />
         <LaptopScene mobile={mobile} />
-      </SceneCanvas>
+      </SafeSceneCanvas>
       <div className="bg-background px-1 py-3">
         <p className="font-semibold">MacBook Pro — aluminium brossé</p>
         <p className="mt-1 text-sm text-muted-foreground">

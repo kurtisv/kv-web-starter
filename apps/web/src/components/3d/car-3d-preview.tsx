@@ -7,10 +7,10 @@ import * as THREE from "three";
 import { DoubleSide } from "three";
 import type { Group } from "three";
 import {
-  SceneCanvas,
   useMobilePerformance,
   type ScenePerformanceMode,
 } from "./scene-canvas";
+import { SafeSceneCanvas } from "./core/safe-scene-canvas";
 
 // ── shared PBR clearcoat paint ───────────────────────────────────────────────
 const PAINT = {
@@ -326,9 +326,10 @@ export function Car3DPreview({
 
   return (
     <div className={className} data-testid="car-3d-preview">
-      <SceneCanvas
+      <SafeSceneCanvas
         aria-label="Car 3D preview"
         performanceMode={performanceMode}
+        fallbackType="car"
         className="aspect-video min-h-[280px] rounded-none"
       >
         <color attach="background" args={["#060610"]} />
@@ -343,7 +344,7 @@ export function Car3DPreview({
         <pointLight position={[-5, 2, 0]} intensity={0.48} color="#e8f0ff" />
         <hemisphereLight args={["#b8c8ff", "#050508", 0.18]} />
         <TaycanScene mobile={mobile} color={color} />
-      </SceneCanvas>
+      </SafeSceneCanvas>
       {label && (
         <div className="bg-background px-1 py-3">
           <p className="font-semibold">{label}</p>

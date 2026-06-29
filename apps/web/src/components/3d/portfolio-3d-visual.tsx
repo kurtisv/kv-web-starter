@@ -4,7 +4,8 @@ import * as React from "react";
 import { useFrame } from "@react-three/fiber";
 import { Float } from "@react-three/drei";
 import type { Mesh } from "three";
-import { SceneCanvas, useMobilePerformance, type ScenePerformanceMode } from "./scene-canvas";
+import { useMobilePerformance, type ScenePerformanceMode } from "./scene-canvas";
+import { SafeSceneCanvas } from "./core/safe-scene-canvas";
 import { ParticleBackground } from "./particle-background";
 
 function PortfolioScene({ mobilePerformance }: { mobilePerformance: boolean }) {
@@ -76,9 +77,10 @@ export function Portfolio3DVisual({ className, performanceMode = "auto" }: Portf
 
   return (
     <div className={className} data-testid="portfolio-3d-visual">
-      <SceneCanvas
+      <SafeSceneCanvas
         aria-label="Portfolio 3D visual"
         performanceMode={performanceMode}
+        fallbackType="abstract"
         className="aspect-square min-h-[300px] rounded-none"
       >
         <color attach="background" args={["#060a14"]} />
@@ -87,7 +89,7 @@ export function Portfolio3DVisual({ className, performanceMode = "auto" }: Portf
         <pointLight position={[-3, 2, 3]} intensity={0.8} color="#3b82f6" />
         <pointLight position={[3, -1, -2]} intensity={0.4} color="#818cf8" />
         <PortfolioScene mobilePerformance={mobilePerformance} />
-      </SceneCanvas>
+      </SafeSceneCanvas>
       <div className="bg-background px-1 py-3">
         <p className="font-semibold">Visual abstrait</p>
         <p className="mt-1 text-sm text-muted-foreground">

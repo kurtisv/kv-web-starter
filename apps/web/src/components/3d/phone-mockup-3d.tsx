@@ -4,7 +4,8 @@ import * as React from "react";
 import { RoundedBox, Float, ContactShadows } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import type { Group } from "three";
-import { SceneCanvas, useMobilePerformance, type ScenePerformanceMode } from "./scene-canvas";
+import { useMobilePerformance, type ScenePerformanceMode } from "./scene-canvas";
+import { SafeSceneCanvas } from "./core/safe-scene-canvas";
 
 function PhoneScene({ mobilePerformance }: { mobilePerformance: boolean }) {
   const groupRef = React.useRef<Group>(null);
@@ -165,9 +166,10 @@ export function PhoneMockup3D({ className, performanceMode = "auto" }: PhoneMock
 
   return (
     <div className={className} data-testid="phone-mockup-3d">
-      <SceneCanvas
+      <SafeSceneCanvas
         aria-label="Phone mockup 3D"
         performanceMode={performanceMode}
+        fallbackType="phone"
         className="aspect-[3/4] min-h-[280px] rounded-none"
       >
         <color attach="background" args={["#0a0a10"]} />
@@ -180,7 +182,7 @@ export function PhoneMockup3D({ className, performanceMode = "auto" }: PhoneMock
         <pointLight position={[0, -2, 3]} intensity={0.22} color="#3b82f6" />
         <hemisphereLight args={["#c8d4ff", "#0a0a14", 0.28]} />
         <PhoneScene mobilePerformance={mobilePerformance} />
-      </SceneCanvas>
+      </SafeSceneCanvas>
       <div className="bg-background px-1 py-3">
         <p className="font-semibold">Smartphone premium</p>
         <p className="mt-1 text-sm text-muted-foreground">

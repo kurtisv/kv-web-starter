@@ -5,7 +5,8 @@ import { ContactShadows } from "@react-three/drei";
 
 import { FloatingModel } from "./floating-model";
 import { ParticleBackground } from "./particle-background";
-import { SceneCanvas, type ScenePerformanceMode, useMobilePerformance } from "./scene-canvas";
+import { type ScenePerformanceMode, useMobilePerformance } from "./scene-canvas";
+import { SafeSceneCanvas } from "./core/safe-scene-canvas";
 
 interface Product3DViewerProps {
   className?: string;
@@ -36,13 +37,14 @@ export function Product3DViewer({
 
   return (
     <div className={className} data-testid="product-3d-viewer">
-      <SceneCanvas
+      <SafeSceneCanvas
         aria-label={title}
         performanceMode={performanceMode}
+        fallbackType="abstract"
         className="aspect-[4/3] min-h-[300px] rounded-none md:aspect-[16/7]"
       >
         <ProductScene color={color} mobilePerformance={mobilePerformance} />
-      </SceneCanvas>
+      </SafeSceneCanvas>
       <div className="grid gap-2 bg-background px-1 py-4 md:grid-cols-[1fr_auto] md:items-end">
         <div>
           <h2 className="text-2xl font-semibold tracking-normal">Experience produit 3D</h2>

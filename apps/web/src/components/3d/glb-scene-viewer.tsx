@@ -56,7 +56,12 @@ function useAutoFit(
 
 // ── The mesh itself (suspends while loading) ──────────────────────────────────
 function GLBMesh({ url, targetSize }: { url: string; targetSize: number }) {
-  const { scene } = useGLTF(url);
+  const { scene } = useGLTF(url, undefined, undefined, (err) => {
+    // Suppress texture/asset warnings — non-fatal, model still renders
+    if (process.env.NODE_ENV === "development") {
+      console.warn("[GlbSceneViewer] asset load warning:", err);
+    }
+  });
   const { position, scale } = useAutoFit(scene, targetSize);
   return <primitive object={scene} scale={scale} position={position} />;
 }

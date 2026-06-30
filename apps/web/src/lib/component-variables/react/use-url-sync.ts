@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { ComponentVariable } from "../types";
 import { serializeAll, deserializeAll } from "../variable-serialization";
@@ -20,7 +20,7 @@ export function useUrlSync(variables: ComponentVariable[]) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const varsRef = useRef(variables);
-  varsRef.current = variables;
+  useLayoutEffect(() => { varsRef.current = variables; });
 
   const readFromUrl = useCallback((): Record<string, unknown> => {
     const params: Record<string, string> = {};
@@ -81,6 +81,10 @@ export function useUrlInitialValues(
  * Automatically write values to the URL whenever they change.
  * Call this inside the component that owns the VariableProvider,
  * passing `values` from `useAllVariables()`.
+ *
+ * @deprecated Prefer ConfigurableFilterBar which uses defaultSerialized to
+ * skip writing default values — keeping URLs clean. This hook writes all
+ * non-empty values regardless of whether they equal the variable default.
  */
 export function useAutoUrlSync(
   variables: ComponentVariable[],
@@ -90,7 +94,7 @@ export function useAutoUrlSync(
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const varsRef = useRef(variables);
-  varsRef.current = variables;
+  useLayoutEffect(() => { varsRef.current = variables; });
 
   // Track previous values to avoid spurious pushes
   const prevRef = useRef<string>("");

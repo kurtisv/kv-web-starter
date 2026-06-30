@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { FilterBar, type FilterGroup } from "@/components/dashboard-ui/filter-bar";
 import type { ComponentVariable } from "@/lib/component-variables";
+import { autoVariables } from "@/lib/component-variables/presets";
 import { RatingStars } from "@/components/ecommerce/rating-stars";
 import { formatPrice } from "@/components/ecommerce/price-display";
 
@@ -41,7 +42,7 @@ interface AutoBlogCarGridProps {
   variables?: ComponentVariable[];
 }
 
-export function AutoBlogCarGrid({ variables }: AutoBlogCarGridProps = {}) {
+export function AutoBlogCarGrid({ variables = autoVariables }: AutoBlogCarGridProps = {}) {
   const searchParams = useSearchParams();
   const search   = (searchParams.get("search") ?? "").toLowerCase();
   const category = searchParams.get("category") ?? "";

@@ -5,6 +5,8 @@ import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, type SelectOption } from "@/components/ui/select";
+import type { ComponentVariable } from "@/lib/component-variables";
+import type { SliderRangeVariableConfig } from "@/lib/component-variables/factories";
 
 const typeOptions: SelectOption[] = [
   { value: "all", label: "Tous les biens" },
@@ -32,13 +34,35 @@ const roomOptions: SelectOption[] = [
 
 export interface PropertySearchBarProps {
   onSearch?: (params: { query: string; type: string; maxPrice: string; rooms: string }) => void;
+  /**
+   * Override the hardcoded filter options with ComponentVariable[] from the variable system.
+   * Expected ids: "propertyType" (select), "maxPrice" (select or slider), "rooms" (select), "search" (text).
+   * Unrecognized ids are ignored. Missing ids fall back to the built-in defaults.
+   */
+  variables?: ComponentVariable[];
+  className?: string;
 }
 
-export function PropertySearchBar({ onSearch }: PropertySearchBarProps) {
+function resolveSelectOptions(
+  variables: ComponentVariable[] | undefined,
+  id: string,
+  fallback: SelectOption[],
+): SelectOption[] {
+  const v = variables?.find((x) => x.id === id);
+  if (!v) return fallback;
+  const opts = (v.metadata as { options?: SelectOption[] } | undefined)?.options;
+  return opts ?? fallback;
+}
+
+export function PropertySearchBar({ onSearch, variables, className }: PropertySearchBarProps) {
+  const resolvedTypeOptions   = resolveSelectOptions(variables, "propertyType", typeOptions);
+  const resolvedPriceOptions  = resolveSelectOptions(variables, "maxPrice", priceOptions);
+  const resolvedRoomOptions   = resolveSelectOptions(variables, "rooms", roomOptions);
+
   const [query, setQuery] = React.useState("");
-  const [type, setType] = React.useState("all");
-  const [maxPrice, setMaxPrice] = React.useState("all");
-  const [rooms, setRooms] = React.useState("all");
+  const [type, setType] = React.useState(resolvedTypeOptions[0]?.value ?? "all");
+  const [maxPrice, setMaxPrice] = React.useState(resolvedPriceOptions[0]?.value ?? "all");
+  const [rooms, setRooms] = React.useState(resolvedRoomOptions[0]?.value ?? "all");
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -48,7 +72,7 @@ export function PropertySearchBar({ onSearch }: PropertySearchBarProps) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-xl border bg-card p-4 shadow-sm"
+      className={`rounded-xl border bg-card p-4 shadow-sm${className ? ` ${className}` : ""}`}
     >
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-[1fr_160px_180px_140px_auto]">
         <div className="relative">
@@ -64,21 +88,21 @@ export function PropertySearchBar({ onSearch }: PropertySearchBarProps) {
         <Select
           value={type}
           onValueChange={setType}
-          options={typeOptions}
+          options={resolvedTypeOptions}
           placeholder="Type de bien"
         />
 
         <Select
           value={maxPrice}
           onValueChange={setMaxPrice}
-          options={priceOptions}
+          options={resolvedPriceOptions}
           placeholder="Budget max"
         />
 
         <Select
           value={rooms}
           onValueChange={setRooms}
-          options={roomOptions}
+          options={resolvedRoomOptions}
           placeholder="Pieces"
         />
 

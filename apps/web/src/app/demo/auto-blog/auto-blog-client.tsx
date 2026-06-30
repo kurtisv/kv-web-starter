@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { FilterBar, type FilterGroup } from "@/components/dashboard-ui/filter-bar";
+import type { ComponentVariable } from "@/lib/component-variables";
 import { RatingStars } from "@/components/ecommerce/rating-stars";
 import { formatPrice } from "@/components/ecommerce/price-display";
 
@@ -32,7 +33,15 @@ const FILTERS: FilterGroup[] = [
   },
 ];
 
-export function AutoBlogCarGrid() {
+interface AutoBlogCarGridProps {
+  /**
+   * Inject ComponentVariable[] to replace hardcoded FILTERS.
+   * The "category" select variable (id="category") maps to the car category filter.
+   */
+  variables?: ComponentVariable[];
+}
+
+export function AutoBlogCarGrid({ variables }: AutoBlogCarGridProps = {}) {
   const searchParams = useSearchParams();
   const search   = (searchParams.get("search") ?? "").toLowerCase();
   const category = searchParams.get("category") ?? "";
@@ -46,7 +55,8 @@ export function AutoBlogCarGrid() {
   return (
     <>
       <FilterBar
-        filters={FILTERS}
+        filters={variables ? undefined : FILTERS}
+        variables={variables}
         searchPlaceholder="Rechercher une marque ou un modele..."
         className="mb-6"
       />

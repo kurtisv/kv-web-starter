@@ -1,6 +1,13 @@
 "use client";
 
 import * as React from "react";
+import { ConfigurableFilterBar } from "@/components/component-variables";
+import {
+  realEstateVariables,
+  autoVariables,
+  ecommerceVariables,
+  dashboardVariables,
+} from "@/lib/component-variables/presets";
 
 // UI primitives
 import { Button } from "@/components/ui/button";
@@ -85,6 +92,7 @@ const CATEGORIES = [
   { id: "booking",    label: "Reservation",   count: 8  },
   { id: "sections",   label: "Sections",      count: 11 },
   { id: "threed",     label: "3D",            count: 10 },
+  { id: "variables",  label: "Variable System", count: 4 },
 ] as const;
 
 // ── Layout helpers ─────────────────────────────────────────────────────────────
@@ -900,6 +908,43 @@ export function ShowcaseClient() {
                 </div>
               </div>
             ))}
+          </div>
+        </section>
+
+        {/* ── Variable System ── */}
+        <section className="flex flex-col gap-8">
+          <SectionHeader
+            id="variables"
+            label="Variable System"
+            count={4}
+            description="ConfigurableFilterBar pilote par ComponentVariable[]. Meme composant, options injectees — pas de code duplique."
+          />
+
+          <div className="flex flex-col gap-6">
+            <div>
+              <p className="mb-2 font-mono text-xs text-muted-foreground">realEstateVariables</p>
+              <React.Suspense>
+                <ConfigurableFilterBar variables={realEstateVariables} />
+              </React.Suspense>
+            </div>
+            <div>
+              <p className="mb-2 font-mono text-xs text-muted-foreground">autoVariables</p>
+              <React.Suspense>
+                <ConfigurableFilterBar variables={autoVariables} />
+              </React.Suspense>
+            </div>
+            <div>
+              <p className="mb-2 font-mono text-xs text-muted-foreground">ecommerceVariables</p>
+              <React.Suspense>
+                <ConfigurableFilterBar variables={ecommerceVariables} />
+              </React.Suspense>
+            </div>
+            <div>
+              <p className="mb-2 font-mono text-xs text-muted-foreground">dashboardVariables</p>
+              <React.Suspense>
+                <ConfigurableFilterBar variables={dashboardVariables} />
+              </React.Suspense>
+            </div>
           </div>
         </section>
 

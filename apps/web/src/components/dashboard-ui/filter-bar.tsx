@@ -4,6 +4,8 @@ import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { Search, X } from "lucide-react";
 import { Select } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import type { ComponentVariable } from "@/lib/component-variables";
+import { ConfigurableFilterBar } from "@/components/component-variables";
 
 export interface FilterGroup {
   key: string;
@@ -15,6 +17,9 @@ interface FilterBarProps {
   filters?: FilterGroup[];
   searchPlaceholder?: string;
   className?: string;
+  /** Pass ComponentVariable[] to use the new variable system instead of FilterGroup[] */
+  variables?: ComponentVariable[];
+  onValuesChange?: (values: Record<string, unknown>) => void;
 }
 
 function useDebounce<T>(value: T, delay: number): T {
@@ -26,7 +31,18 @@ function useDebounce<T>(value: T, delay: number): T {
   return debounced;
 }
 
-export function FilterBar({ filters = [], searchPlaceholder = "Rechercher...", className }: FilterBarProps) {
+export function FilterBar({ filters = [], searchPlaceholder = "Rechercher...", className, variables, onValuesChange }: FilterBarProps) {
+  if (variables) {
+    return (
+      <ConfigurableFilterBar
+        variables={variables}
+        searchPlaceholder={searchPlaceholder}
+        className={className}
+        onValuesChange={onValuesChange}
+      />
+    );
+  }
+
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();

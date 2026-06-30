@@ -5,16 +5,19 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Search, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { ComponentVariable } from "@/lib/component-variables";
-import { VariableProvider, useAllVariables } from "@/lib/component-variables/react";
+import {
+  VariableProvider,
+  useAllVariables,
+  useUrlInitialValues,
+} from "@/lib/component-variables/react";
+import { serializeAll } from "@/lib/component-variables";
 import { VariableRenderer } from "./variable-renderer";
 
-// ── Internal search bar that syncs with URL ───────────────────────────────────
+// ── Search input — always syncs to ?search= URL param ────────────────────────
 function SearchInput({
   placeholder = "Rechercher...",
-  className,
 }: {
   placeholder?: string;
-  className?: string;
 }) {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -32,12 +35,11 @@ function SearchInput({
         params.delete("search");
       }
       params.delete("page");
-      router.push(`${pathname}?${params.toString()}`, { scroll: false });
+      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
     },
     [searchParams, router, pathname],
   );
 
-  // Debounce URL push
   useEffect(() => {
     clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
@@ -48,7 +50,7 @@ function SearchInput({
   }, [search, pushSearch, searchParams]);
 
   return (
-    <div className={cn("relative flex-1 min-w-48 max-w-xs", className)}>
+    <div className="relative flex-1 min-w-48 max-w-xs">
       <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
       <input
         value={search}
@@ -72,7 +74,7 @@ function SearchInput({
   );
 }
 
-// ── Inner component (uses context, needs Suspense above it) ───────────────────
+// ── Inner — reads URL on mount, writes on every change ───────────────────────
 function FilterBarInner({
   variables,
   searchPlaceholder,
@@ -87,29 +89,91 @@ function FilterBarInner({
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-  const { resolved, reset, values } = useAllVariables();
+  const { resolved, reset, values, set } = useAllVariables();
 
-  // Notify parent when values change
-  const prevValuesRef = useRef<string>("");
+  // On mount: initialize from URL (only once)
+  const initializedRef = useRef(false);
+  const urlValues = useUrlInitialValues(variables);
   useEffect(() => {
-    const serialized = JSON.stringify(values);
-    if (serialized !== prevValuesRef.current) {
-      prevValuesRef.current = serialized;
+    if (initializedRef.current) return;
+    initializedRef.current = true;
+    for (const v of variables) {
+      if (urlValues[v.id] !== undefined && urlValues[v.id] !== v.defaultValue) {
+        set(v.id, urlValues[v.id]);
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Write variable values to URL whenever they change, debounced
+  const writeRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const prevSerializedRef = useRef<string>("");
+  useEffect(() => {
+    clearTimeout(writeRef.current);
+    writeRef.current = setTimeout(() => {
+      const serialized = serializeAll(variables, values);
+      const serializedStr = JSON.stringify(serialized);
+      if (serializedStr === prevSerializedRef.current) return;
+      prevSerializedRef.current = serializedStr;
+
+      // Merge with existing URL params not managed by these variables
+      const managedKeys = new Set<string>();
+      for (const v of variables) {
+        if (!v.urlKeys) continue;
+        if (typeof v.urlKeys === "string") managedKeys.add(v.urlKeys);
+        else Object.values(v.urlKeys).forEach((k) => managedKeys.add(k));
+      }
+      const params = new URLSearchParams();
+      searchParams.forEach((val, key) => {
+        if (!managedKeys.has(key)) params.set(key, val);
+      });
+      for (const [k, v] of Object.entries(serialized)) {
+        if (v !== "") params.set(k, v);
+      }
+      params.delete("page");
+      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+    }, 150);
+    return () => clearTimeout(writeRef.current);
+  }, [values, variables, searchParams, router, pathname]);
+
+  // Notify parent
+  const prevNotifyRef = useRef<string>("");
+  useEffect(() => {
+    const s = JSON.stringify(values);
+    if (s !== prevNotifyRef.current) {
+      prevNotifyRef.current = s;
       onValuesChange?.(values);
     }
   }, [values, onValuesChange]);
 
-  const activeCount =
-    (searchParams.get("search") ? 1 : 0) +
-    resolved.filter((r) => {
-      const def = r.variable.defaultValue;
-      return r.value !== def && r.value !== "" && r.value !== null;
-    }).length;
+  // Active count: search param + non-default variable values
+  const activeVariableCount = resolved.filter((r) => {
+    const def = r.variable.defaultValue;
+    const val = r.value;
+    if (typeof def === "object" && def !== null) {
+      return JSON.stringify(val) !== JSON.stringify(def);
+    }
+    return val !== def && val !== "" && val !== null;
+  }).length;
+
+  const activeCount = (searchParams.get("search") ? 1 : 0) + activeVariableCount;
 
   const clearAll = () => {
     reset();
+    // Clear URL: keep only non-managed, non-search params
+    const managedKeys = new Set<string>();
+    for (const v of variables) {
+      if (!v.urlKeys) continue;
+      if (typeof v.urlKeys === "string") managedKeys.add(v.urlKeys);
+      else Object.values(v.urlKeys).forEach((k) => managedKeys.add(k));
+    }
+    managedKeys.add("search");
+    managedKeys.add("page");
     const params = new URLSearchParams();
-    router.push(`${pathname}?${params.toString()}`, { scroll: false });
+    searchParams.forEach((val, key) => {
+      if (!managedKeys.has(key)) params.set(key, val);
+    });
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
   return (
@@ -134,7 +198,7 @@ function FilterBarInner({
   );
 }
 
-// ── Public component ──────────────────────────────────────────────────────────
+// ── Public API ────────────────────────────────────────────────────────────────
 export interface ConfigurableFilterBarProps {
   variables: ComponentVariable[];
   searchPlaceholder?: string;
@@ -143,13 +207,6 @@ export interface ConfigurableFilterBarProps {
   onValuesChange?: (values: Record<string, unknown>) => void;
 }
 
-/**
- * Drop-in replacement for FilterBar that accepts ComponentVariable[] instead of
- * FilterGroup[]. Wraps the inner bar in VariableProvider + Suspense.
- *
- * URL sync for select filters is handled by each variable's urlKeys.
- * The search field always syncs to the "search" URL param.
- */
 export function ConfigurableFilterBar({
   variables,
   searchPlaceholder,

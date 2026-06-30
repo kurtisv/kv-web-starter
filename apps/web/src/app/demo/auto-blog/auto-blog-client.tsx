@@ -46,10 +46,17 @@ export function AutoBlogCarGrid({ variables }: AutoBlogCarGridProps = {}) {
   const search   = (searchParams.get("search") ?? "").toLowerCase();
   const category = searchParams.get("category") ?? "";
 
+  // Extra filters when using the variable system (reads URL params written by ConfigurableFilterBar)
+  const make     = variables ? (searchParams.get("make") ?? "all") : "";
+  const minPrice = variables ? Number(searchParams.get("minPrice") ?? "0")       : 0;
+  const maxPrice = variables ? Number(searchParams.get("maxPrice") ?? "99999999") : 99999999;
+
   const cars = ALL_CARS.filter((c) => {
     const matchSearch   = !search   || `${c.make} ${c.model}`.toLowerCase().includes(search);
-    const matchCategory = !category || c.category === category;
-    return matchSearch && matchCategory;
+    const matchCategory = !category || category === "all" || c.category === category;
+    const matchMake     = !variables || make === "all" || c.make === make;
+    const matchPrice    = !variables || (c.priceCents >= minPrice * 100 && c.priceCents <= maxPrice * 100);
+    return matchSearch && matchCategory && matchMake && matchPrice;
   });
 
   return (

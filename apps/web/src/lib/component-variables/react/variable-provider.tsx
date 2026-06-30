@@ -5,7 +5,6 @@ import {
   useCallback,
   useContext,
   useMemo,
-  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -47,29 +46,24 @@ export function VariableProvider({
     ...(initial ?? {}),
   }));
 
-  const variablesRef = useRef(variables);
-  variablesRef.current = variables;
-
   const set = useCallback((id: string, value: unknown) => {
     setValues((prev) => ({ ...prev, [id]: value }));
   }, []);
 
   const reset = useCallback(() => {
-    setValues({
-      ...Object.fromEntries(variablesRef.current.map((v) => [v.id, v.defaultValue])),
-    });
-  }, []);
+    setValues(Object.fromEntries(variables.map((v) => [v.id, v.defaultValue])) as VariableContext);
+  }, [variables]);
 
   const resolved = useMemo<ResolvedVariable[]>(
     () =>
-      variablesRef.current.map((v) => ({
+      variables.map((v) => ({
         variable: v,
         value: values[v.id],
         error: validateVariable(v, values[v.id], values),
         isVisible: isVariableVisible(v, values),
         isDisabled: isVariableDisabled(v, values),
       })) as ResolvedVariable[],
-    [values],
+    [values, variables],
   );
 
   const ctx = useMemo<VariableContextValue>(
@@ -121,8 +115,8 @@ export function useVariable<TValue = unknown>(id: string) {
   };
 }
 
-/** Access all resolved variables + bulk reset. */
+/** Access all resolved variables, bulk reset, and individual set. */
 export function useAllVariables() {
-  const { resolved, reset, values } = useVariableContext();
-  return { resolved, reset, values };
+  const { resolved, reset, values, set } = useVariableContext();
+  return { resolved, reset, values, set };
 }

@@ -5,64 +5,42 @@ import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, type SelectOption } from "@/components/ui/select";
-import type { ComponentVariable } from "@/lib/component-variables";
-import type { SliderRangeVariableConfig } from "@/lib/component-variables/factories";
 
+// ── Legacy hardcoded options (intentional — migration = Lot 9) ────────────────
 const typeOptions: SelectOption[] = [
-  { value: "all", label: "Tous les biens" },
-  { value: "appartement", label: "Appartement" },
-  { value: "maison", label: "Maison" },
-  { value: "studio", label: "Studio" },
-  { value: "loft", label: "Loft" },
+  { value: "all",          label: "Tous les biens" },
+  { value: "appartement",  label: "Appartement" },
+  { value: "maison",       label: "Maison" },
+  { value: "studio",       label: "Studio" },
+  { value: "loft",         label: "Loft" },
 ];
 
 const priceOptions: SelectOption[] = [
-  { value: "all", label: "Sans limite" },
-  { value: "200000", label: "Jusqu'a 200 000 €" },
-  { value: "400000", label: "Jusqu'a 400 000 €" },
-  { value: "600000", label: "Jusqu'a 600 000 €" },
-  { value: "1000000", label: "Jusqu'a 1 000 000 €" },
+  { value: "all",      label: "Sans limite" },
+  { value: "200000",   label: "Jusqu'a 200 000 €" },
+  { value: "400000",   label: "Jusqu'a 400 000 €" },
+  { value: "600000",   label: "Jusqu'a 600 000 €" },
+  { value: "1000000",  label: "Jusqu'a 1 000 000 €" },
 ];
 
 const roomOptions: SelectOption[] = [
   { value: "all", label: "Toutes les pieces" },
-  { value: "1", label: "1 piece" },
-  { value: "2", label: "2 pieces" },
-  { value: "3", label: "3 pieces" },
-  { value: "4", label: "4 pieces+" },
+  { value: "1",   label: "1 piece" },
+  { value: "2",   label: "2 pieces" },
+  { value: "3",   label: "3 pieces" },
+  { value: "4",   label: "4 pieces+" },
 ];
 
 export interface PropertySearchBarProps {
   onSearch?: (params: { query: string; type: string; maxPrice: string; rooms: string }) => void;
-  /**
-   * Override the hardcoded filter options with ComponentVariable[] from the variable system.
-   * Expected ids: "propertyType" (select), "maxPrice" (select or slider), "rooms" (select), "search" (text).
-   * Unrecognized ids are ignored. Missing ids fall back to the built-in defaults.
-   */
-  variables?: ComponentVariable[];
   className?: string;
 }
 
-function resolveSelectOptions(
-  variables: ComponentVariable[] | undefined,
-  id: string,
-  fallback: SelectOption[],
-): SelectOption[] {
-  const v = variables?.find((x) => x.id === id);
-  if (!v) return fallback;
-  const opts = (v.metadata as { options?: SelectOption[] } | undefined)?.options;
-  return opts ?? fallback;
-}
-
-export function PropertySearchBar({ onSearch, variables, className }: PropertySearchBarProps) {
-  const resolvedTypeOptions   = resolveSelectOptions(variables, "propertyType", typeOptions);
-  const resolvedPriceOptions  = resolveSelectOptions(variables, "maxPrice", priceOptions);
-  const resolvedRoomOptions   = resolveSelectOptions(variables, "rooms", roomOptions);
-
-  const [query, setQuery] = React.useState("");
-  const [type, setType] = React.useState(resolvedTypeOptions[0]?.value ?? "all");
-  const [maxPrice, setMaxPrice] = React.useState(resolvedPriceOptions[0]?.value ?? "all");
-  const [rooms, setRooms] = React.useState(resolvedRoomOptions[0]?.value ?? "all");
+export function PropertySearchBar({ onSearch, className }: PropertySearchBarProps) {
+  const [query,    setQuery]    = React.useState("");
+  const [type,     setType]     = React.useState("all");
+  const [maxPrice, setMaxPrice] = React.useState("all");
+  const [rooms,    setRooms]    = React.useState("all");
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -88,21 +66,21 @@ export function PropertySearchBar({ onSearch, variables, className }: PropertySe
         <Select
           value={type}
           onValueChange={setType}
-          options={resolvedTypeOptions}
+          options={typeOptions}
           placeholder="Type de bien"
         />
 
         <Select
           value={maxPrice}
           onValueChange={setMaxPrice}
-          options={resolvedPriceOptions}
+          options={priceOptions}
           placeholder="Budget max"
         />
 
         <Select
           value={rooms}
           onValueChange={setRooms}
-          options={resolvedRoomOptions}
+          options={roomOptions}
           placeholder="Pieces"
         />
 

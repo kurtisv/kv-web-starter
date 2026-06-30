@@ -52,6 +52,12 @@ export type {
   SliderRangeValue,
   SliderRangeVariableConfig,
   RatingVariableConfig,
+  DateVariableConfig,
+  CurrencyVariableConfig,
+  LocationValue,
+  LocationVariableConfig,
+  RelationVariableConfig,
+  MediaVariableConfig,
 } from "./factories";
 
 export {
@@ -66,6 +72,11 @@ export {
   createSliderRangeVariable,
   createStatusVariable,
   createRatingVariable,
+  createDateVariable,
+  createCurrencyVariable,
+  createLocationVariable,
+  createRelationVariable,
+  createMediaVariable,
 } from "./factories";
 
 // Domain presets

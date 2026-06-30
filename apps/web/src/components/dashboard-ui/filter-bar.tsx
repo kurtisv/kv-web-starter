@@ -13,15 +13,16 @@ export interface FilterGroup {
   options: { value: string; label: string }[];
 }
 
-interface FilterBarProps {
+export interface FilterBarProps {
   filters?: FilterGroup[];
   searchPlaceholder?: string;
   className?: string;
-  /** Pass ComponentVariable[] to use the new variable system instead of FilterGroup[] */
+  /** Pass ComponentVariable[] to delegate to ConfigurableFilterBar */
   variables?: ComponentVariable[];
   onValuesChange?: (values: Record<string, unknown>) => void;
 }
 
+// ── Debounce helper ───────────────────────────────────────────────────────────
 function useDebounce<T>(value: T, delay: number): T {
   const [debounced, setDebounced] = React.useState(value);
   React.useEffect(() => {
@@ -31,18 +32,12 @@ function useDebounce<T>(value: T, delay: number): T {
   return debounced;
 }
 
-export function FilterBar({ filters = [], searchPlaceholder = "Rechercher...", className, variables, onValuesChange }: FilterBarProps) {
-  if (variables) {
-    return (
-      <ConfigurableFilterBar
-        variables={variables}
-        searchPlaceholder={searchPlaceholder}
-        className={className}
-        onValuesChange={onValuesChange}
-      />
-    );
-  }
-
+// ── Legacy implementation (FilterGroup[] API) — hooks always called ──────────
+function LegacyFilterBar({
+  filters = [],
+  searchPlaceholder = "Rechercher...",
+  className,
+}: Pick<FilterBarProps, "filters" | "searchPlaceholder" | "className">) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -63,7 +58,7 @@ export function FilterBar({ filters = [], searchPlaceholder = "Rechercher...", c
       params.delete("page");
       return params.toString();
     },
-    [searchParams]
+    [searchParams],
   );
 
   React.useEffect(() => {
@@ -76,7 +71,7 @@ export function FilterBar({ filters = [], searchPlaceholder = "Rechercher...", c
   const handleFilter = (key: string, value: string) => {
     const current = searchParams.get(key);
     router.push(
-      `${pathname}?${buildParams({ [key]: current === value ? null : value })}`
+      `${pathname}?${buildParams({ [key]: current === value ? null : value })}`,
     );
   };
 
@@ -86,13 +81,11 @@ export function FilterBar({ filters = [], searchPlaceholder = "Rechercher...", c
 
   const clearAll = () => {
     setSearch("");
-    const params = new URLSearchParams();
-    router.push(`${pathname}?${params.toString()}`);
+    router.push(`${pathname}?${new URLSearchParams().toString()}`);
   };
 
   return (
     <div className={cn("flex flex-wrap items-center gap-2", className)}>
-      {/* Search */}
       <div className="relative flex-1 min-w-48 max-w-xs">
         <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
         <input
@@ -101,7 +94,7 @@ export function FilterBar({ filters = [], searchPlaceholder = "Rechercher...", c
           placeholder={searchPlaceholder}
           className={cn(
             "h-9 w-full border border-border bg-background pl-8 pr-3 text-sm outline-none",
-            "transition-colors focus:border-foreground placeholder:text-muted-foreground"
+            "transition-colors focus:border-foreground placeholder:text-muted-foreground",
           )}
         />
         {search && (
@@ -115,7 +108,6 @@ export function FilterBar({ filters = [], searchPlaceholder = "Rechercher...", c
         )}
       </div>
 
-      {/* Filter selects */}
       {filters.map((group) => {
         const active = searchParams.get(group.key);
         return (
@@ -131,7 +123,6 @@ export function FilterBar({ filters = [], searchPlaceholder = "Rechercher...", c
         );
       })}
 
-      {/* Clear */}
       {activeCount > 0 && (
         <button
           type="button"
@@ -143,5 +134,32 @@ export function FilterBar({ filters = [], searchPlaceholder = "Rechercher...", c
         </button>
       )}
     </div>
+  );
+}
+
+// ── Public API — delegates based on which props are provided ─────────────────
+export function FilterBar({
+  filters,
+  searchPlaceholder,
+  className,
+  variables,
+  onValuesChange,
+}: FilterBarProps) {
+  if (variables) {
+    return (
+      <ConfigurableFilterBar
+        variables={variables}
+        searchPlaceholder={searchPlaceholder}
+        className={className}
+        onValuesChange={onValuesChange}
+      />
+    );
+  }
+  return (
+    <LegacyFilterBar
+      filters={filters}
+      searchPlaceholder={searchPlaceholder}
+      className={className}
+    />
   );
 }

@@ -97,7 +97,7 @@ export function createSelectVariable(
     ...rest,
     metadata: { options },
     serialize: (v) => v,
-    deserialize: (raw) => (typeof raw === "string" ? raw : config.defaultValue ?? options[0]?.value ?? ""),
+    deserialize: (raw) => (typeof raw === "string" && raw !== "" ? raw : config.defaultValue ?? options[0]?.value ?? ""),
     validate: (v) => {
       if (config.validate) return config.validate(v, options);
       return null;
@@ -292,8 +292,8 @@ export function createSliderRangeVariable(
     serialize: ({ min, max }) => ({ [keys.min]: String(min), [keys.max]: String(max) }),
     deserialize: (raw) => {
       const r = raw as Record<string, string>;
-      const minVal = r[keys.min] !== undefined ? Number(r[keys.min]) : defaultV.min;
-      const maxVal = r[keys.max] !== undefined ? Number(r[keys.max]) : defaultV.max;
+      const minVal = r[keys.min] ? Number(r[keys.min]) : defaultV.min;
+      const maxVal = r[keys.max] ? Number(r[keys.max]) : defaultV.max;
       return { min: minVal, max: maxVal };
     },
     validate: ({ min, max }) => {
@@ -339,5 +339,158 @@ export function createRatingVariable(
       if (v < 0 || v > max) return `La note doit etre entre 0 et ${max}.`;
       return null;
     },
+  });
+}
+
+// ── Date (single date, ISO string) ────────────────────────────────────────────
+export interface DateVariableConfig {
+  id: string;
+  label: string;
+  description?: string;
+  defaultValue?: string;
+  min?: string;
+  max?: string;
+  group?: string;
+  order?: number;
+  urlKeys?: string;
+}
+
+export function createDateVariable(
+  config: DateVariableConfig,
+): ComponentVariable<string> {
+  return createComponentVariable<string>({
+    defaultValue: config.defaultValue ?? "",
+    ...config,
+    metadata: { min: config.min, max: config.max },
+    serialize: (v) => v,
+    deserialize: (raw) => (typeof raw === "string" ? raw : ""),
+    validate: (v) => {
+      if (!v) return null;
+      if (isNaN(Date.parse(v))) return "Date invalide.";
+      if (config.min && v < config.min) return `Date minimale: ${config.min}.`;
+      if (config.max && v > config.max) return `Date maximale: ${config.max}.`;
+      return null;
+    },
+  });
+}
+
+// ── Currency (cents integer) ───────────────────────────────────────────────────
+export interface CurrencyVariableConfig {
+  id: string;
+  label: string;
+  description?: string;
+  defaultValue?: number;
+  currency?: string;
+  min?: number;
+  max?: number;
+  group?: string;
+  order?: number;
+  urlKeys?: string;
+}
+
+export function createCurrencyVariable(
+  config: CurrencyVariableConfig,
+): ComponentVariable<number> {
+  const currency = config.currency ?? "EUR";
+  return createComponentVariable<number>({
+    defaultValue: config.defaultValue ?? 0,
+    ...config,
+    metadata: { currency, min: config.min, max: config.max },
+    serialize: (v) => String(v),
+    deserialize: (raw) => Number(raw),
+    validate: (v) => {
+      if (config.min !== undefined && v < config.min)
+        return `Minimum: ${config.min}.`;
+      if (config.max !== undefined && v > config.max)
+        return `Maximum: ${config.max}.`;
+      return null;
+    },
+  });
+}
+
+// ── Location (lat/lng or address string) ──────────────────────────────────────
+export interface LocationValue {
+  address: string;
+  lat?: number;
+  lng?: number;
+}
+
+export interface LocationVariableConfig {
+  id: string;
+  label: string;
+  description?: string;
+  defaultValue?: LocationValue;
+  group?: string;
+  order?: number;
+  urlKeys?: string | { address: string; lat?: string; lng?: string };
+}
+
+export function createLocationVariable(
+  config: LocationVariableConfig,
+): ComponentVariable<LocationValue> {
+  const keys =
+    typeof config.urlKeys === "object"
+      ? config.urlKeys
+      : { address: config.urlKeys ?? `${config.id}Address` };
+  return createComponentVariable<LocationValue>({
+    defaultValue: config.defaultValue ?? { address: "" },
+    ...config,
+    metadata: { keys },
+    serialize: ({ address }) => ({ [keys.address]: address }),
+    deserialize: (raw) => {
+      const r = raw as Record<string, string>;
+      return { address: r[keys.address] ?? "" };
+    },
+    validate: () => null,
+  });
+}
+
+// ── Relation (select from an external list loaded at render time) ──────────────
+// The render fn is left to the consumer; this factory only sets up the string ID.
+export interface RelationVariableConfig {
+  id: string;
+  label: string;
+  description?: string;
+  defaultValue?: string;
+  group?: string;
+  order?: number;
+  urlKeys?: string;
+  validate?: (value: string) => string | null;
+}
+
+export function createRelationVariable(
+  config: RelationVariableConfig,
+): ComponentVariable<string> {
+  return createComponentVariable<string>({
+    defaultValue: config.defaultValue ?? "",
+    ...config,
+    metadata: { kind: "relation" },
+    serialize: (v) => v,
+    deserialize: (raw) => (typeof raw === "string" ? raw : ""),
+    validate: config.validate ?? (() => null),
+  });
+}
+
+// ── Media (file URL or File object — URL string in URL params) ────────────────
+export interface MediaVariableConfig {
+  id: string;
+  label: string;
+  description?: string;
+  accept?: string;
+  group?: string;
+  order?: number;
+  urlKeys?: string;
+}
+
+export function createMediaVariable(
+  config: MediaVariableConfig,
+): ComponentVariable<string> {
+  return createComponentVariable<string>({
+    defaultValue: "",
+    ...config,
+    metadata: { accept: config.accept, kind: "media" },
+    serialize: (v) => v,
+    deserialize: (raw) => (typeof raw === "string" ? raw : ""),
+    validate: () => null,
   });
 }

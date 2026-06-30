@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { ComponentVariable } from "../types";
 import { serializeAll, deserializeAll } from "../variable-serialization";
@@ -20,7 +20,7 @@ export function useUrlSync(variables: ComponentVariable[]) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const varsRef = useRef(variables);
-  varsRef.current = variables;
+  useLayoutEffect(() => { varsRef.current = variables; });
 
   const readFromUrl = useCallback((): Record<string, unknown> => {
     const params: Record<string, string> = {};
@@ -90,7 +90,7 @@ export function useAutoUrlSync(
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const varsRef = useRef(variables);
-  varsRef.current = variables;
+  useLayoutEffect(() => { varsRef.current = variables; });
 
   // Track previous values to avoid spurious pushes
   const prevRef = useRef<string>("");

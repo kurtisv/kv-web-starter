@@ -6,12 +6,14 @@ Date: 2026-06-30
 
 ### Ce qui fonctionne
 - Component Variables System complet (factories, types, serialization, validation, visibility)
-- ConfigurableFilterBar avec URL sync, defauts absents de l'URL, reset propre
-- DualRangeSlider : drag souris, touch, clavier, inputs numeriques, ARIA
+- ConfigurableFilterBar avec URL sync, defauts absents de l'URL, reset propre, focus-visible sur le bouton Effacer
+- DualRangeSlider : drag souris, touch, clavier, inputs numeriques, ARIA complet (aria-label, aria-valuenow, aria-valuemin, aria-valuemax, focus-visible)
 - Presets realEstate/auto/ecommerce/dashboard/apiPortal
 - VariableRenderer dispatche par forme de valeur (slider, sort, dateRange, select, boolean, number, text/search)
-- 299 tests unitaires passent
-- Build OK (22s)
+- Select custom : ARIA combobox/listbox, focus-visible:ring
+- 351 tests unitaires passent (32 fichiers)
+- Build OK
+- E2E : 34 tests chromium + mobile-chrome passent (17 par browser)
 
 ### Problemes trouves (baseline Lot 0)
 
@@ -49,26 +51,34 @@ Date: 2026-06-30
 ```bash
 pnpm lint         # eslint sur src/
 pnpm typecheck    # tsc --noEmit
-pnpm test         # vitest (299 tests)
+pnpm test         # vitest (351 tests, 32 fichiers)
 pnpm build        # next build
-pnpm test:e2e     # playwright (necessite serveur dev)
+pnpm test:e2e     # playwright chromium + mobile-chrome (34 tests)
 ```
 
-## Pages critiques a tester
+## Pages critiques
 
 | Page | Statut E2E |
 |------|-----------|
 | `/` | smoke.spec.ts |
-| `/showcase` | a ajouter (Lot 4) |
-| `/demo/real-estate` | a ajouter (Lot 4) |
-| `/demo/auto-blog` | a ajouter (Lot 4) |
+| `/showcase` | variable-system.spec.ts (Lot 4) |
+| `/demo/real-estate` | variable-system.spec.ts (Lot 4) |
+| `/demo/auto-blog` | variable-system.spec.ts (Lot 4) |
 | `/docs` | smoke.spec.ts |
 | `/docs/api` | smoke.spec.ts |
 | `/booking` | smoke.spec.ts |
 | `/pricing` | smoke.spec.ts |
 | `/dashboard/api-usage` | smoke.spec.ts |
 
-## Validations Lot 0
+## Validations par Lot
 
-- pnpm lint : OK (apres fix vendor/3D ignore + useLayoutEffect use-url-sync)
-- pnpm typecheck : OK
+| Lot | Statut | Notes |
+|-----|--------|-------|
+| 0 | OK | lint + typecheck, baseline etabli |
+| 1 | OK | DualRangeSlider click-track corrige |
+| 2 | OK | 35 tests RTL sur DualRangeSlider |
+| 3 | OK | stabilization.test.ts + 12 cas URL reset/search/sliderRange |
+| 4 | OK | 34 tests E2E Playwright (chromium + Pixel 5), auto-blog migre vers autoVariables |
+| 5 | OK | focus-visible Select, Effacer button, DualRangeSlider; ARIA complet |
+| 6 | OK | Docs mises a jour |
+| 7 | voir rapport final | |

@@ -91,7 +91,7 @@ export function Select({
         onKeyDown={handleKeyDown}
         className={cn(
           "flex h-10 w-full items-center justify-between border border-border bg-background px-3 text-sm outline-none",
-          "transition-colors focus:border-foreground",
+          "transition-colors focus:border-foreground focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2",
           "disabled:cursor-not-allowed disabled:opacity-50",
           !selected && "text-muted-foreground"
         )}

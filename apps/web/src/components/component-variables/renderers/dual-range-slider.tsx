@@ -109,7 +109,7 @@ export function DualRangeSlider({
   // ── Handlers wired to React events ──────────────────────────────────────────
 
   const handleTrackPointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
-    if (disabled || e.target !== e.currentTarget) return;
+    if (disabled) return;
     const track = trackRef.current;
     if (!track) return;
     const { min: lo, max: hi, step: s, value: v, onChange: cb } = propsRef.current;
@@ -196,8 +196,8 @@ export function DualRangeSlider({
           disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer",
         )}
       >
-        {/* Rail */}
-        <div className="absolute top-1/2 left-0 right-0 h-1.5 -translate-y-1/2 rounded-full bg-border" />
+        {/* Rail — pointer-events-none so clicks bubble up to the track div */}
+        <div className="absolute top-1/2 left-0 right-0 h-1.5 -translate-y-1/2 rounded-full bg-border pointer-events-none" />
 
         {/* Active fill */}
         <div

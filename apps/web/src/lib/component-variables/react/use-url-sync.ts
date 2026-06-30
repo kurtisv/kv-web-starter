@@ -81,6 +81,10 @@ export function useUrlInitialValues(
  * Automatically write values to the URL whenever they change.
  * Call this inside the component that owns the VariableProvider,
  * passing `values` from `useAllVariables()`.
+ *
+ * @deprecated Prefer ConfigurableFilterBar which uses defaultSerialized to
+ * skip writing default values — keeping URLs clean. This hook writes all
+ * non-empty values regardless of whether they equal the variable default.
  */
 export function useAutoUrlSync(
   variables: ComponentVariable[],

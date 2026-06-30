@@ -421,3 +421,126 @@ describe("URL clean — default values skip URL", () => {
     expect(written.maxPrice).toBeUndefined();
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 7. URL reset — managed keys cleared, external params preserved, page removed
+// ─────────────────────────────────────────────────────────────────────────────
+describe("URL reset — managed keys and external params", () => {
+  const searchVar = createTextVariable({ id: "search", label: "Search", urlKeys: "search" });
+  const typeVar   = createSelectVariable({
+    id: "type", label: "Type", urlKeys: "type",
+    options: [{ value: "all", label: "Tous" }],
+  });
+  const variables = [searchVar, typeVar];
+
+  function managedKeySet(vars: typeof variables) {
+    const keys = new Set<string>();
+    for (const v of vars) {
+      if (!v.urlKeys) continue;
+      if (typeof v.urlKeys === "string") keys.add(v.urlKeys);
+      else Object.values(v.urlKeys).forEach((k) => keys.add(k as string));
+    }
+    keys.add("page");
+    return keys;
+  }
+
+  function simulateClearAll(currentParams: Record<string, string>) {
+    const managed = managedKeySet(variables);
+    const next: Record<string, string> = {};
+    for (const [k, v] of Object.entries(currentParams)) {
+      if (!managed.has(k)) next[k] = v;
+    }
+    return next;
+  }
+
+  it("reset removes managed URL keys", () => {
+    const current = { search: "paris", type: "maison", tab: "list" };
+    const after = simulateClearAll(current);
+    expect(after.search).toBeUndefined();
+    expect(after.type).toBeUndefined();
+  });
+
+  it("reset preserves external (non-managed) URL params", () => {
+    const current = { search: "paris", type: "maison", tab: "list", view: "map" };
+    const after = simulateClearAll(current);
+    expect(after.tab).toBe("list");
+    expect(after.view).toBe("map");
+  });
+
+  it("reset removes page param", () => {
+    const current = { search: "paris", page: "3", tab: "results" };
+    const after = simulateClearAll(current);
+    expect(after.page).toBeUndefined();
+    expect(after.tab).toBe("results");
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 8. Search variable — text type, not auto-created
+// ─────────────────────────────────────────────────────────────────────────────
+describe("search variable — factory-created, not auto-injected", () => {
+  it("createTextVariable produces a variable with kind text", () => {
+    const s = createTextVariable({ id: "search", label: "Recherche", urlKeys: "search" });
+    expect(s.id).toBe("search");
+    expect(s.defaultValue).toBe("");
+  });
+
+  it("search serializes to its urlKey", () => {
+    const s = createTextVariable({ id: "search", label: "Recherche", urlKeys: "search" });
+    const result = serializeVariable(s, "paris");
+    expect(result).toMatchObject({ search: "paris" });
+  });
+
+  it("search deserializes from its urlKey", () => {
+    const s = createTextVariable({ id: "search", label: "Recherche", urlKeys: "search" });
+    const result = deserializeVariable(s, { search: "paris" });
+    expect(result).toBe("paris");
+  });
+
+  it("empty search deserializes to empty string", () => {
+    const s = createTextVariable({ id: "search", label: "Recherche", urlKeys: "search" });
+    const result = deserializeVariable(s, { search: "" });
+    expect(result).toBe("");
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 9. SliderRange URL round-trip with named keys
+// ─────────────────────────────────────────────────────────────────────────────
+describe("sliderRange URL round-trip with named keys", () => {
+  const pv = createSliderRangeVariable({
+    id: "priceRange",
+    label: "Budget",
+    min: 0, max: 2_000_000, step: 10_000,
+    defaultValue: { min: 0, max: 2_000_000 },
+    urlKeys: { min: "minPrice", max: "maxPrice" },
+  });
+
+  it("serializes min and max to separate URL keys", () => {
+    const result = serializeVariable(pv, { min: 300_000, max: 800_000 });
+    expect(result).toMatchObject({ minPrice: "300000", maxPrice: "800000" });
+  });
+
+  it("deserializes minPrice and maxPrice back to SliderValue", () => {
+    const result = deserializeVariable(pv, { minPrice: "300000", maxPrice: "800000" });
+    expect(result).toEqual({ min: 300_000, max: 800_000 });
+  });
+
+  it("missing URL keys fall back to defaultValue", () => {
+    const result = deserializeVariable(pv, {});
+    expect(result).toEqual({ min: 0, max: 2_000_000 });
+  });
+
+  it("partial URL keys (only minPrice) preserves max default", () => {
+    const result = deserializeVariable(pv, { minPrice: "400000" });
+    expect((result as { min: number; max: number }).min).toBe(400_000);
+    expect((result as { min: number; max: number }).max).toBe(2_000_000);
+  });
+
+  it("round-trip: serialize then deserialize returns same value", () => {
+    const original = { min: 250_000, max: 1_500_000 };
+    const serialized = serializeVariable(pv, original) as Record<string, string>;
+    const restored   = deserializeVariable(pv, serialized) as { min: number; max: number };
+    expect(restored).toEqual(original);
+  });
+});

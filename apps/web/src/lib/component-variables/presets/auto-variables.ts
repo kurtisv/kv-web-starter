@@ -50,7 +50,7 @@ export const autoVariables: ComponentVariable[] = [
     min: 0,
     max: 1000000,
     step: 5000,
-    defaultValue: { min: 0, max: 500000 },
+    defaultValue: { min: 0, max: 1000000 },
     urlKeys: { min: "minPrice", max: "maxPrice" },
   }),
 

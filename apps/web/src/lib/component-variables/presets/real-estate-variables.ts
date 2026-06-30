@@ -33,7 +33,7 @@ export const realEstateVariables: ComponentVariable[] = [
     min: 0,
     max: 2000000,
     step: 10000,
-    defaultValue: { min: 0, max: 1000000 },
+    defaultValue: { min: 0, max: 2000000 },
     urlKeys: { min: "minPrice", max: "maxPrice" },
   }),
 

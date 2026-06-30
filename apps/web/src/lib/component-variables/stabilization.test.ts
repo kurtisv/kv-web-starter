@@ -350,3 +350,74 @@ describe("No duplicate search field", () => {
     expect(restored.search).toBe("");
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 6. URL clean — default values must NOT appear in serialized URL output
+// ─────────────────────────────────────────────────────────────────────────────
+describe("URL clean — default values skip URL", () => {
+  const priceRange = createSliderRangeVariable({
+    id: "priceRange",
+    label: "Budget",
+    min: 0,
+    max: 2_000_000,
+    step: 10_000,
+    defaultValue: { min: 0, max: 2_000_000 },
+    urlKeys: { min: "minPrice", max: "maxPrice" },
+  });
+  const type = createSelectVariable({
+    id: "type",
+    label: "Type",
+    urlKeys: "type",
+    options: [{ value: "all", label: "Tous" }, { value: "maison", label: "Maison" }],
+  });
+  const variables = [priceRange, type];
+
+  // Replicate the URL-writer logic (skip empty + skip default)
+  function urlWriteFilter(serialized: Record<string, string>, defaultSerialized: Record<string, string>) {
+    return Object.fromEntries(
+      Object.entries(serialized).filter(([k, v]) => v !== "" && v !== defaultSerialized[k])
+    );
+  }
+
+  it("slider at default does not pollute URL", () => {
+    const defaults = { priceRange: { min: 0, max: 2_000_000 }, type: "all" };
+    const serialized = serializeAll(variables, defaults);
+    const defaultSerialized: Record<string, string> = {};
+    for (const v of variables) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const s = serializeVariable(v as any, v.defaultValue);
+      if (s) Object.assign(defaultSerialized, s);
+    }
+    const written = urlWriteFilter(serialized, defaultSerialized);
+    expect(written).toEqual({});
+  });
+
+  it("non-default slider values appear in URL", () => {
+    const values = { priceRange: { min: 400_000, max: 900_000 }, type: "all" };
+    const serialized = serializeAll(variables, values);
+    const defaultSerialized: Record<string, string> = {};
+    for (const v of variables) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const s = serializeVariable(v as any, v.defaultValue);
+      if (s) Object.assign(defaultSerialized, s);
+    }
+    const written = urlWriteFilter(serialized, defaultSerialized);
+    expect(written).toMatchObject({ minPrice: "400000", maxPrice: "900000" });
+    expect(written.type).toBeUndefined();
+  });
+
+  it("non-default select appears in URL", () => {
+    const values = { priceRange: { min: 0, max: 2_000_000 }, type: "maison" };
+    const serialized = serializeAll(variables, values);
+    const defaultSerialized: Record<string, string> = {};
+    for (const v of variables) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const s = serializeVariable(v as any, v.defaultValue);
+      if (s) Object.assign(defaultSerialized, s);
+    }
+    const written = urlWriteFilter(serialized, defaultSerialized);
+    expect(written.type).toBe("maison");
+    expect(written.minPrice).toBeUndefined();
+    expect(written.maxPrice).toBeUndefined();
+  });
+});

@@ -6,127 +6,13 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { useVariable } from "@/lib/component-variables/react";
 import type { ComponentVariable } from "@/lib/component-variables";
-import type { SelectOption, SliderRangeValue, SortValue, DateRangeValue } from "@/lib/component-variables/factories";
+import type { SelectOption, SortValue, DateRangeValue } from "@/lib/component-variables/factories";
+import { DualRangeSlider } from "./renderers/dual-range-slider";
+import type { SliderValue } from "./renderers/dual-range-slider";
 
 interface VariableRendererProps {
   variable: ComponentVariable;
   className?: string;
-}
-
-// ── SliderRange renderer (min/max inputs + visual track) ──────────────────────
-function SliderRangeRenderer({
-  variable,
-  value,
-  onChange,
-  error,
-  isDisabled,
-  className,
-}: {
-  variable: ComponentVariable;
-  value: SliderRangeValue;
-  onChange: (v: SliderRangeValue) => void;
-  error: string | null;
-  isDisabled: boolean;
-  className?: string;
-}) {
-  const meta = variable.metadata as {
-    min: number;
-    max: number;
-    step?: number;
-    format?: (v: number) => string;
-  };
-
-  const absMin = meta.min ?? 0;
-  const absMax = meta.max ?? 100;
-  const step = meta.step ?? 1;
-  const fmt = meta.format ?? String;
-
-  const minPct = ((value.min - absMin) / (absMax - absMin)) * 100;
-  const maxPct = ((value.max - absMin) / (absMax - absMin)) * 100;
-
-  return (
-    <div className={cn("flex flex-col gap-2 min-w-52", className)}>
-      <span className="text-xs text-muted-foreground">{variable.label}</span>
-
-      {/* Visual range track */}
-      <div className="relative h-1.5 w-full rounded-full bg-border">
-        <div
-          className="absolute h-full rounded-full bg-foreground"
-          style={{ left: `${minPct}%`, width: `${maxPct - minPct}%` }}
-        />
-        {/* Min thumb */}
-        <input
-          type="range"
-          min={absMin}
-          max={absMax}
-          step={step}
-          value={value.min}
-          disabled={isDisabled}
-          aria-label={`${variable.label} minimum`}
-          onChange={(e) => {
-            const next = Number(e.target.value);
-            if (next <= value.max) onChange({ min: next, max: value.max });
-          }}
-          className="pointer-events-none absolute inset-0 h-full w-full appearance-none opacity-0"
-        />
-        {/* Max thumb */}
-        <input
-          type="range"
-          min={absMin}
-          max={absMax}
-          step={step}
-          value={value.max}
-          disabled={isDisabled}
-          aria-label={`${variable.label} maximum`}
-          onChange={(e) => {
-            const next = Number(e.target.value);
-            if (next >= value.min) onChange({ min: value.min, max: next });
-          }}
-          className="pointer-events-none absolute inset-0 h-full w-full appearance-none opacity-0"
-        />
-      </div>
-
-      {/* Min / Max inputs */}
-      <div className="flex items-center gap-2">
-        <Input
-          type="number"
-          value={value.min}
-          min={absMin}
-          max={value.max}
-          step={step}
-          disabled={isDisabled}
-          aria-label={`${variable.label} min`}
-          onChange={(e) => {
-            const next = Number(e.target.value);
-            if (next <= value.max && next >= absMin) onChange({ min: next, max: value.max });
-          }}
-          className="h-8 w-24 text-xs"
-        />
-        <span className="text-xs text-muted-foreground">–</span>
-        <Input
-          type="number"
-          value={value.max}
-          min={value.min}
-          max={absMax}
-          step={step}
-          disabled={isDisabled}
-          aria-label={`${variable.label} max`}
-          onChange={(e) => {
-            const next = Number(e.target.value);
-            if (next >= value.min && next <= absMax) onChange({ min: value.min, max: next });
-          }}
-          className="h-8 w-24 text-xs"
-        />
-        {(value.min !== absMin || value.max !== absMax) && (
-          <span className="text-[10px] text-muted-foreground whitespace-nowrap">
-            {fmt(value.min)} – {fmt(value.max)}
-          </span>
-        )}
-      </div>
-
-      {error && <p className="text-xs text-destructive">{error}</p>}
-    </div>
-  );
 }
 
 // ── Sort renderer (field select + direction toggle) ───────────────────────────
@@ -244,13 +130,23 @@ export function VariableRenderer({ variable, className }: VariableRendererProps)
     "min" in (value as object) &&
     "max" in (value as object)
   ) {
+    const meta = variable.metadata as {
+      min?: number;
+      max?: number;
+      step?: number;
+      format?: (v: number) => string;
+    };
     return (
-      <SliderRangeRenderer
-        variable={variable}
-        value={value as SliderRangeValue}
-        onChange={onChange as (v: SliderRangeValue) => void}
+      <DualRangeSlider
+        label={variable.label}
+        value={value as SliderValue}
+        min={meta.min ?? 0}
+        max={meta.max ?? 100}
+        step={meta.step ?? 1}
+        formatValue={meta.format}
+        disabled={isDisabled}
         error={error}
-        isDisabled={isDisabled}
+        onChange={onChange as (v: SliderValue) => void}
         className={className}
       />
     );

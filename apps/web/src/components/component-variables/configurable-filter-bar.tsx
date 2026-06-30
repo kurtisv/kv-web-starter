@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useCallback, useEffect, useRef } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useRef } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -10,7 +10,7 @@ import {
   useAllVariables,
   useUrlInitialValues,
 } from "@/lib/component-variables/react";
-import { serializeAll } from "@/lib/component-variables";
+import { serializeAll, serializeVariable } from "@/lib/component-variables";
 import { VariableRenderer } from "./variable-renderer";
 
 // ── Inner — reads URL on mount, writes on every change ───────────────────────
@@ -28,21 +28,34 @@ function FilterBarInner({
   const pathname = usePathname();
   const { resolved, reset, values, set } = useAllVariables();
 
-  // On mount: initialize from URL (only once)
+  // Serialized defaults — used to skip writing unchanged values to URL
+  const defaultSerialized = useMemo(() => {
+    const out: Record<string, string> = {};
+    for (const v of variables) {
+      const s = serializeVariable(v, v.defaultValue);
+      if (s) Object.assign(out, s);
+    }
+    return out;
+  }, [variables]);
+
+  // On mount: initialize from URL (only once, using deep equality for objects)
   const initializedRef = useRef(false);
   const urlValues = useUrlInitialValues(variables);
   useEffect(() => {
     if (initializedRef.current) return;
     initializedRef.current = true;
     for (const v of variables) {
-      if (urlValues[v.id] !== undefined && urlValues[v.id] !== v.defaultValue) {
-        set(v.id, urlValues[v.id]);
-      }
+      if (urlValues[v.id] === undefined) continue;
+      const fromUrl = urlValues[v.id];
+      const isDefault = JSON.stringify(fromUrl) === JSON.stringify(v.defaultValue);
+      if (!isDefault) set(v.id, fromUrl);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Write variable values to URL whenever they change, debounced
+  // Write variable values to URL whenever they change, debounced.
+  // Only non-default values are written; params that match defaults are omitted
+  // so the URL stays clean: /page?type=maison not /page?search=&type=all&view=grid
   const writeRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const prevSerializedRef = useRef<string>("");
   useEffect(() => {
@@ -53,25 +66,27 @@ function FilterBarInner({
       if (serializedStr === prevSerializedRef.current) return;
       prevSerializedRef.current = serializedStr;
 
-      // Merge with existing URL params not managed by these variables
       const managedKeys = new Set<string>();
       for (const v of variables) {
         if (!v.urlKeys) continue;
         if (typeof v.urlKeys === "string") managedKeys.add(v.urlKeys);
         else Object.values(v.urlKeys).forEach((k) => managedKeys.add(k));
       }
+      managedKeys.add("page");
+
       const params = new URLSearchParams();
       searchParams.forEach((val, key) => {
         if (!managedKeys.has(key)) params.set(key, val);
       });
       for (const [k, v] of Object.entries(serialized)) {
-        if (v !== "") params.set(k, v);
+        // Skip empty values and values that match the serialized default
+        if (v !== "" && v !== defaultSerialized[k]) params.set(k, v);
       }
       params.delete("page");
       router.replace(`${pathname}?${params.toString()}`, { scroll: false });
     }, 150);
     return () => clearTimeout(writeRef.current);
-  }, [values, variables, searchParams, router, pathname]);
+  }, [values, variables, defaultSerialized, searchParams, router, pathname]);
 
   // Notify parent
   const prevNotifyRef = useRef<string>("");

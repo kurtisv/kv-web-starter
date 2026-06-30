@@ -10,11 +10,10 @@ FilterBar (wrapper public)
   +-- variables prop? --> ConfigurableFilterBar (nouveau)
   |                         |-- VariableProvider
   |                         |-- FilterBarInner (useSearchParams)
-  |                         |   |-- SearchInput
-  |                         |   |-- VariableRenderer x N
+  |                         |   |-- VariableRenderer x N  (inclut search si variable search presente)
   |                         |   |-- Bouton Effacer
   |
-  +-- filters prop? ---> LegacyFilterBar (inchange)
+  +-- filters prop? ---> LegacyFilterBar (inchange, avec SearchInput dedie)
 ```
 
 ## FilterBar (backward-compat)
@@ -46,28 +45,37 @@ import { realEstateVariables } from "@/lib/component-variables/presets";
 
 <ConfigurableFilterBar
   variables={realEstateVariables}
-  searchPlaceholder="Ville, quartier..."
   onValuesChange={(values) => console.log(values)}
 />
 ```
 
 Le composant :
-- wraps chaque variable dans `VariableRenderer`
+- rend uniquement les variables recues (pas de SearchInput automatique)
+- le champ de recherche = `createTextVariable({ id: "search", urlKeys: "search" })`, rendu avec icone
 - lit les valeurs initiales depuis l'URL au mount
-- ecrit les changements dans l'URL (debounce 150ms, `router.replace`)
+- ecrit SEULEMENT les valeurs non-defaut dans l'URL (debounce 150ms, `router.replace`)
 - gere le reset (efface les params geres)
 - affiche un bouton "Effacer (N)" quand des filtres actifs existent
 
+**URL propre** : `/page?type=maison&minPrice=400000` (pas `?search=&type=all&view=grid`)
+
 ## URL sync
 
-Les params URL sont geres automatiquement par les `urlKeys` de chaque variable. Le composant maintient une separation propre :
+Les params URL sont geres automatiquement par les `urlKeys` de chaque variable :
 
-- Params geres = les `urlKeys` de toutes les variables + `search`
+- Params geres = les `urlKeys` de toutes les variables
 - Params non geres = preserves tels quels lors des mises a jour
+- Valeurs egales au defaut = absentes de l'URL (URL propre)
+- `page` est toujours supprime lors d'un changement de filtre
 
-Exemple avec `realEstateVariables` :
+Exemple avec `realEstateVariables` (filtre actif) :
 ```
-?search=paris&type=appartement&minPrice=200000&maxPrice=600000&rooms=3
+?type=appartement&minPrice=200000&maxPrice=600000&rooms=3
+```
+
+Etat vide (tout a defaut) :
+```
+/demo/real-estate
 ```
 
 ## Lire les filtres dans la page
@@ -106,6 +114,7 @@ Toujours placer `MyGrid` dans un `<Suspense>` car `useSearchParams` le requiert 
 | `string` + `options` dans metadata | Select |
 | `boolean` | Checkbox |
 | `number` | Input number |
+| `string` avec `id === "search"` | Input text + icone Search + clear |
 | `string` (defaut) | Input text |
 | `variable.render` defini | Custom render fn |
 
@@ -125,6 +134,40 @@ const colorVariable = createComponentVariable<string>({
   ),
 });
 ```
+
+## DualRangeSlider 9/10
+
+Le composant `DualRangeSlider` remplace le POC slider temporaire. Il est utilise automatiquement par `VariableRenderer` pour toute valeur `{ min, max }`.
+
+**Pourquoi** : le POC utilisait deux `<input type="range">` avec `pointer-events-none`, ce qui les rendait non-interactifs. Le nouveau composant est entierement draggable souris + tactile + clavier.
+
+**Comment l'utiliser** :
+
+```typescript
+createSliderRangeVariable({
+  id: "priceRange",
+  label: "Budget",
+  min: 0,
+  max: 2_000_000,
+  step: 10_000,
+  defaultValue: { min: 0, max: 2_000_000 },
+  urlKeys: { min: "minPrice", max: "maxPrice" },
+  format: (v) => `${(v / 1000).toFixed(0)}k€`,  // formatage optionnel
+});
+```
+
+**Regles** :
+- `defaultValue.max` doit egaler `max` pour que l'URL reste propre (sinon le defaut est ecrit)
+- `step` est respecte au snap sur drag et keyboard
+- Shift + fleche = step x10
+- Home/End = aller aux bornes
+- Inputs numeriques : valeur snappee et clampee
+- NaN bloque silencieusement la mise a jour
+
+**Limites** :
+- Pas de librairie externe (Radix, etc.) : le track CSS est simple
+- Interaction tactile fonctionne mais sans thumb visible pendant le drag (le thumb suit visuellement)
+- Pas de tooltips au hover
 
 ## Checklist migration
 

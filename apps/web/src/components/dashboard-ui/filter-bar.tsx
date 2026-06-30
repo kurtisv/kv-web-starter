@@ -149,7 +149,6 @@ export function FilterBar({
     return (
       <ConfigurableFilterBar
         variables={variables}
-        searchPlaceholder={searchPlaceholder}
         className={className}
         onValuesChange={onValuesChange}
       />

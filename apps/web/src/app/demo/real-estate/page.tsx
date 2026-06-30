@@ -234,10 +234,7 @@ export default function DemoRealEstatePage() {
       <section className="border-b bg-background">
         <div className="mx-auto max-w-6xl px-6 py-6">
           <Suspense>
-            <ConfigurableFilterBar
-              variables={realEstateVariables}
-              searchPlaceholder="Ville, quartier, code postal..."
-            />
+            <ConfigurableFilterBar variables={realEstateVariables} />
           </Suspense>
         </div>
       </section>

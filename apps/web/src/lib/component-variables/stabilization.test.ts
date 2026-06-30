@@ -311,3 +311,42 @@ describe("createMediaVariable", () => {
     });
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 5. No duplicate search — preset with id="search" must not produce two keys
+// ─────────────────────────────────────────────────────────────────────────────
+describe("No duplicate search field", () => {
+  const searchVar = createTextVariable({ id: "search", label: "Recherche", urlKeys: "search" });
+  const typeVar   = createSelectVariable({
+    id: "type",
+    label: "Type",
+    urlKeys: "type",
+    options: [{ value: "all", label: "Tous" }, { value: "a", label: "A" }],
+  });
+  const variables = [searchVar, typeVar];
+
+  it("serializeAll produces exactly one 'search' key", () => {
+    const out = serializeAll(variables, { search: "paris", type: "all" });
+    const searchKeys = Object.keys(out).filter((k) => k === "search");
+    expect(searchKeys).toHaveLength(1);
+    expect(out.search).toBe("paris");
+  });
+
+  it("empty search value does not appear in serialized output (filtered by URL writer)", () => {
+    const out = serializeAll(variables, { search: "", type: "all" });
+    expect(out.search).toBe("");
+  });
+
+  it("round-trip with search variable preserves value", () => {
+    const values   = { search: "lyon", type: "a" };
+    const params   = serializeAll(variables, values);
+    const restored = deserializeAll(variables, params);
+    expect(restored.search).toBe("lyon");
+    expect(restored.type).toBe("a");
+  });
+
+  it("deserializeAll with no search param returns default empty string", () => {
+    const restored = deserializeAll(variables, { type: "a" });
+    expect(restored.search).toBe("");
+  });
+});

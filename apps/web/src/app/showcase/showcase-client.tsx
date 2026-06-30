@@ -973,7 +973,7 @@ export function ShowcaseClient() {
             <React.Suspense>
               <ConfigurableFilterBar
                 variables={[
-                  createTextVariable({ id: "q", label: "Recherche", urlKeys: "q" }),
+                  createTextVariable({ id: "search", label: "Recherche", urlKeys: "search", placeholder: "Titre, auteur..." }),
                   createSelectVariable({
                     id: "lang",
                     label: "Langue",
@@ -996,12 +996,11 @@ export function ShowcaseClient() {
                   }),
                   createBooleanVariable({ id: "subtitles", label: "Sous-titres", urlKeys: "sub" }),
                 ]}
-                searchPlaceholder="Titre, auteur..."
               />
             </React.Suspense>
             <pre className="overflow-x-auto rounded border bg-card p-3 text-xs leading-relaxed text-muted-foreground">
 {`const variables = [
-  createTextVariable({ id: "q", label: "Recherche", urlKeys: "q" }),
+  createTextVariable({ id: "search", label: "Recherche", urlKeys: "search", placeholder: "Titre, auteur..." }),
   createSelectVariable({ id: "lang", label: "Langue", urlKeys: "lang", options: [...] }),
   createSliderRangeVariable({ id: "duration", label: "Duree", min: 0, max: 120, urlKeys: { min: "dMin", max: "dMax" } }),
   createBooleanVariable({ id: "subtitles", label: "Sous-titres", urlKeys: "sub" }),

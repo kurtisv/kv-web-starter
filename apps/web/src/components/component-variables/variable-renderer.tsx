@@ -1,5 +1,6 @@
 "use client";
 
+import { Search, X } from "lucide-react";
 import { Select } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -343,6 +344,39 @@ export function VariableRenderer({ variable, className }: VariableRendererProps)
           placeholder={variable.label}
           className="h-9"
         />
+        {error && <p className="mt-1 text-xs text-destructive">{error}</p>}
+      </div>
+    );
+  }
+
+  // Text — search-styled when variable.id is "search"
+  if (variable.id === "search") {
+    const strValue = value as string;
+    return (
+      <div className={cn("relative flex-1 min-w-48 max-w-xs", className)}>
+        <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+        <input
+          type="text"
+          value={strValue}
+          onChange={(e) => onChange(e.target.value)}
+          disabled={isDisabled}
+          placeholder={(meta?.placeholder as string | undefined) ?? variable.label}
+          maxLength={meta?.maxLength as number | undefined}
+          className={cn(
+            "h-9 w-full border border-border bg-background pl-8 pr-8 text-sm outline-none",
+            "transition-colors focus:border-foreground placeholder:text-muted-foreground",
+          )}
+        />
+        {strValue && (
+          <button
+            type="button"
+            onClick={() => onChange("")}
+            disabled={isDisabled}
+            className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+          >
+            <X className="h-3.5 w-3.5" />
+          </button>
+        )}
         {error && <p className="mt-1 text-xs text-destructive">{error}</p>}
       </div>
     );

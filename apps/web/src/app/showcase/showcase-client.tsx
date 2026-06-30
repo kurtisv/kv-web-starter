@@ -8,6 +8,13 @@ import {
   ecommerceVariables,
   dashboardVariables,
 } from "@/lib/component-variables/presets";
+import {
+  createTextVariable,
+  createSelectVariable,
+  createSliderRangeVariable,
+  createBooleanVariable,
+  createComponentVariable,
+} from "@/lib/component-variables";
 
 // UI primitives
 import { Button } from "@/components/ui/button";
@@ -92,7 +99,7 @@ const CATEGORIES = [
   { id: "booking",    label: "Reservation",   count: 8  },
   { id: "sections",   label: "Sections",      count: 11 },
   { id: "threed",     label: "3D",            count: 10 },
-  { id: "variables",  label: "Variable System", count: 4 },
+  { id: "variables",  label: "Variable System", count: 7 },
 ] as const;
 
 // ── Layout helpers ─────────────────────────────────────────────────────────────
@@ -916,35 +923,136 @@ export function ShowcaseClient() {
           <SectionHeader
             id="variables"
             label="Variable System"
-            count={4}
-            description="ConfigurableFilterBar pilote par ComponentVariable[]. Meme composant, options injectees — pas de code duplique."
+            count={7}
+            description="Default first. Factory second. Custom last. — ConfigurableFilterBar pilote par ComponentVariable[]. Meme composant, options injectees."
           />
 
+          {/* Philosophy callout */}
+          <div className="rounded-lg border border-border bg-card p-5">
+            <p className="text-sm font-medium">Architecture</p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Chaque variable porte : identifiant, valeur par defaut, validation, serialisation URL, et rendu.
+              Le composant lit l&apos;URL au mount et ecrit chaque changement (debounce 150ms).
+              Ancien <code className="font-mono text-xs">FilterBar</code> reste inchange — backward-compat total.
+            </p>
+          </div>
+
+          {/* 1 — Presets live */}
           <div className="flex flex-col gap-6">
+            <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Presets — demos live</p>
+
             <div>
-              <p className="mb-2 font-mono text-xs text-muted-foreground">realEstateVariables</p>
+              <p className="mb-2 font-mono text-xs text-muted-foreground">realEstateVariables — search, propertyType, priceRange (slider), rooms, viewMode</p>
               <React.Suspense>
                 <ConfigurableFilterBar variables={realEstateVariables} />
               </React.Suspense>
             </div>
             <div>
-              <p className="mb-2 font-mono text-xs text-muted-foreground">autoVariables</p>
+              <p className="mb-2 font-mono text-xs text-muted-foreground">autoVariables — search, category, make, priceRange (slider), viewMode</p>
               <React.Suspense>
                 <ConfigurableFilterBar variables={autoVariables} />
               </React.Suspense>
             </div>
             <div>
-              <p className="mb-2 font-mono text-xs text-muted-foreground">ecommerceVariables</p>
+              <p className="mb-2 font-mono text-xs text-muted-foreground">ecommerceVariables — search, category, brand, priceRange (slider), rating, inStock, sort, viewMode</p>
               <React.Suspense>
                 <ConfigurableFilterBar variables={ecommerceVariables} />
               </React.Suspense>
             </div>
             <div>
-              <p className="mb-2 font-mono text-xs text-muted-foreground">dashboardVariables</p>
+              <p className="mb-2 font-mono text-xs text-muted-foreground">dashboardVariables — search, status, dateRange, sort</p>
               <React.Suspense>
                 <ConfigurableFilterBar variables={dashboardVariables} />
               </React.Suspense>
             </div>
+          </div>
+
+          {/* 2 — Factory variable */}
+          <div className="flex flex-col gap-3">
+            <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Factory variable — compose a la carte</p>
+            <React.Suspense>
+              <ConfigurableFilterBar
+                variables={[
+                  createTextVariable({ id: "q", label: "Recherche", urlKeys: "q" }),
+                  createSelectVariable({
+                    id: "lang",
+                    label: "Langue",
+                    urlKeys: "lang",
+                    options: [
+                      { value: "all", label: "Toutes" },
+                      { value: "fr",  label: "Francais" },
+                      { value: "en",  label: "Anglais" },
+                      { value: "es",  label: "Espagnol" },
+                    ],
+                  }),
+                  createSliderRangeVariable({
+                    id: "duration",
+                    label: "Duree (min)",
+                    min: 0,
+                    max: 120,
+                    step: 5,
+                    defaultValue: { min: 0, max: 60 },
+                    urlKeys: { min: "dMin", max: "dMax" },
+                  }),
+                  createBooleanVariable({ id: "subtitles", label: "Sous-titres", urlKeys: "sub" }),
+                ]}
+                searchPlaceholder="Titre, auteur..."
+              />
+            </React.Suspense>
+            <pre className="overflow-x-auto rounded border bg-card p-3 text-xs leading-relaxed text-muted-foreground">
+{`const variables = [
+  createTextVariable({ id: "q", label: "Recherche", urlKeys: "q" }),
+  createSelectVariable({ id: "lang", label: "Langue", urlKeys: "lang", options: [...] }),
+  createSliderRangeVariable({ id: "duration", label: "Duree", min: 0, max: 120, urlKeys: { min: "dMin", max: "dMax" } }),
+  createBooleanVariable({ id: "subtitles", label: "Sous-titres", urlKeys: "sub" }),
+];
+
+<ConfigurableFilterBar variables={variables} />`}
+            </pre>
+          </div>
+
+          {/* 3 — Custom render */}
+          <div className="flex flex-col gap-3">
+            <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Custom render — variable de A a Z</p>
+            <React.Suspense>
+              <ConfigurableFilterBar
+                variables={[
+                  createComponentVariable<string>({
+                    id: "color",
+                    label: "Couleur",
+                    defaultValue: "#6366f1",
+                    urlKeys: "color",
+                    validate: (v) => /^#[0-9a-f]{6}$/i.test(v) ? null : "Couleur invalide",
+                    serialize: (v) => v,
+                    deserialize: (raw) => typeof raw === "string" && raw.startsWith("#") ? raw : "#6366f1",
+                    render: ({ value, onChange }) => (
+                      <label className="flex items-center gap-2 text-sm">
+                        <span className="text-muted-foreground text-xs">Couleur</span>
+                        <input
+                          type="color"
+                          value={value}
+                          onChange={(e) => onChange(e.target.value)}
+                          className="h-8 w-12 cursor-pointer rounded border border-border bg-background p-0.5"
+                        />
+                        <span className="font-mono text-xs text-muted-foreground">{value}</span>
+                      </label>
+                    ),
+                  }),
+                ]}
+              />
+            </React.Suspense>
+            <pre className="overflow-x-auto rounded border bg-card p-3 text-xs leading-relaxed text-muted-foreground">
+{`createComponentVariable<string>({
+  id: "color",
+  label: "Couleur",
+  defaultValue: "#6366f1",
+  urlKeys: "color",
+  validate: (v) => /^#[0-9a-f]{6}$/i.test(v) ? null : "Couleur invalide",
+  render: ({ value, onChange }) => (
+    <input type="color" value={value} onChange={(e) => onChange(e.target.value)} />
+  ),
+})`}
+            </pre>
           </div>
         </section>
 

@@ -1,26 +1,35 @@
 "use client";
 
+import { Suspense } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { ArrowRight, Search } from "lucide-react";
 import { HeroSection } from "@/components/sections/hero-section";
 import { CTASection } from "@/components/sections/cta-section";
 import { StatsSection } from "@/components/sections/stats-section";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { PropertyCard, type PropertyItem } from "@/components/real-estate/property-card";
 import { MortgageCalculator } from "@/components/real-estate/mortgage-calculator";
 import { AgentProfileCard } from "@/components/real-estate/agent-profile-card";
-import { PropertySearchBar } from "@/components/real-estate/property-search-bar";
 import { NeighborhoodScoreCard, type NeighborhoodScoreCardProps } from "@/components/real-estate/neighborhood-score-card";
+import { ConfigurableFilterBar } from "@/components/component-variables";
+import { realEstateVariables } from "@/lib/component-variables/presets";
 
-const properties: PropertyItem[] = [
+// ── Property data with filterable fields ─────────────────────────────────────
+interface EnrichedProperty extends PropertyItem {
+  priceValue: number;
+  roomCount: number;
+  typeKey: string;
+}
+
+const ALL_PROPERTIES: EnrichedProperty[] = [
   {
     id: "p1",
-    type: "Appartement",
+    type: "Appartement", typeKey: "appartement",
     location: "Paris 11e",
-    price: "425 000 €",
+    price: "425 000 €",    priceValue: 425000,
     size: "65 m²",
-    rooms: "3 pieces",
+    rooms: "3 pieces",     roomCount: 3,
     score: 8.4,
     yieldPct: "4.2%",
     status: "Disponible",
@@ -28,11 +37,11 @@ const properties: PropertyItem[] = [
   },
   {
     id: "p2",
-    type: "Maison",
+    type: "Maison", typeKey: "maison",
     location: "Boulogne-Billancourt",
-    price: "890 000 €",
+    price: "890 000 €",    priceValue: 890000,
     size: "140 m²",
-    rooms: "5 pieces",
+    rooms: "5 pieces",     roomCount: 5,
     score: 9.1,
     yieldPct: "3.8%",
     status: "Sous compromis",
@@ -40,11 +49,11 @@ const properties: PropertyItem[] = [
   },
   {
     id: "p3",
-    type: "Studio",
+    type: "Studio", typeKey: "studio",
     location: "Paris 5e",
-    price: "215 000 €",
+    price: "215 000 €",    priceValue: 215000,
     size: "28 m²",
-    rooms: "1 piece",
+    rooms: "1 piece",      roomCount: 1,
     score: 7.9,
     yieldPct: "5.1%",
     status: "Disponible",
@@ -52,11 +61,11 @@ const properties: PropertyItem[] = [
   },
   {
     id: "p4",
-    type: "Loft",
+    type: "Loft", typeKey: "loft",
     location: "Montreuil",
-    price: "380 000 €",
+    price: "380 000 €",    priceValue: 380000,
     size: "90 m²",
-    rooms: "3 pieces",
+    rooms: "3 pieces",     roomCount: 3,
     score: 8.7,
     yieldPct: "4.6%",
     status: "Disponible",
@@ -132,6 +141,62 @@ const neighborhoods: NeighborhoodScoreCardProps[] = [
   },
 ];
 
+// ── Filtered property grid (reads URL params written by ConfigurableFilterBar) ─
+function PropertyGrid() {
+  const searchParams = useSearchParams();
+
+  const search       = (searchParams.get("search") ?? "").toLowerCase();
+  const propertyType = searchParams.get("type") ?? "all";
+  const minPrice     = Number(searchParams.get("minPrice") ?? "0");
+  const maxPrice     = Number(searchParams.get("maxPrice") ?? "2000000");
+  const rooms        = searchParams.get("rooms") ?? "all";
+
+  const filtered = ALL_PROPERTIES.filter((p) => {
+    const matchSearch   = !search   || p.location.toLowerCase().includes(search) || p.type.toLowerCase().includes(search);
+    const matchType     = propertyType === "all" || p.typeKey === propertyType;
+    const matchPrice    = p.priceValue >= minPrice && p.priceValue <= maxPrice;
+    const matchRooms    = rooms === "all" || (rooms === "4" ? p.roomCount >= 4 : p.roomCount === Number(rooms));
+    return matchSearch && matchType && matchPrice && matchRooms;
+  });
+
+  return (
+    <section className="bg-background">
+      <div className="mx-auto max-w-6xl px-6 py-12">
+        <div className="mb-8 flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-semibold">Biens disponibles</h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {filtered.length} resultat{filtered.length !== 1 ? "s" : ""} — tries par score de quartier
+            </p>
+          </div>
+        </div>
+
+        {filtered.length === 0 ? (
+          <div className="py-16 text-center">
+            <p className="text-muted-foreground">Aucun bien ne correspond a votre recherche.</p>
+            <p className="mt-1 text-xs text-muted-foreground">Essayez d&apos;elargir les criteres de filtre.</p>
+          </div>
+        ) : (
+          <div className="grid gap-4 sm:grid-cols-2">
+            {filtered.map((p) => (
+              <PropertyCard key={p.id} property={p} />
+            ))}
+          </div>
+        )}
+
+        {filtered.length > 0 && (
+          <div className="mt-8 text-center">
+            <Button variant="outline" size="lg">
+              Voir tous les biens <ArrowRight className="size-4" />
+            </Button>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
+// ── Page ─────────────────────────────────────────────────────────────────────
 export default function DemoRealEstatePage() {
   return (
     <div data-theme="real-estate">
@@ -165,43 +230,34 @@ export default function DemoRealEstatePage() {
 
       <StatsSection stats={stats} variant="strip" />
 
-      {/* Search bar */}
+      {/* Variable-driven search bar — replaces static PropertySearchBar */}
       <section className="border-b bg-background">
-        <div className="mx-auto max-w-6xl px-6 py-8">
-          <PropertySearchBar />
+        <div className="mx-auto max-w-6xl px-6 py-6">
+          <Suspense>
+            <ConfigurableFilterBar
+              variables={realEstateVariables}
+              searchPlaceholder="Ville, quartier, code postal..."
+            />
+          </Suspense>
         </div>
       </section>
 
-      {/* PropertyCard grid */}
-      <section className="bg-background">
-        <div className="mx-auto max-w-6xl px-6 py-12">
-          <div className="mb-8 flex items-center justify-between">
-            <div>
-              <h2 className="text-2xl font-semibold">Biens disponibles</h2>
-              <p className="mt-1 text-sm text-muted-foreground">
-                340 resultats — tries par score de quartier
-              </p>
+      {/* Filtered property grid */}
+      <Suspense
+        fallback={
+          <section className="bg-background">
+            <div className="mx-auto max-w-6xl px-6 py-12">
+              <div className="grid gap-4 sm:grid-cols-2">
+                {ALL_PROPERTIES.map((p) => (
+                  <PropertyCard key={p.id} property={p} />
+                ))}
+              </div>
             </div>
-            <div className="flex gap-2">
-              {["Appartement", "Maison", "Studio"].map((t) => (
-                <Badge key={t} variant="outline">{t}</Badge>
-              ))}
-            </div>
-          </div>
-
-          <div className="grid gap-4 sm:grid-cols-2">
-            {properties.map((p) => (
-              <PropertyCard key={p.id} property={p} />
-            ))}
-          </div>
-
-          <div className="mt-8 text-center">
-            <Button variant="outline" size="lg">
-              Voir tous les biens <ArrowRight className="size-4" />
-            </Button>
-          </div>
-        </div>
-      </section>
+          </section>
+        }
+      >
+        <PropertyGrid />
+      </Suspense>
 
       {/* Scores de quartier */}
       <section className="border-y bg-card">

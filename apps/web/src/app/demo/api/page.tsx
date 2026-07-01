@@ -132,11 +132,11 @@ const webhookEvents: WebhookEvent[] = [
 
 export default function DemoAPIPage() {
   return (
-    <div data-theme="dark-tech-api">
+    <div data-theme="dark-tech-api" className="bg-profile-dark-depth">
       <HeroSection
         variant="split"
         eyebrow="v2.4.0 — changelog"
-        title={<>Une API <span className="text-primary">robuste</span>. Une integration en minutes.</>}
+        title={<>Une API <span className="text-gradient-primary">robuste</span>. Une integration en minutes.</>}
         description="REST JSON avec auth par cle API. Documentation interactive. SDKs Node, Python et Go inclus."
         actions={
           <>

@@ -83,7 +83,7 @@ const schedule: DaySchedule[] = [
 
 export default function DemoLocalBusinessPage() {
   return (
-    <div data-theme="local-business">
+    <div data-theme="local-business" className="bg-profile-soft-gradient">
       <HeroSection
         variant="split"
         eyebrow="Massotherapie & bien-etre"

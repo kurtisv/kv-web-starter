@@ -199,7 +199,7 @@ function PropertyGrid() {
 // ── Page ─────────────────────────────────────────────────────────────────────
 export default function DemoRealEstatePage() {
   return (
-    <div data-theme="real-estate">
+    <div data-theme="real-estate" className="bg-profile-soft-gradient">
       <HeroSection
         variant="dark"
         videoSrc="/videos/themes/real-estate-bg.mp4"

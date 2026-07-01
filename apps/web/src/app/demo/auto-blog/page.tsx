@@ -122,12 +122,12 @@ const winnerKey: Record<string, number> = {
 
 export default function DemoAutoBlogPage() {
   return (
-    <div data-theme="luxury-auto">
+    <div data-theme="luxury-auto" className="bg-profile-dark-depth">
       <HeroSection
         variant="dark"
         videoSrc="/videos/themes/luxury-auto-bg.mp4"
         eyebrow="Passion automobile"
-        title="La voiture, sans compromis."
+        title={<span className="text-gradient-editorial">La voiture, sans compromis.</span>}
         description="Fiches techniques exhaustives, essais exigeants, comparatifs objectifs. Pour les vrais passionnes."
         actions={
           <>

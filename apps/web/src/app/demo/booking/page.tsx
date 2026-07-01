@@ -54,7 +54,7 @@ const BOOKING_HISTORY: BookingHistoryItem[] = [
 
 export default function DemoBookingPage() {
   return (
-    <div data-theme="local-business">
+    <div data-theme="local-business" className="bg-profile-soft-gradient">
       <HeroSection
         variant="split"
         eyebrow="Bien-etre et relaxation"

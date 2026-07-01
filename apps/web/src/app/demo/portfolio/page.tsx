@@ -176,12 +176,12 @@ const testimonials = [
 
 export default function DemoPortfolioPage() {
   return (
-    <div data-theme="corporate-classic">
+    <div data-theme="corporate-classic" className="bg-profile-noise">
       {/* Hero */}
       <HeroSection
         variant="split"
         eyebrow="Developpeur Full Stack — Paris"
-        title="Je construis des produits qui fonctionnent."
+        title={<span className="text-gradient-editorial">Je construis des produits qui fonctionnent.</span>}
         description="Specialise Next.js, TypeScript et APIs. Je livre des applications rapides, accessibles et maintenables. Disponible pour missions freelance."
         actions={
           <>

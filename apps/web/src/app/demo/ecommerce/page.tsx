@@ -120,11 +120,11 @@ export default function DemoEcommercePage() {
   const [selectedSize, setSelectedSize] = React.useState("m");
 
   return (
-    <div data-theme="ecommerce-clean">
+    <div data-theme="ecommerce-clean" className="bg-profile-soft-gradient">
       <HeroSection
         variant="split"
         eyebrow="Collection printemps 2026"
-        title="Artisanat cuir premium, livre chez vous."
+        title={<span className="text-gradient-primary">Artisanat cuir premium, livre chez vous.</span>}
         description="Pieces fabriquees a la main, matieres nobles, finitions irreprochables. Garantie 2 ans incluse."
         actions={
           <>

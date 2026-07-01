@@ -98,11 +98,11 @@ const saasTestimonials = [
 
 export default function DemoSaaSPage() {
   return (
-    <div data-theme="premium-saas">
+    <div data-theme="premium-saas" className="bg-profile-soft-gradient">
       <HeroSection
         variant="centered"
         eyebrow="Nouveau — V3 disponible"
-        title={<>La plateforme qui <span className="text-primary">simplifie</span> votre workflow.</>}
+        title={<>La plateforme qui <span className="text-gradient-primary">simplifie</span> votre workflow.</>}
         description="Gagnez 10h/semaine. Integrez en 5 minutes. Sans carte de credit pour commencer."
         actions={
           <>
@@ -115,7 +115,7 @@ export default function DemoSaaSPage() {
           </>
         }
         media={
-          <div className="rounded-xl border bg-card p-6 text-left shadow-lg">
+          <div className="rounded-xl p-6 text-left card-glass">
             <p className="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
               Apercu dashboard
             </p>

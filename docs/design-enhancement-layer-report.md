@@ -23,9 +23,9 @@ minimal TypeScript data.
 - `heroStyle`, `motionStyle`, `imageStyle`, `density`, `radius`, `shadow`, `gradient`, `accentTreatment`
 - `mood[]`, `recommendedDomains[]`, `typographyNote`, `layoutNote`
 
-Profiles: `premium-saas`, `minimal-dashboard`, `dark-tech-api`, `corporate-classic`,
-`warm-local`, `luxury-auto`, `ecommerce-clean`, `real-estate-premium`, `editorial-studio`,
-`academy-focused`.
+Profiles: `premium-saas`, `minimal-dashboard`, `luxury-editorial`, `warm-local`,
+`dark-technical`, `commerce-clean`, `academy-premium`, `auto-performance`,
+`real-estate-luxe`, `creative-portfolio`.
 
 ### 2. CSS Utilities (`apps/web/src/app/globals.css`)
 
@@ -89,8 +89,10 @@ Showcase page with:
 
 ### 7. Design Recipes (`apps/web/src/design-system/design-recipes.ts`)
 
-8 recipes: `premium-saas`, `minimal-dashboard`, `dark-api`, `warm-booking`,
-`editorial-portfolio`, `cinematic-auto`, `ecommerce-clean`, `real-estate-premium`.
+8 recipes: `premium-saas`, `minimal-dashboard`, `dark-api` (→ profile `dark-technical`),
+`warm-booking`, `editorial-portfolio` (→ profile `creative-portfolio`),
+`cinematic-auto` (→ profile `auto-performance`), `ecommerce-clean` (→ profile `commerce-clean`),
+`real-estate-premium` (→ profile `real-estate-luxe`).
 
 Each recipe specifies: `wrapperClass`, `heroTextClass`, `cardClass`, `heroCardClass`,
 `accentClass`, `sectionPadding`, `featureCard` ("spotlight" | "glass" | "gradient-border" | "plain"),

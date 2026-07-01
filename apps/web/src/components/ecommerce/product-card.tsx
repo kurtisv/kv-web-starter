@@ -71,7 +71,7 @@ export function ProductCard({
   const inner = (
     <div
       className={cn(
-        "group overflow-hidden border bg-background transition-shadow hover:shadow-sm",
+        "group overflow-hidden border bg-background rounded-lg transition-shadow hover:shadow-md",
         isList ? "flex gap-4" : "flex flex-col",
         className
       )}

@@ -94,7 +94,7 @@ describe("COMPONENT_REGISTRY", () => {
 
   describe("domain coverage", () => {
     const domains = [
-      "general", "saas", "ecommerce", "real-estate",
+      "general", "academy", "saas", "ecommerce", "real-estate",
       "auto-blog", "booking", "dashboard", "api", "portfolio",
     ] as const;
 

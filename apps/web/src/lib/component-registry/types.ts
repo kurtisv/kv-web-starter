@@ -7,6 +7,7 @@
 /** Business domain a component is designed for. */
 export type ComponentDomain =
   | "general"
+  | "academy"
   | "saas"
   | "ecommerce"
   | "real-estate"
@@ -52,6 +53,13 @@ export type ComponentMaturity =
   | "beta"
   | "experimental"
   | "demo-only";
+
+/** Prescriptive action level for agent and report workflows. */
+export type ComponentRecommendationLevel =
+  | "recommended"
+  | "acceptable"
+  | "avoid"
+  | "gap";
 
 /** A concrete usage example for the registry. */
 export interface ComponentExample {

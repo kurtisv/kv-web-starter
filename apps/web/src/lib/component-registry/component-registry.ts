@@ -12,7 +12,7 @@ export const COMPONENT_REGISTRY: ComponentCapability[] = [
     name: "HeroSection",
     importPath: "@/components/sections/hero-section",
     category: "section",
-    domains: ["general", "saas", "portfolio", "local-business"],
+    domains: ["general", "academy", "saas", "portfolio", "local-business"],
     description: "Full-width hero with eyebrow label, headline, description, and CTA buttons.",
     useCases: [
       "Landing page above-the-fold section",
@@ -54,7 +54,7 @@ export const COMPONENT_REGISTRY: ComponentCapability[] = [
     name: "FeatureGrid",
     importPath: "@/components/sections/feature-grid",
     category: "section",
-    domains: ["general", "saas", "api"],
+    domains: ["general", "academy", "saas", "api"],
     description: "Responsive grid of feature cards with icon, title, and description.",
     useCases: [
       "SaaS feature list",
@@ -72,7 +72,7 @@ export const COMPONENT_REGISTRY: ComponentCapability[] = [
     name: "StatsSection",
     importPath: "@/components/sections/stats-section",
     category: "section",
-    domains: ["general", "saas", "portfolio"],
+    domains: ["general", "academy", "saas", "portfolio"],
     description: "Animated counter statistics displayed as a grid or banner, triggered on scroll.",
     useCases: [
       "Social proof numbers (users, revenue, uptime)",
@@ -89,7 +89,7 @@ export const COMPONENT_REGISTRY: ComponentCapability[] = [
     name: "PricingSection",
     importPath: "@/components/sections/pricing-section",
     category: "section",
-    domains: ["saas", "general"],
+    domains: ["saas", "academy", "general"],
     description: "Pricing plans in a horizontal card layout with feature lists and highlighted plan.",
     useCases: [
       "SaaS subscription tiers",
@@ -106,7 +106,7 @@ export const COMPONENT_REGISTRY: ComponentCapability[] = [
     name: "FAQSection",
     importPath: "@/components/sections/faq-section",
     category: "section",
-    domains: ["general", "saas", "local-business"],
+    domains: ["general", "academy", "saas", "local-business"],
     description: "Accordion-based FAQ with eyebrow, title, and expandable question/answer items.",
     useCases: [
       "Product FAQ below pricing",
@@ -123,7 +123,7 @@ export const COMPONENT_REGISTRY: ComponentCapability[] = [
     name: "TestimonialSection",
     importPath: "@/components/sections/testimonial-section",
     category: "section",
-    domains: ["general", "saas", "local-business"],
+    domains: ["general", "academy", "saas", "local-business"],
     description: "Grid of customer testimonial quotes with author name and optional avatar.",
     useCases: ["Social proof section", "Client reviews below pricing"],
     compatibleVariables: [],
@@ -137,7 +137,7 @@ export const COMPONENT_REGISTRY: ComponentCapability[] = [
     name: "CTASection",
     importPath: "@/components/sections/cta-section",
     category: "section",
-    domains: ["general"],
+    domains: ["general", "academy"],
     description: "Compact call-to-action section with title, description, and action buttons.",
     useCases: ["Page bottom conversion prompt", "Between-section upsell"],
     compatibleVariables: [],
@@ -247,7 +247,7 @@ export const COMPONENT_REGISTRY: ComponentCapability[] = [
     name: "ConfigurableFilterBar",
     importPath: "@/components/component-variables/configurable-filter-bar",
     category: "filter",
-    domains: ["real-estate", "auto-blog", "ecommerce", "dashboard"],
+    domains: ["real-estate", "auto-blog", "ecommerce", "dashboard", "academy"],
     description:
       "URL-synchronized filter bar driven by a ComponentVariable[] preset. Shows active count and an Effacer reset button.",
     useCases: [

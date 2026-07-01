@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Calculator } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { formatCurrency } from "@/lib/format";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 function calcMonthly(principal: number, annualRate: number, months: number): number {
@@ -12,11 +13,12 @@ function calcMonthly(principal: number, annualRate: number, months: number): num
 }
 
 function fmt(n: number) {
-  return new Intl.NumberFormat("fr-FR", {
-    style: "currency",
+  return formatCurrency(Math.round(n * 100), {
     currency: "EUR",
+    locale: "fr-FR",
+    minimumFractionDigits: 0,
     maximumFractionDigits: 0,
-  }).format(n);
+  });
 }
 
 interface SliderRowProps {

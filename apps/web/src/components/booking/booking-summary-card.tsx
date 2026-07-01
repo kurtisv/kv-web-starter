@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Clock3, User, CalendarDays } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { formatDate } from "@/lib/format";
 import type { ServiceOption } from "./service-picker";
 import type { StaffOption } from "./staff-picker";
 
@@ -17,7 +18,7 @@ function formatPrice(priceCents: number | null) {
 }
 
 function formatDateLabel(dateStr: string) {
-  return new Date(`${dateStr}T12:00:00`).toLocaleDateString("fr-CA", {
+  return formatDate(dateStr, {
     weekday: "long",
     day: "numeric",
     month: "long",

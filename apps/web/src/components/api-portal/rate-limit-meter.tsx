@@ -1,4 +1,5 @@
 import { Badge } from "@/components/ui/badge";
+import { formatNumber } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 interface RateLimitMeterProps {
@@ -22,7 +23,7 @@ export function RateLimitMeter({ used, limit, label = "Quota", className }: Rate
         <div className="h-full bg-primary transition-all" style={{ width: `${percentage}%` }} />
       </div>
       <p className="text-xs text-muted-foreground">
-        {used.toLocaleString("fr-CA")} / {limit.toLocaleString("fr-CA")} appels
+        {formatNumber(used)} / {formatNumber(limit)} appels
       </p>
     </div>
   );

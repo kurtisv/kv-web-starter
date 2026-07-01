@@ -1,17 +1,18 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
+import { formatCurrency } from "@/lib/format";
 
 export function formatPrice(
   cents: number,
   currency = "EUR",
   locale = "fr-FR"
 ): string {
-  return new Intl.NumberFormat(locale, {
-    style: "currency",
+  return formatCurrency(cents, {
     currency,
+    locale,
     minimumFractionDigits: cents % 100 === 0 ? 0 : 2,
     maximumFractionDigits: 2,
-  }).format(cents / 100);
+  });
 }
 
 export interface PriceDisplayProps {

@@ -1,7 +1,7 @@
 import { Download, FileText } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { StatusBadge } from "@/components/dashboard-ui/status-badge";
 import { cn } from "@/lib/utils";
 
 export type InvoiceStatus = "paid" | "open" | "void";
@@ -15,16 +15,10 @@ export interface Invoice {
   plan: string;
 }
 
-const STATUS_STYLES: Record<InvoiceStatus, string> = {
-  paid: "border-green-200 bg-green-50 text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300",
-  open: "border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-300",
-  void: "border-zinc-200 bg-zinc-100 text-zinc-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-400",
-};
-
-const STATUS_LABELS: Record<InvoiceStatus, string> = {
-  paid: "Paye",
-  open: "En attente",
-  void: "Annule",
+const STATUS_MAP: Record<InvoiceStatus, { status: string; label: string }> = {
+  paid: { status: "active",   label: "Paye" },
+  open: { status: "pending",  label: "En attente" },
+  void: { status: "inactive", label: "Annule" },
 };
 
 interface InvoiceListProps {
@@ -58,9 +52,10 @@ export function InvoiceList({ invoices, className }: InvoiceListProps) {
                   <span className="text-sm font-semibold">
                     {(inv.amountCents / 100).toFixed(2)} €
                   </span>
-                  <Badge variant="outline" size="sm" className={cn("font-normal", STATUS_STYLES[inv.status])}>
-                    {STATUS_LABELS[inv.status]}
-                  </Badge>
+                  <StatusBadge
+                    status={STATUS_MAP[inv.status].status}
+                    label={STATUS_MAP[inv.status].label}
+                  />
                   <Button variant="ghost" size="icon" className="h-7 w-7" aria-label="Telecharger">
                     <Download className="h-3.5 w-3.5" />
                   </Button>

@@ -35,6 +35,4 @@ export function LoadingState({ text, className, size = "default" }: LoadingState
   );
 }
 
-export function Skeleton({ className }: { className?: string }) {
-  return <div className={cn("animate-pulse rounded bg-muted", className)} />;
-}
+export { Skeleton } from "@/components/ui/skeleton";

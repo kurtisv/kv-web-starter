@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { SkeletonTable } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 
 type SortDir = "asc" | "desc" | null;
@@ -32,6 +33,7 @@ export interface DataTableProps<T extends Record<string, unknown>> {
   emptyText?: string;
   className?: string;
   caption?: string;
+  loading?: boolean;
 }
 
 export function DataTable<T extends Record<string, unknown>>({
@@ -43,6 +45,7 @@ export function DataTable<T extends Record<string, unknown>>({
   emptyText = "Aucun resultat.",
   className,
   caption,
+  loading = false,
 }: DataTableProps<T>) {
   const [search, setSearch] = React.useState("");
   const [sortKey, setSortKey] = React.useState<string | null>(null);
@@ -88,6 +91,10 @@ export function DataTable<T extends Record<string, unknown>>({
     setSearch(value);
     setPage(1);
   };
+
+  if (loading) {
+    return <SkeletonTable rows={pageSize} />;
+  }
 
   return (
     <div className={cn("grid gap-3", className)}>

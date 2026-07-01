@@ -38,7 +38,7 @@ export function PlanComparisonTable({
       <table className="w-full border-collapse text-sm">
         <thead>
           <tr className="border-b">
-            <th className="w-1/2 py-3 pr-6 text-left font-medium text-muted-foreground">
+            <th className="sticky left-0 z-10 w-1/2 bg-card py-3 pr-6 text-left font-medium text-muted-foreground">
               Fonctionnalite
             </th>
             <th className="px-4 py-3 text-center font-semibold">Starter</th>
@@ -59,7 +59,9 @@ export function PlanComparisonTable({
               key={f.label}
               className={cn("border-b", i % 2 === 0 ? "bg-muted/20" : "")}
             >
-              <td className="py-2.5 pr-6">{f.label}</td>
+              <td className="sticky left-0 z-10 bg-card py-2.5 pr-6 shadow-[1px_0_0_0_hsl(var(--border))]">
+                {f.label}
+              </td>
               <td className="px-4 py-2.5 text-center">
                 <Cell value={f.starter} />
               </td>

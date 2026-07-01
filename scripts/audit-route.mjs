@@ -29,9 +29,35 @@ async function fetchHtml(url) {
   };
 }
 
+async function loadPlaywright() {
+  const candidates = [
+    () => import("@playwright/test"),
+    () => import("../apps/web/node_modules/@playwright/test/index.mjs"),
+  ];
+  for (const load of candidates) {
+    try {
+      return await load();
+    } catch {
+      // try next candidate
+    }
+  }
+  return null;
+}
+
 async function runBrowserAudit(url) {
   try {
-    const mod = await import("../apps/web/node_modules/@playwright/test/index.mjs");
+    const mod = await loadPlaywright();
+    if (!mod) {
+      return {
+        consoleMessages: ["playwright-unavailable: Cannot resolve @playwright/test from any candidate path"],
+        networkErrors: [],
+        hydrationWarnings: [],
+        mobileOverflow: false,
+        mobileOverflowPx: 0,
+        playwrightAvailable: false,
+        browserAudit: "skipped",
+      };
+    }
     const { chromium, devices } = mod;
     const browser = await chromium.launch();
     const consoleMessages = [];
@@ -71,6 +97,7 @@ async function runBrowserAudit(url) {
       mobileOverflow: mobileOverflowPx > 0,
       mobileOverflowPx,
       playwrightAvailable: true,
+      browserAudit: "completed",
     };
   } catch (error) {
     return {
@@ -80,6 +107,7 @@ async function runBrowserAudit(url) {
       mobileOverflow: false,
       mobileOverflowPx: 0,
       playwrightAvailable: false,
+      browserAudit: "skipped",
     };
   }
 }
@@ -110,6 +138,7 @@ Object Object: ${objectObject}
 Mobile overflow: ${browser.mobileOverflow}
 Mobile overflow px: ${browser.mobileOverflowPx}
 Playwright: ${browser.playwrightAvailable ? "available" : "unavailable"}
+Browser audit: ${browser.browserAudit ?? "unknown"}
 Verdict: ${ok ? "OK" : "FAIL"}
 
 ## Console Messages

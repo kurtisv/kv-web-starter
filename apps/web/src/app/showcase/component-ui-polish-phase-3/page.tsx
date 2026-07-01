@@ -181,8 +181,8 @@ export default function ComponentUiPolishPhase3Page() {
           <p className="text-sm text-muted-foreground mb-4">
             Phase 1 · Phase 2 · Phase 3 terminées
           </p>
-          <Button variant="outline" rightIcon={<ArrowRight className="h-4 w-4" />} asChild>
-            <a href="/showcase/component-ui-polish">Voir Phase 2</a>
+          <Button variant="outline" asChild>
+            <a href="/showcase/component-ui-polish">Voir Phase 2 <ArrowRight className="h-4 w-4" /></a>
           </Button>
         </section>
 

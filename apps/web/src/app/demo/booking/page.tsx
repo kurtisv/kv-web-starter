@@ -292,8 +292,8 @@ export default function DemoBookingPage() {
         title="Pret a vous faire du bien ?"
         description="Premiere seance avec 10% de reduction. Reservez en 2 minutes, annulation gratuite."
         actions={
-          <Button asChild size="lg" rightIcon={<ArrowRight className="size-4" />}>
-            <Link href="/booking">Prendre rendez-vous</Link>
+          <Button asChild size="lg">
+            <Link href="/booking">Prendre rendez-vous <ArrowRight className="size-4" /></Link>
           </Button>
         }
       />

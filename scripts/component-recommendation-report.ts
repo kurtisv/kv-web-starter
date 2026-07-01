@@ -18,43 +18,58 @@ function list(items: string[]): string {
   return items.length > 0 ? items.map((item) => `- ${item}`).join("\n") : "- None";
 }
 
-const markdown = `# Component Recommendation Report ${domain}
+const markdown = `# Component Recommendation Report — ${domain}
 
-## Domain
+## Summary
 
-${domain}
+Recommended: ${report.recommended.length}
+Acceptable: ${report.acceptable.length}
+Avoid: ${report.avoid.length}
+Gaps: ${report.gaps.length}
 
-## Recommended
+## Use First
 
-${list(report.recommended.map((component) => `${component.name} (${component.id}) - ${component.importPath}`))}
+These components are production-ready or stable and designed for the \`${domain}\` domain.
+Use them without custom work.
 
-## Acceptable
+${list(report.recommended.map((c) => `**${c.name}** (\`${c.id}\`) — ${c.description} | \`${c.importPath}\` | maturity: ${c.maturity}`))}
 
-${list(report.acceptable.map((component) => `${component.name} (${component.id}) - ${component.maturity}`))}
+## Acceptable With Adaptation
 
-## Avoid
+These components can be used for \`${domain}\` but may require domain-specific adjustments.
+General-purpose components or beta-maturity domain components.
 
-${list(report.avoid.map((item) => `${item.component.name} (${item.component.id}) - ${item.reason}`))}
+${list(report.acceptable.map((c) => `${c.name} (\`${c.id}\`) — ${c.maturity} — ${c.description}`))}
 
-## Gaps
+## Do Not Use By Default
+
+${list(report.avoid.map((item) => `${item.component.name} (\`${item.component.id}\`) — ${item.reason}`))}
+
+## Gaps Before Custom Work
+
+Document these gaps before creating new components. A gap means no recommended component
+covers this category for the \`${domain}\` domain.
 
 ${list(report.gaps)}
+
+## Components With Variables
+
+${list(report.componentsWithVariables.map((c) => `${c.name} — variables: ${c.compatibleVariables.join(", ")}`))}
+
+## Demo-Only Components
+
+${list(report.demoOnly.map((c) => `${c.name} (\`${c.id}\`) — requires adaptation before client delivery`))}
 
 ## Warnings
 
 ${list(report.warnings)}
 
-## Components With Variables
-
-${list(report.componentsWithVariables.map((component) => `${component.name} - ${component.compatibleVariables.join(", ")}`))}
-
-## Demo-Only Components
-
-${list(report.demoOnly.map((component) => `${component.name} (${component.id})`))}
-
-## Next Action
+## Agent Decision
 
 ${report.nextAction}
+
+Workflow: use recommended first -> acceptable with adaptation -> document gap -> custom component.
+Do NOT create a custom component when a recommended component exists.
 `;
 
 const outDir = resolve("artifacts/component-recommendations");

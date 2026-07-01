@@ -125,7 +125,9 @@ export function getAvoidedComponentsForDomain(
       reason:
         component.maturity === "demo-only"
           ? "demo-only components require adaptation before client use"
-          : "experimental components are not agent-safe defaults",
+          : component.maturity === "experimental"
+          ? "experimental components are not agent-safe defaults"
+          : `out-of-domain component (designed for: ${component.domains.join(", ")})`,
     }))
     .sort((a, b) => byName(a.component, b.component));
 }

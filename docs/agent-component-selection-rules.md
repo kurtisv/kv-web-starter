@@ -30,7 +30,8 @@ These rules are mandatory for agents selecting or creating components in this bo
 
 ## Client Project Safety
 
-- Treat `stable` components as the safest default.
+- Treat `production` components as the safest default — no reservations for client delivery.
+- Treat `stable` components as reliable and safe for most client work.
 - Treat `beta` components as acceptable with review.
 - Treat `demo-only` components as source examples, not production components.
 - Treat `experimental` components as opt-in only.

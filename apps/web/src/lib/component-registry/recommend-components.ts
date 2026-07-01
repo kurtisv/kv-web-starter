@@ -7,6 +7,7 @@ import type {
 import { COMPONENT_REGISTRY } from "./component-registry";
 
 const MATURITY_RANK: Record<ComponentMaturity, number> = {
+  production: 4,
   stable: 3,
   beta: 2,
   experimental: 1,
@@ -84,6 +85,7 @@ function scoreComponent(
   if (primarySignals > 0) {
     const maturityRank = MATURITY_RANK[cap.maturity];
     score += maturityRank * 5;
+    if (cap.maturity === "production") reasons.push("Production-ready component");
     if (cap.maturity === "stable") reasons.push("Stable component");
 
     if (cap.maturity === "demo-only") {

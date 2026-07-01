@@ -1,38 +1,38 @@
-# Component Recommendation Report — academy
+# Component Recommendation Report — saas
 
 ## Summary
 
-Recommended: 8
-Acceptable: 8
+Recommended: 9
+Acceptable: 7
 Avoid: 29
-Gaps: 7
+Gaps: 1
 
 ## Use First
 
-These components are production-ready or stable and designed for the `academy` domain.
+These components are production-ready or stable and designed for the `saas` domain.
 Use them without custom work.
 
-- **ConfigurableFilterBar** (`configurable-filter-bar`) — URL-synchronized filter bar driven by a ComponentVariable[] preset. Shows active count and an Effacer reset button. | `@/components/component-variables/configurable-filter-bar` | maturity: stable
-- **CTASection** (`cta-section`) — Compact call-to-action section with title, description, and action buttons. | `@/components/sections/cta-section` | maturity: stable
+- **AnimatedHero** (`animated-hero`) — Hero section with Framer Motion entrance animations on title and description. | `@/components/sections/animated-hero` | maturity: stable
 - **FAQSection** (`faq-section`) — Accordion-based FAQ with eyebrow, title, and expandable question/answer items. | `@/components/sections/faq-section` | maturity: stable
 - **FeatureGrid** (`feature-grid`) — Responsive grid of feature cards with icon, title, and description. | `@/components/sections/feature-grid` | maturity: production
 - **HeroSection** (`hero-section`) — Full-width hero with eyebrow label, headline, description, and CTA buttons. | `@/components/sections/hero-section` | maturity: production
+- **LogoCloud** (`logo-cloud`) — Horizontal band of client or partner logos with optional label. | `@/components/sections/logo-cloud` | maturity: stable
+- **MetricCard** (`metric-card`) — KPI card displaying a label, numeric value, optional trend indicator, and icon. | `@/components/dashboard-ui/metric-card` | maturity: production
 - **PricingSection** (`pricing-section`) — Pricing plans in a horizontal card layout with feature lists and highlighted plan. | `@/components/sections/pricing-section` | maturity: production
 - **StatsSection** (`stats-section`) — Animated counter statistics displayed as a grid or banner, triggered on scroll. | `@/components/sections/stats-section` | maturity: production
 - **TestimonialSection** (`testimonial-section`) — Grid of customer testimonial quotes with author name and optional avatar. | `@/components/sections/testimonial-section` | maturity: production
 
 ## Acceptable With Adaptation
 
-These components can be used for `academy` but may require domain-specific adjustments.
+These components can be used for `saas` but may require domain-specific adjustments.
 General-purpose components or beta-maturity domain components.
 
-- AnimatedHero (`animated-hero`) — stable — Hero section with Framer Motion entrance animations on title and description.
 - ArticleCard (`article-card`) — stable — Blog article card with image, category tag, title, excerpt, and read-time.
 - CodeTabsBlock (`code-tabs-block`) — stable — Tabbed code block with syntax highlighting across multiple languages (curl, JS, Python, etc.).
 - ConfirmDialog (`confirm-dialog`) — stable — Modal confirmation dialog with title, body, confirm/cancel buttons, and optional destructive styling.
 - ContactSection (`contact-section`) — stable — Contact section with address/phone/email display and a slot for a form component.
+- CTASection (`cta-section`) — stable — Compact call-to-action section with title, description, and action buttons.
 - FilterBar (`filter-bar`) — stable — Adapter component that renders either a legacy FilterGroup or a variable-driven bar based on props.
-- LogoCloud (`logo-cloud`) — stable — Horizontal band of client or partner logos with optional label.
 - PriceDisplay (`price-display`) — stable — Formats a price in cents with currency symbol, optional original price, and discount percentage.
 
 ## Do Not Use By Default
@@ -48,6 +48,7 @@ General-purpose components or beta-maturity domain components.
 - CartDrawer (`cart-drawer`) — out-of-domain component (designed for: ecommerce)
 - CaseStudyCard (`case-study-card`) — out-of-domain component (designed for: portfolio)
 - CheckoutSteps (`checkout-steps`) — out-of-domain component (designed for: ecommerce)
+- ConfigurableFilterBar (`configurable-filter-bar`) — out-of-domain component (designed for: real-estate, auto-blog, ecommerce, dashboard, academy)
 - CustomerOrderTable (`customer-order-table`) — out-of-domain component (designed for: ecommerce)
 - DashboardShell (`dashboard-shell`) — out-of-domain component (designed for: dashboard)
 - DataTableShell (`data-table-shell`) — out-of-domain component (designed for: dashboard)
@@ -57,7 +58,6 @@ General-purpose components or beta-maturity domain components.
 - EntityDrawer (`entity-drawer`) — out-of-domain component (designed for: dashboard)
 - FeaturedArticleCard (`featured-article-card`) — out-of-domain component (designed for: auto-blog)
 - HttpMethodBadge (`http-method-badge`) — out-of-domain component (designed for: api)
-- MetricCard (`metric-card`) — out-of-domain component (designed for: dashboard, saas, api)
 - OrderStatusTimeline (`order-status-timeline`) — out-of-domain component (designed for: ecommerce)
 - ProductCard (`product-card`) — out-of-domain component (designed for: ecommerce)
 - ProjectShowcase (`project-showcase`) — out-of-domain component (designed for: portfolio)
@@ -70,19 +70,13 @@ General-purpose components or beta-maturity domain components.
 ## Gaps Before Custom Work
 
 Document these gaps before creating new components. A gap means no recommended component
-covers this category for the `academy` domain.
+covers this category for the `saas` domain.
 
-- CertificateCard
-- CourseCard stable
-- InstructorCard
-- LearningProgressCard
-- LessonList
-- No recommended card component for academy
-- No recommended metric component for academy
+- No recommended card component for saas
 
 ## Components With Variables
 
-- ConfigurableFilterBar — variables: realEstateVariables, autoVariables, ecommerceVariables, dashboardVariables
+- MetricCard — variables: apiPortalVariables
 
 ## Demo-Only Components
 
@@ -90,7 +84,7 @@ covers this category for the `academy` domain.
 
 ## Warnings
 
-- 7 gap(s) must be reviewed before custom work.
+- 1 gap(s) must be reviewed before custom work.
 
 ## Agent Decision
 

@@ -3,7 +3,7 @@
 Route: /demo/academy
 URL: http://127.0.0.1:3000/demo/academy
 Status: 404
-Response time: 72 ms
+Response time: 70 ms
 Console errors: 1
 Network errors: 0
 Hydration warnings: 0

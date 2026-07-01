@@ -8,10 +8,10 @@ E2E tests: not found at apps/web/tests/e2e/academy.spec.ts
 
 ## Results
 
-- lint: OK (18714 ms)
-- typecheck: OK (10230 ms)
-- build: OK (54128 ms)
-- audit route: FAIL (3917 ms)
+- lint: OK (18027 ms)
+- typecheck: OK (8247 ms)
+- build: OK (46144 ms)
+- audit route: FAIL (3736 ms)
 
 ## Commands
 
@@ -50,7 +50,7 @@ Output:
 Route: /demo/academy
 URL: http://127.0.0.1:3000/demo/academy
 Status: 404
-Response time: 72 ms
+Response time: 70 ms
 Console errors: 1
 Network errors: 0
 Hydration warnings: 0

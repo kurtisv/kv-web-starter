@@ -22,13 +22,8 @@ export function DashboardShell({ sidebar, children, className }: DashboardShellP
     <MobileSidebarCtx.Provider value={{ open: mobileOpen, setOpen: setMobileOpen }}>
       <div className={cn("flex min-h-screen bg-background", className)}>
         {sidebar && (
-          <aside className="hidden w-64 shrink-0 border-r bg-card lg:flex lg:flex-col">
-            {sidebar}
-          </aside>
-        )}
-
-        {sidebar && (
           <>
+            {/* Overlay — mobile only */}
             <div
               className={cn(
                 "fixed inset-0 z-40 bg-background/80 backdrop-blur-sm transition-opacity lg:hidden",
@@ -37,13 +32,18 @@ export function DashboardShell({ sidebar, children, className }: DashboardShellP
               aria-hidden
               onClick={() => setMobileOpen(false)}
             />
+
+            {/* Single aside — fixed + slide on mobile, static on desktop */}
             <aside
               className={cn(
-                "fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r bg-card transition-transform lg:hidden",
-                mobileOpen ? "translate-x-0" : "-translate-x-full",
+                "z-50 flex w-64 shrink-0 flex-col border-r bg-card",
+                "fixed inset-y-0 left-0 transition-transform",
+                "lg:static lg:inset-auto lg:transition-none",
+                mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0",
               )}
             >
-              <div className="flex h-14 shrink-0 items-center justify-end border-b px-3">
+              {/* Close button — mobile only */}
+              <div className="flex h-14 shrink-0 items-center justify-end border-b px-3 lg:hidden">
                 <button
                   type="button"
                   onClick={() => setMobileOpen(false)}

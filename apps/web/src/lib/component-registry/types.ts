@@ -78,6 +78,14 @@ export interface ComponentExample {
   usage: string;
 }
 
+/**
+ * How visually dominant a component is on the page.
+ * light = subtle, doesn't compete for attention.
+ * medium = standard; draws the eye normally.
+ * heavy = hero-level; one or two per page max.
+ */
+export type VisualWeight = "light" | "medium" | "heavy";
+
 /** Full capability descriptor for a single component. */
 export interface ComponentCapability {
   /** Unique, kebab-case ID derived from the exported function name. */
@@ -106,6 +114,10 @@ export interface ComponentCapability {
   tags: string[];
   /** Optional usage examples. */
   examples?: ComponentExample[];
+  /** How visually dominant this component is. Used for design-recipe composition. */
+  visualWeight?: VisualWeight;
+  /** Design profile IDs from design-profiles.ts that suit this component best. */
+  recommendedProfiles?: string[];
 }
 
 /** Input to the recommendation engine. */

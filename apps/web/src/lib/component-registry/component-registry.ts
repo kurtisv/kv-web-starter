@@ -24,6 +24,8 @@ export const COMPONENT_REGISTRY: ComponentCapability[] = [
     maturity: "production",
     limitations: [],
     tags: ["hero", "landing", "cta", "headline"],
+    visualWeight: "heavy",
+    recommendedProfiles: ["premium-saas", "minimal-dashboard", "dark-tech-api", "corporate-classic", "warm-local"],
     examples: [
       {
         label: "Basic hero",
@@ -48,6 +50,8 @@ export const COMPONENT_REGISTRY: ComponentCapability[] = [
     maturity: "stable",
     limitations: ["Requires framer-motion in bundle — avoid if bundle size is critical."],
     tags: ["hero", "animation", "motion", "framer"],
+    visualWeight: "heavy",
+    recommendedProfiles: ["premium-saas", "corporate-classic"],
   },
   {
     id: "feature-grid",
@@ -66,6 +70,8 @@ export const COMPONENT_REGISTRY: ComponentCapability[] = [
     maturity: "production",
     limitations: [],
     tags: ["features", "grid", "icons", "benefits"],
+    visualWeight: "medium",
+    recommendedProfiles: ["premium-saas", "dark-tech-api", "minimal-dashboard"],
   },
   {
     id: "stats-section",
@@ -83,6 +89,8 @@ export const COMPONENT_REGISTRY: ComponentCapability[] = [
     maturity: "production",
     limitations: ["Counters animate once on first scroll into view via InView."],
     tags: ["stats", "numbers", "counter", "animated"],
+    visualWeight: "medium",
+    recommendedProfiles: ["premium-saas", "dark-tech-api", "warm-local"],
   },
   {
     id: "pricing-section",
@@ -100,6 +108,8 @@ export const COMPONENT_REGISTRY: ComponentCapability[] = [
     maturity: "production",
     limitations: [],
     tags: ["pricing", "plans", "saas", "billing"],
+    visualWeight: "heavy",
+    recommendedProfiles: ["premium-saas", "minimal-dashboard"],
   },
   {
     id: "faq-section",
@@ -131,6 +141,8 @@ export const COMPONENT_REGISTRY: ComponentCapability[] = [
     maturity: "production",
     limitations: [],
     tags: ["testimonials", "reviews", "social-proof", "quotes"],
+    visualWeight: "medium",
+    recommendedProfiles: ["premium-saas", "warm-local", "corporate-classic"],
   },
   {
     id: "cta-section",
@@ -207,6 +219,8 @@ export const COMPONENT_REGISTRY: ComponentCapability[] = [
     maturity: "production",
     limitations: [],
     tags: ["kpi", "metric", "trend", "dashboard", "card"],
+    visualWeight: "light",
+    recommendedProfiles: ["minimal-dashboard", "premium-saas", "dark-tech-api"],
   },
   {
     id: "activity-feed",

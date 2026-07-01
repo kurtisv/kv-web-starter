@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { ArrowRight, BarChart2, Lock, Zap, Globe, Clock, Shield } from "lucide-react";
 import { HeroSection } from "@/components/sections/hero-section";
-import { FeatureGrid } from "@/components/sections/feature-grid";
 import { PricingSection } from "@/components/sections/pricing-section";
 import { StatsSection } from "@/components/sections/stats-section";
 import { CTASection } from "@/components/sections/cta-section";
@@ -15,6 +14,8 @@ import { PlanComparisonTable } from "@/components/saas/plan-comparison-table";
 import type { PlanFeature } from "@/components/saas/plan-comparison-table";
 import { InvoiceList, type Invoice } from "@/components/saas/invoice-list";
 import { TestimonialSection } from "@/components/sections/testimonial-section";
+import { SpotlightCard } from "@/components/ui/spotlight-card";
+import { ShimmerBadge } from "@/components/ui/shimmer-badge";
 import { SaasDemoActions } from "./saas-demo-actions";
 
 const features = [
@@ -101,7 +102,7 @@ export default function DemoSaaSPage() {
     <div data-theme="premium-saas" className="bg-profile-soft-gradient">
       <HeroSection
         variant="centered"
-        eyebrow="Nouveau — V3 disponible"
+        eyebrow={<ShimmerBadge>Nouveau — V3 disponible</ShimmerBadge>}
         title={<>La plateforme qui <span className="text-gradient-primary">simplifie</span> votre workflow.</>}
         description="Gagnez 10h/semaine. Integrez en 5 minutes. Sans carte de credit pour commencer."
         actions={
@@ -130,13 +131,27 @@ export default function DemoSaaSPage() {
       />
 
       <StatsSection stats={stats} variant="strip" />
-      <FeatureGrid
-        eyebrow="Fonctionnalites"
-        title="Tout ce dont vous avez besoin."
-        features={features}
-        columns={3}
-        variant="cards"
-      />
+
+      {/* Feature section with SpotlightCard — premium interactive hover effect */}
+      <section className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
+        <p className="mb-2 text-sm font-medium uppercase tracking-widest text-muted-foreground">
+          Fonctionnalites
+        </p>
+        <h2 className="mb-10 text-3xl font-bold tracking-tight sm:text-4xl">
+          Tout ce dont vous avez besoin.
+        </h2>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {features.map((f) => (
+            <SpotlightCard key={f.title} className="flex flex-col gap-3 p-6 rounded-xl">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                {f.icon}
+              </div>
+              <p className="font-semibold">{f.title}</p>
+              <p className="text-sm text-muted-foreground">{f.description}</p>
+            </SpotlightCard>
+          ))}
+        </div>
+      </section>
 
       {/* Subscription + Usage components */}
       <section className="border-y bg-card">

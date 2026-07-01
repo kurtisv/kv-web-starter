@@ -33,11 +33,11 @@ export function ActivityFeed({
     <div className={cn("", className)}>
       {title && <h3 className="mb-4 text-sm font-semibold">{title}</h3>}
 
-      {items.length === 0 ? (
-        <p className="py-6 text-center text-sm text-muted-foreground">{emptyText}</p>
-      ) : (
-        <ol className="relative border-l border-border pl-4" aria-label={title ?? "Fil d'activite"}>
-          {items.map((item) => (
+      <ol className="relative border-l border-border pl-4" aria-label={title ?? "Fil d'activite"}>
+        {items.length === 0 ? (
+          <li className="py-6 text-center text-sm text-muted-foreground">{emptyText}</li>
+        ) : (
+          items.map((item) => (
             <li key={item.id} className="mb-6 last:mb-0">
               <span
                 className={cn(
@@ -53,9 +53,9 @@ export function ActivityFeed({
                 </time>
               </div>
             </li>
-          ))}
-        </ol>
-      )}
+          ))
+        )}
+      </ol>
     </div>
   );
 }

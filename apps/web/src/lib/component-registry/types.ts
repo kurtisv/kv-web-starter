@@ -118,6 +118,14 @@ export interface ComponentCapability {
   visualWeight?: VisualWeight;
   /** Design profile IDs from design-profiles.ts that suit this component best. */
   recommendedProfiles?: string[];
+  /** UI quality level IDs from ui-quality-levels.ts this component targets. */
+  qualityLevels?: string[];
+  /** Frontend pattern IDs from frontend-patterns.ts where this component appears. */
+  frontendPatterns?: string[];
+  /** States required for production use of this component. */
+  requiredStates?: string[];
+  /** UX guidance for agents using this component. */
+  uxNotes?: string[];
 }
 
 /** Input to the recommendation engine. */

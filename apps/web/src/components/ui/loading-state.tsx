@@ -1,10 +1,13 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
+type LoadingStateVariant = "default" | "card" | "muted" | "inline";
+
 interface LoadingStateProps {
   text?: string;
   className?: string;
   size?: "sm" | "default" | "lg";
+  variant?: LoadingStateVariant;
 }
 
 const sizeMap = {
@@ -13,11 +16,18 @@ const sizeMap = {
   lg: "h-12 w-12",
 };
 
-export function LoadingState({ text, className, size = "default" }: LoadingStateProps) {
+const variantWrapper: Record<LoadingStateVariant, string> = {
+  default: "flex flex-col items-center justify-center gap-3 py-12",
+  card:    "flex flex-col items-center justify-center gap-3 py-12 border bg-card rounded-lg shadow-sm",
+  muted:   "flex flex-col items-center justify-center gap-3 py-12 rounded-lg bg-muted/40",
+  inline:  "inline-flex items-center gap-2",
+};
+
+export function LoadingState({ text, className, size = "default", variant = "default" }: LoadingStateProps) {
   return (
-    <div className={cn("flex flex-col items-center justify-center gap-3 py-12", className)}>
+    <div className={cn(variantWrapper[variant], className)}>
       <svg
-        className={cn("animate-spin text-muted-foreground", sizeMap[size])}
+        className={cn("animate-spin motion-reduce:animate-none text-muted-foreground", sizeMap[size])}
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"

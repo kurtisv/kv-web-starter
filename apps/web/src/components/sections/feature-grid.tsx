@@ -3,7 +3,8 @@ import * as React from "react";
 import { useRef } from "react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardDescription, type CardProps } from "@/components/ui/card";
+import { SpotlightCard } from "@/components/ui/spotlight-card";
 import { EASE, DURATION, CONTAINER, ITEM } from "@/components/animations/motion";
 
 interface Feature {
@@ -18,7 +19,9 @@ interface FeatureGridProps {
   description?: React.ReactNode;
   features: Feature[];
   columns?: 2 | 3 | 4;
-  variant?: "cards" | "list" | "icon-left";
+  variant?: "cards" | "list" | "icon-left" | "spotlight";
+  /** Card variant used for the "cards" variant. Defaults to "default". */
+  cardVariant?: CardProps["variant"];
   className?: string;
 }
 
@@ -29,6 +32,7 @@ export function FeatureGrid({
   features,
   columns = 3,
   variant = "cards",
+  cardVariant = "default",
   className,
 }: FeatureGridProps) {
   const ref = useRef(null);
@@ -70,10 +74,13 @@ export function FeatureGrid({
           >
             {features.map((f, i) => (
               <motion.div key={i} variants={ITEM} transition={{ duration: DURATION.reveal, ease: EASE.smooth }}>
-                <Card className="flex flex-col h-full">
+                <Card variant={cardVariant} className="flex flex-col h-full">
                   <CardHeader>
                     {f.icon && (
-                      <div className="mb-2 flex h-10 w-10 items-center justify-center border bg-muted text-muted-foreground">
+                      <div
+                        className="mb-2 flex h-10 w-10 items-center justify-center rounded-md border bg-muted text-muted-foreground"
+                        aria-hidden="true"
+                      >
                         {f.icon}
                       </div>
                     )}
@@ -81,6 +88,34 @@ export function FeatureGrid({
                     <CardDescription>{f.description}</CardDescription>
                   </CardHeader>
                 </Card>
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
+
+        {variant === "spotlight" && (
+          <motion.div
+            className={cn("grid gap-4", colClass)}
+            variants={CONTAINER}
+            initial={initial}
+            animate={animate}
+          >
+            {features.map((f, i) => (
+              <motion.div key={i} variants={ITEM} transition={{ duration: DURATION.reveal, ease: EASE.smooth }} className="h-full">
+                <SpotlightCard className="flex flex-col h-full">
+                  <div className="flex flex-col gap-3 p-5 h-full">
+                    {f.icon && (
+                      <div
+                        className="flex h-10 w-10 items-center justify-center rounded-md border bg-muted text-muted-foreground"
+                        aria-hidden="true"
+                      >
+                        {f.icon}
+                      </div>
+                    )}
+                    <p className="text-base font-semibold">{f.title}</p>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{f.description}</p>
+                  </div>
+                </SpotlightCard>
               </motion.div>
             ))}
           </motion.div>
@@ -96,7 +131,10 @@ export function FeatureGrid({
             {features.map((f, i) => (
               <motion.div key={i} variants={ITEM} transition={{ duration: DURATION.reveal, ease: EASE.smooth }} className="flex gap-4">
                 {f.icon && (
-                  <div className="mt-1 flex h-9 w-9 shrink-0 items-center justify-center border bg-muted text-muted-foreground">
+                  <div
+                    className="mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-md border bg-muted text-muted-foreground"
+                    aria-hidden="true"
+                  >
                     {f.icon}
                   </div>
                 )}
@@ -118,7 +156,7 @@ export function FeatureGrid({
           >
             {features.map((f, i) => (
               <motion.li key={i} variants={ITEM} transition={{ duration: DURATION.reveal, ease: EASE.smooth }} className="flex items-start gap-3 border-b pb-4 last:border-0">
-                {f.icon && <span className="mt-0.5 text-primary">{f.icon}</span>}
+                {f.icon && <span className="mt-0.5 text-primary" aria-hidden="true">{f.icon}</span>}
                 <div>
                   <p className="font-medium">{f.title}</p>
                   <p className="mt-0.5 text-sm text-muted-foreground">{f.description}</p>

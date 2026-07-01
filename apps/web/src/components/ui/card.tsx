@@ -11,10 +11,13 @@ const cardVariants = cva("border bg-card text-card-foreground", {
       flat: "shadow-none",
       outline: "shadow-none bg-transparent",
       muted: "border-0 bg-muted shadow-none",
+      subtle: "border-0 bg-muted/40 shadow-none",
       premium: "shadow-lg ring-1 ring-primary/10",
       glass: "card-glass",
       "gradient-border": "card-gradient-border shadow-sm",
       "dark-elevated": "card-dark-elevated",
+      interactive:
+        "shadow-sm cursor-pointer transition-shadow hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
     },
     radius: {
       none: "rounded-none",

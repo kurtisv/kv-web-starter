@@ -1,18 +1,29 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
+type HeroSize = "compact" | "default" | "large";
+
 interface HeroSectionProps {
   eyebrow?: React.ReactNode;
   title: React.ReactNode;
   description?: React.ReactNode;
   actions?: React.ReactNode;
   media?: React.ReactNode;
+  /** Slot for trust signals below actions: LogoCloud, StatsSection, avatar stack, etc. */
+  trustBar?: React.ReactNode;
   variant?: "centered" | "split" | "dark" | "minimal";
+  size?: HeroSize;
   // Optional: path to a text-free looping Remotion render used as a subtle backdrop.
   // Only used in the "dark" variant. Must be muted and loop-safe.
   videoSrc?: string;
   className?: string;
 }
+
+const paddingBySize: Record<HeroSize, { section: string; text?: string }> = {
+  compact: { section: "py-12 sm:py-16" },
+  default: { section: "py-20 sm:py-28" },
+  large:   { section: "py-28 sm:py-36" },
+};
 
 export function HeroSection({
   eyebrow,
@@ -20,10 +31,14 @@ export function HeroSection({
   description,
   actions,
   media,
+  trustBar,
   variant = "centered",
+  size = "default",
   videoSrc,
   className,
 }: HeroSectionProps) {
+  const pad = paddingBySize[size];
+
   if (variant === "dark") {
     return (
       <section className={cn("theme-hero", videoSrc ? "relative overflow-hidden" : "", className)}>
@@ -36,7 +51,7 @@ export function HeroSection({
             style={{ opacity: 0.18, mixBlendMode: "soft-light" }}
           />
         )}
-        <div className={cn("mx-auto max-w-6xl px-6 py-20 sm:py-28", videoSrc ? "relative z-10" : "")}>
+        <div className={cn("mx-auto max-w-6xl px-6", pad.section, videoSrc ? "relative z-10" : "")}>
           {eyebrow && (
             <p className="mb-5 text-sm font-medium uppercase tracking-[0.18em] opacity-50">
               {eyebrow}
@@ -49,6 +64,7 @@ export function HeroSection({
             <p className="mt-6 max-w-2xl text-lg leading-8 opacity-70">{description}</p>
           )}
           {actions && <div className="mt-9 flex flex-wrap gap-3">{actions}</div>}
+          {trustBar && <div className="mt-10 border-t border-white/10 pt-8">{trustBar}</div>}
           {media && <div className="mt-14">{media}</div>}
         </div>
       </section>
@@ -58,7 +74,7 @@ export function HeroSection({
   if (variant === "split") {
     return (
       <section className={cn("border-b bg-background", className)}>
-        <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-16 sm:py-24 lg:grid-cols-2">
+        <div className={cn("mx-auto grid max-w-6xl items-center gap-12 px-6", pad.section, "lg:grid-cols-2")}>
           <div>
             {eyebrow && (
               <p className="mb-4 text-sm font-medium uppercase tracking-[0.18em] text-muted-foreground">
@@ -72,6 +88,7 @@ export function HeroSection({
               <p className="mt-5 text-lg leading-8 text-muted-foreground">{description}</p>
             )}
             {actions && <div className="mt-8 flex flex-wrap gap-3">{actions}</div>}
+            {trustBar && <div className="mt-8 border-t pt-6">{trustBar}</div>}
           </div>
           {media && <div className="relative">{media}</div>}
         </div>
@@ -82,7 +99,7 @@ export function HeroSection({
   if (variant === "minimal") {
     return (
       <section className={cn("border-b bg-background", className)}>
-        <div className="mx-auto max-w-6xl px-6 py-14">
+        <div className={cn("mx-auto max-w-6xl px-6", pad.section)}>
           {eyebrow && (
             <p className="mb-3 text-sm font-medium uppercase tracking-[0.18em] text-muted-foreground">
               {eyebrow}
@@ -93,6 +110,7 @@ export function HeroSection({
             <p className="mt-4 max-w-2xl text-base text-muted-foreground">{description}</p>
           )}
           {actions && <div className="mt-6 flex flex-wrap gap-3">{actions}</div>}
+          {trustBar && <div className="mt-6 border-t pt-5">{trustBar}</div>}
         </div>
       </section>
     );
@@ -101,7 +119,7 @@ export function HeroSection({
   // centered (default)
   return (
     <section className={cn("border-b bg-background text-center", className)}>
-      <div className="mx-auto max-w-4xl px-6 py-20 sm:py-28">
+      <div className={cn("mx-auto max-w-4xl px-6", pad.section)}>
         {eyebrow && (
           <p className="mb-5 text-sm font-medium uppercase tracking-[0.18em] text-muted-foreground">
             {eyebrow}
@@ -114,6 +132,7 @@ export function HeroSection({
           </p>
         )}
         {actions && <div className="mt-9 flex flex-wrap justify-center gap-3">{actions}</div>}
+        {trustBar && <div className="mt-10 border-t pt-8">{trustBar}</div>}
         {media && <div className="mt-14">{media}</div>}
       </div>
     </section>

@@ -123,36 +123,51 @@ if (existsSync(e2ePath)) {
   reportLines.push(`E2E tests: not found at ${e2ePath}`);
 }
 
-results.push(run("build", "pnpm", ["build"]));
+const buildStep = run("build", "pnpm", ["build"]);
+results.push(buildStep);
 
+const skippedSteps = [];
 let server = null;
 const url = new URL(route, baseUrl).toString();
-if (!(await isServerReady(baseUrl))) {
-  server = startServer();
-  const ready = await waitForServer(baseUrl);
-  if (!ready) {
-    results.push({
-      label: "server",
-      command: "pnpm --filter @kv/web start",
-      status: 1,
-      durationMs: 60_000,
-      stdout: "",
-      stderr: `Timed out waiting for ${baseUrl}`,
-    });
+
+if (buildStep.status !== 0) {
+  skippedSteps.push("server start skipped because build failed");
+  skippedSteps.push("audit route skipped because build failed");
+} else {
+  if (!(await isServerReady(baseUrl))) {
+    server = startServer();
+    const ready = await waitForServer(baseUrl);
+    if (!ready) {
+      results.push({
+        label: "server",
+        command: "pnpm --filter @kv/web start",
+        status: 1,
+        durationMs: 60_000,
+        stdout: "",
+        stderr: `Timed out waiting for ${baseUrl}`,
+      });
+    }
   }
-}
 
-if (await isServerReady(baseUrl)) {
-  results.push(run("audit route", "pnpm", ["audit:route", route]));
-}
+  if (await isServerReady(baseUrl)) {
+    results.push(run("audit route", "pnpm", ["audit:route", route]));
+  }
 
-if (server) {
-  server.kill();
+  if (server) {
+    server.kill();
+  }
 }
 
 reportLines.push("", "## Results", "");
 for (const result of results) {
   reportLines.push(`- ${result.label}: ${result.status === 0 ? "OK" : "FAIL"} (${result.durationMs} ms)`);
+}
+
+if (skippedSteps.length > 0) {
+  reportLines.push("", "## Skipped Steps", "");
+  for (const step of skippedSteps) {
+    reportLines.push(`- ${step}`);
+  }
 }
 
 reportLines.push("", "## Commands", "");

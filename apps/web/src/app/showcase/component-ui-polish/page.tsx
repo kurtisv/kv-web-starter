@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ArrowRight, Zap, Shield, BarChart2, Star, AlertTriangle, CheckCircle2, Inbox } from "lucide-react";
+import { ArrowRight, Zap, BarChart2, Star, CheckCircle2, Inbox } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";

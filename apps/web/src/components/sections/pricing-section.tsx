@@ -54,7 +54,7 @@ export function PricingSection({ eyebrow, title, description, plans, className }
 
         <motion.div
           ref={ref}
-          className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+          className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 items-start"
           variants={CONTAINER}
           initial={initial}
           animate={animate}
@@ -64,21 +64,39 @@ export function PricingSection({ eyebrow, title, description, plans, className }
               key={plan.name}
               variants={ITEM}
               transition={{ duration: DURATION.reveal, ease: EASE.smooth }}
-              className="flex"
+              className={cn("flex", plan.featured && "lg:-my-4")}
             >
               <Card
                 variant={plan.featured ? "premium" : "default"}
-                className={cn("flex flex-col w-full", plan.featured && "border-primary")}
+                aria-label={plan.featured ? `${plan.name} — plan recommande` : plan.name}
+                className={cn(
+                  "flex flex-col w-full transition-shadow",
+                  plan.featured
+                    ? "border-primary shadow-lg ring-1 ring-primary/20"
+                    : "hover:shadow-sm"
+                )}
               >
                 <CardHeader className="pb-4">
                   <div className="flex items-center justify-between">
-                    <p className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+                    <p className={cn(
+                      "text-sm font-semibold uppercase tracking-wide",
+                      plan.featured ? "text-primary" : "text-muted-foreground"
+                    )}>
                       {plan.name}
                     </p>
-                    {plan.badge && <Badge variant="soft">{plan.badge}</Badge>}
+                    {plan.badge && (
+                      <Badge variant={plan.featured ? "default" : "soft"}>
+                        {plan.badge}
+                      </Badge>
+                    )}
                   </div>
                   <div className="mt-3 flex items-baseline gap-1">
-                    <span className="text-4xl font-semibold">{plan.price}</span>
+                    <span className={cn(
+                      "text-4xl font-semibold tabular-nums",
+                      plan.featured && "text-primary"
+                    )}>
+                      {plan.price}
+                    </span>
                     {plan.period && (
                       <span className="text-sm text-muted-foreground">{plan.period}</span>
                     )}
@@ -86,10 +104,16 @@ export function PricingSection({ eyebrow, title, description, plans, className }
                   <p className="text-sm text-muted-foreground">{plan.description}</p>
                 </CardHeader>
                 <CardContent className="flex flex-1 flex-col gap-6">
-                  <ul className="grid gap-2.5">
+                  <ul className="grid gap-2.5" aria-label={`Fonctionnalites ${plan.name}`}>
                     {plan.features.map((f) => (
                       <li key={f} className="flex items-start gap-2.5 text-sm">
-                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                        <Check
+                          className={cn(
+                            "mt-0.5 h-4 w-4 shrink-0",
+                            plan.featured ? "text-primary" : "text-muted-foreground"
+                          )}
+                          aria-hidden="true"
+                        />
                         {f}
                       </li>
                     ))}

@@ -324,8 +324,8 @@ export default function DemoRealEstatePage() {
         title={<span className="text-gradient-editorial">Planifiez une visite.</span>}
         description="Nos conseillers vous accompagnent de la recherche a la signature. Sans engagement."
         actions={
-          <Button asChild size="lg" rightIcon={<ArrowRight className="size-4" />}>
-            <Link href="/booking">Prendre rendez-vous</Link>
+          <Button asChild size="lg">
+            <Link href="/booking">Prendre rendez-vous <ArrowRight className="size-4" /></Link>
           </Button>
         }
       />

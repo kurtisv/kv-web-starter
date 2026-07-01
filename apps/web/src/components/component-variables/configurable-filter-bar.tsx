@@ -56,6 +56,11 @@ function FilterBarInner({
   // Write variable values to URL whenever they change, debounced.
   // Only non-default values are written; params that match defaults are omitted
   // so the URL stays clean: /page?type=maison not /page?search=&type=all&view=grid
+  // searchParams is captured via ref to avoid adding it to deps (which would cause
+  // a render cascade: replace() → searchParams changes → effect fires → replace() ...).
+  const searchParamsRef = useRef(searchParams);
+  useEffect(() => { searchParamsRef.current = searchParams; }, [searchParams]);
+
   const writeRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const prevSerializedRef = useRef<string>("");
   useEffect(() => {
@@ -75,7 +80,7 @@ function FilterBarInner({
       managedKeys.add("page");
 
       const params = new URLSearchParams();
-      searchParams.forEach((val, key) => {
+      searchParamsRef.current.forEach((val, key) => {
         if (!managedKeys.has(key)) params.set(key, val);
       });
       for (const [k, v] of Object.entries(serialized)) {
@@ -86,7 +91,7 @@ function FilterBarInner({
       router.replace(`${pathname}?${params.toString()}`, { scroll: false });
     }, 150);
     return () => clearTimeout(writeRef.current);
-  }, [values, variables, defaultSerialized, searchParams, router, pathname]);
+  }, [values, variables, defaultSerialized, router, pathname]);
 
   // Notify parent
   const prevNotifyRef = useRef<string>("");
@@ -118,11 +123,11 @@ function FilterBarInner({
     }
     managedKeys.add("page");
     const params = new URLSearchParams();
-    searchParams.forEach((val, key) => {
+    searchParamsRef.current.forEach((val, key) => {
       if (!managedKeys.has(key)) params.set(key, val);
     });
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-  }, [reset, variables, searchParams, router, pathname]);
+  }, [reset, variables, router, pathname]);
 
   return (
     <div className="flex flex-wrap items-center gap-2">

@@ -317,13 +317,13 @@ export default function DemoIndexPage() {
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Button size="lg" asChild>
-              <Link href="/docs/getting-started">
-                Lire le guide <ArrowRight className="size-4" />
+              <Link href="/demo/design-lab">
+                Explorer le Design Lab <ArrowRight className="size-4" />
               </Link>
             </Button>
             <Button size="lg" variant="outline" asChild>
-              <Link href="/dashboard/settings/integrations">
-                Voir les integrations
+              <Link href="/demo/components">
+                Voir les composants
               </Link>
             </Button>
           </div>

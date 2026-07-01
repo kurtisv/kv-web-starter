@@ -282,8 +282,8 @@ export default function DemoLocalBusinessPage() {
         title="Premiere seance ? -10%"
         description="Pour tout nouveau client, sur tous les soins. Reservez en ligne en 2 minutes."
         actions={
-          <Button asChild size="lg" rightIcon={<ArrowRight className="size-4" />}>
-            <Link href="/booking">En profiter</Link>
+          <Button asChild size="lg">
+            <Link href="/booking">En profiter <ArrowRight className="size-4" /></Link>
           </Button>
         }
       />

@@ -150,11 +150,11 @@ export default function DemoAPIPage() {
         description="REST JSON avec auth par cle API. Documentation interactive. SDKs Node, Python et Go inclus."
         actions={
           <>
-            <Button size="lg" variant="default" asChild rightIcon={<Key className="size-4" />}>
-              <Link href="/login">Obtenir une cle API</Link>
+            <Button size="lg" variant="default" asChild>
+              <Link href="/login">Obtenir une cle API <Key className="size-4" /></Link>
             </Button>
-            <Button size="lg" variant="glass" asChild rightIcon={<ArrowRight className="size-4" />}>
-              <Link href="/developers">Portail developpeur</Link>
+            <Button size="lg" variant="glass" asChild>
+              <Link href="/developers">Portail developpeur <ArrowRight className="size-4" /></Link>
             </Button>
           </>
         }
@@ -329,8 +329,8 @@ export default function DemoAPIPage() {
         title="Integrez en moins de 10 minutes."
         description="Cle API generee en 30 secondes. Premiere requete en 5 minutes. Garantie."
         actions={
-          <Button size="lg" variant="glass" asChild rightIcon={<ArrowRight className="size-4" />}>
-            <Link href="/login">Commencer gratuitement</Link>
+          <Button size="lg" variant="glass" asChild>
+            <Link href="/login">Commencer gratuitement <ArrowRight className="size-4" /></Link>
           </Button>
         }
       />

@@ -186,11 +186,11 @@ export default function DemoPortfolioPage() {
         description="Specialise Next.js, TypeScript et APIs. Je livre des applications rapides, accessibles et maintenables. Disponible pour missions freelance."
         actions={
           <>
-            <Button asChild size="lg" rightIcon={<ArrowRight className="size-4" />}>
-              <Link href="#etudes">Voir mes projets</Link>
+            <Button asChild size="lg">
+              <Link href="#etudes">Voir mes projets <ArrowRight className="size-4" /></Link>
             </Button>
-            <Button asChild variant="outline" size="lg" leftIcon={<Mail className="size-4" />}>
-              <Link href="#contact">Me contacter</Link>
+            <Button asChild variant="outline" size="lg">
+              <Link href="#contact"><Mail className="size-4" /> Me contacter</Link>
             </Button>
           </>
         }
@@ -422,8 +422,8 @@ export default function DemoPortfolioPage() {
         title={<span className="text-gradient-editorial">Interesse par une collaboration ?</span>}
         description="30 minutes d'echange pour cadrer votre projet — sans engagement."
         actions={
-          <Button asChild size="lg" rightIcon={<ArrowRight className="size-4" />}>
-            <Link href="mailto:hello@alexmorin.dev">Envoyer un email</Link>
+          <Button asChild size="lg">
+            <Link href="mailto:hello@alexmorin.dev">Envoyer un email <ArrowRight className="size-4" /></Link>
           </Button>
         }
       />

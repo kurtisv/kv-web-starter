@@ -137,3 +137,19 @@ describe("ComponentCapability shape", () => {
     }
   });
 });
+
+describe("design metadata alignment", () => {
+  it("all recommendedProfiles values reference real design profile IDs", async () => {
+    const { DESIGN_PROFILE_IDS } = await import("../../design-system/design-profiles");
+    const validIds = new Set(DESIGN_PROFILE_IDS);
+    for (const cap of COMPONENT_REGISTRY) {
+      if (!cap.recommendedProfiles) continue;
+      for (const pid of cap.recommendedProfiles) {
+        expect(
+          validIds.has(pid as typeof DESIGN_PROFILE_IDS[number]),
+          `component "${cap.id}" recommendedProfiles contains unknown profile ID "${pid}"`,
+        ).toBe(true);
+      }
+    }
+  });
+});

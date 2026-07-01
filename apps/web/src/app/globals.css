@@ -620,3 +620,60 @@ section[aria-live]:not([data-sonner-toaster]) {
     animation: none;
   }
 }
+
+/* ============================================================
+   PREMIUM UI COMPONENTS — SpotlightCard + ShimmerBadge
+   ============================================================ */
+
+/* SpotlightCard: interactive radial gradient follows the cursor */
+.spotlight-card {
+  position: relative;
+  overflow: hidden;
+}
+.spotlight-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    500px circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%),
+    color-mix(in srgb, var(--primary) 7%, transparent),
+    transparent 65%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+.spotlight-card:hover::before {
+  opacity: 1;
+}
+.spotlight-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ShimmerBadge: gradient sweep animation */
+@keyframes shimmer-sweep {
+  0%   { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+.shimmer-badge {
+  background: linear-gradient(
+    90deg,
+    var(--primary) 0%,
+    color-mix(in srgb, var(--primary) 55%, var(--accent, var(--primary))) 40%,
+    var(--primary) 100%
+  );
+  background-size: 300% auto;
+  animation: shimmer-sweep 2.8s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shimmer-badge {
+    animation: none;
+    background: var(--primary);
+  }
+  .spotlight-card::before {
+    display: none;
+  }
+}

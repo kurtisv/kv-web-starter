@@ -52,6 +52,7 @@ export function getComponentRecommendationLevel(
   component: ComponentCapability,
   input: ComponentRecommendationPolicyInput,
 ): ComponentRecommendationLevel {
+  // Hard excludes first — these override everything else.
   if (component.maturity === "experimental" && !input.allowExperimental) {
     return "avoid";
   }
@@ -60,18 +61,43 @@ export function getComponentRecommendationLevel(
     return "avoid";
   }
 
-  if (!component.domains.includes(input.domain)) {
-    return "acceptable";
+  const inDomain = component.domains.includes(input.domain);
+  const inGeneral = component.domains.includes("general");
+
+  // demo-only with clientProject=false: acceptable when in domain, avoid otherwise.
+  if (component.maturity === "demo-only") {
+    return inDomain ? "acceptable" : "avoid";
   }
 
-  if (component.maturity === "stable") {
-    return "recommended";
+  // experimental with allowExperimental=true: acceptable when in domain, avoid otherwise.
+  if (component.maturity === "experimental") {
+    return inDomain ? "acceptable" : "avoid";
   }
 
-  if (component.maturity === "beta") {
-    return "acceptable";
+  // Domain match: production or stable -> recommended; beta -> acceptable.
+  if (inDomain) {
+    if (component.maturity === "production" || component.maturity === "stable") {
+      return "recommended";
+    }
+    if (component.maturity === "beta") {
+      return "acceptable";
+    }
+    return "avoid";
   }
 
+  // General-purpose components: acceptable if production/stable/beta; avoid otherwise.
+  if (inGeneral) {
+    if (
+      component.maturity === "production" ||
+      component.maturity === "stable" ||
+      component.maturity === "beta"
+    ) {
+      return "acceptable";
+    }
+    return "avoid";
+  }
+
+  // Out-of-domain, non-general: avoid by default.
   return "avoid";
 }
 

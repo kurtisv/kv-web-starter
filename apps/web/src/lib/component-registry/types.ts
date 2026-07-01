@@ -47,8 +47,15 @@ export type ComponentState =
   | "selected"
   | "expanded";
 
-/** Readiness level. */
+/** Readiness level.
+ * production: fully client-ready, tested, documented, accessible — no reservations.
+ * stable: reliable and usable; safe for most client work.
+ * beta: usable with caution; some limitations may exist.
+ * experimental: opt-in only; not agent-safe as a default.
+ * demo-only: showcase/demo use only; requires adaptation before client delivery.
+ */
 export type ComponentMaturity =
+  | "production"
   | "stable"
   | "beta"
   | "experimental"

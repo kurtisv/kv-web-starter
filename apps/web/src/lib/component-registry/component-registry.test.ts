@@ -45,7 +45,7 @@ describe("COMPONENT_REGISTRY", () => {
   });
 
   it("maturity is one of the valid values", () => {
-    const valid = new Set(["stable", "beta", "experimental", "demo-only"]);
+    const valid = new Set(["production", "stable", "beta", "experimental", "demo-only"]);
     for (const cap of COMPONENT_REGISTRY) {
       expect(valid.has(cap.maturity)).toBe(true);
     }

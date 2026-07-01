@@ -10,6 +10,7 @@
     "typecheck": "pnpm --filter @kv/web typecheck",
     "test": "pnpm --filter @kv/web test",
     "test:e2e": "pnpm --filter @kv/web test:e2e",
+    "demo:env": "node scripts/copy-demo-env.mjs",
     "storybook": "pnpm --filter @kv/web storybook",
     "build-storybook": "pnpm --filter @kv/web build-storybook",
     "check": "pnpm lint && pnpm typecheck && pnpm test",

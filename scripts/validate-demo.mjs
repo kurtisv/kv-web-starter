@@ -61,12 +61,21 @@ async function waitForServer(url) {
   return false;
 }
 
+function createCommand(command, args) {
+  if (process.platform === "win32") {
+    return { command: "cmd.exe", args: ["/c", command, ...args], shell: false };
+  }
+  return { command, args, shell: false };
+}
+
 function startServer() {
-  return spawn("cmd.exe", ["/c", "pnpm --filter @kv/web start"], {
+  const { command, args, shell } = createCommand("pnpm", ["--filter", "@kv/web", "start"]);
+  return spawn(command, args, {
     cwd: process.cwd(),
     detached: false,
     windowsHide: true,
     stdio: "ignore",
+    shell,
     env: {
       ...process.env,
       AUTH_SECRET: process.env.AUTH_SECRET ?? "local-demo-build-secret-local-demo-build-secret",

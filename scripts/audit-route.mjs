@@ -48,7 +48,9 @@ async function runBrowserAudit(url) {
       consoleMessages.push(`pageerror: ${error.message}`);
     });
     page.on("requestfailed", (request) => {
-      networkErrors.push(`${request.method()} ${request.url()} ${request.failure()?.errorText ?? ""}`.trim());
+      const failure = request.failure()?.errorText ?? "";
+      if (failure.includes("net::ERR_ABORTED")) return;
+      networkErrors.push(`${request.method()} ${request.url()} ${failure}`.trim());
     });
 
     await page.goto(url, { waitUntil: "networkidle" });

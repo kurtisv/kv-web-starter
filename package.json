@@ -13,6 +13,7 @@
     "demo:env": "node scripts/copy-demo-env.mjs",
     "audit:route": "node scripts/audit-route.mjs",
     "validate:demo": "node scripts/validate-demo.mjs",
+    "registry:recommend": "tsx scripts/component-recommendation-report.ts",
     "storybook": "pnpm --filter @kv/web storybook",
     "build-storybook": "pnpm --filter @kv/web build-storybook",
     "check": "pnpm lint && pnpm typecheck && pnpm test",

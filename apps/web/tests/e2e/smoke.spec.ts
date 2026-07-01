@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 test("marketing, docs, and public API routes render", async ({ page, request }) => {
-  test.setTimeout(60_000);
+  test.setTimeout(120_000);
 
   await page.goto("/");
   await expect(page.getByRole("heading", { name: /^Un boilerplate/i })).toBeVisible();

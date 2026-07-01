@@ -1,6 +1,9 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { DESIGN_PROFILES, DESIGN_PROFILE_IDS, type DesignProfile } from "@/design-system/design-profiles";
+import { DESIGN_RECIPES } from "@/design-system/design-recipes";
+import { SpotlightCard } from "@/components/ui/spotlight-card";
+import { ShimmerBadge } from "@/components/ui/shimmer-badge";
 
 const BG_CLASS: Record<string, string> = {
   "flat":          "",
@@ -208,6 +211,74 @@ export default function DesignLabPage() {
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {DESIGN_PROFILE_IDS.map((id) => (
               <ProfileCard key={id} profile={DESIGN_PROFILES[id]} />
+            ))}
+          </div>
+        </section>
+
+        {/* Premium UI Components Showcase */}
+        <section className="mt-12" data-testid="premium-components-section">
+          <h3 className="mb-1 text-lg font-semibold">Composants UI premium</h3>
+          <p className="mb-4 text-sm text-muted-foreground">
+            SpotlightCard et ShimmerBadge — interactivite et animation sans dependances.
+          </p>
+          <div className="grid gap-4 sm:grid-cols-3">
+            <SpotlightCard className="p-6">
+              <p className="mb-1 text-xs font-medium uppercase tracking-widest text-muted-foreground">
+                SpotlightCard
+              </p>
+              <p className="font-semibold">Survolez ce card</p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Radial gradient CSS suit le curseur. Zero JS en dehors du mousemove.
+              </p>
+            </SpotlightCard>
+            <SpotlightCard className="p-6 card-glass">
+              <p className="mb-1 text-xs font-medium uppercase tracking-widest text-muted-foreground">
+                SpotlightCard + glass
+              </p>
+              <p className="font-semibold">Combinaison premium</p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Spotlight + backdrop-filter blur pour un effet depth maximale.
+              </p>
+            </SpotlightCard>
+            <div className="rounded-xl border bg-card p-6 flex flex-col gap-3">
+              <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
+                ShimmerBadge
+              </p>
+              <ShimmerBadge data-testid="shimmer-badge-demo">Populaire</ShimmerBadge>
+              <ShimmerBadge>Nouveau — V3</ShimmerBadge>
+              <p className="text-sm text-muted-foreground">
+                Gradient sweep anime. Respecte prefers-reduced-motion.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Design Recipes */}
+        <section className="mt-12" data-testid="recipes-section">
+          <h3 className="mb-1 text-lg font-semibold">Design recipes</h3>
+          <p className="mb-4 text-sm text-muted-foreground">
+            Une recipe = profil + classes CSS concretes + variantes de composants. Copier-coller pret.
+          </p>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {Object.values(DESIGN_RECIPES).map((recipe) => (
+              <div
+                key={recipe.id}
+                className="rounded-xl border bg-card p-4 text-sm"
+                data-testid={`recipe-${recipe.id}`}
+              >
+                <p className="font-semibold">{recipe.name}</p>
+                <p className="mt-1 text-xs text-muted-foreground line-clamp-2">{recipe.description}</p>
+                <div className="mt-3 space-y-1 text-xs text-muted-foreground">
+                  <p>wrapper: <code className="rounded bg-muted px-1">{recipe.wrapperClass || "—"}</code></p>
+                  <p>cards: <code className="rounded bg-muted px-1">{recipe.featureCard}</code></p>
+                  <p>badge: <code className="rounded bg-muted px-1">{recipe.badgeClass}</code></p>
+                </div>
+                <div className="mt-2 flex flex-wrap gap-1">
+                  {recipe.targetPresets.map((p) => (
+                    <span key={p} className="rounded bg-muted px-1.5 py-0.5 text-xs">{p}</span>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         </section>

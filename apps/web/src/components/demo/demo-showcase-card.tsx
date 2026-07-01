@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight, CheckCircle, Puzzle } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/dashboard-ui/status-badge";
 import { DemoPreviewFrame } from "./demo-preview-frame";
 import { DemoStackBadges } from "./demo-stack-badges";
 import { cn } from "@/lib/utils";
@@ -26,10 +27,10 @@ export interface DemoCardData {
   integrations: string[];
 }
 
-const COMPLEXITY_COLORS: Record<DemoComplexity, string> = {
-  Starter:      "border-green-200 bg-green-50 text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300",
-  Intermediate: "border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-300",
-  Advanced:     "border-purple-200 bg-purple-50 text-purple-700 dark:border-purple-800 dark:bg-purple-950 dark:text-purple-300",
+const COMPLEXITY_STATUS: Record<DemoComplexity, string> = {
+  Starter:      "active",
+  Intermediate: "pending",
+  Advanced:     "trialing",
 };
 
 interface DemoShowcaseCardProps {
@@ -109,9 +110,7 @@ export function DemoShowcaseCard({ demo, className }: DemoShowcaseCardProps) {
         {/* Footer */}
         <div className="mt-auto flex items-center justify-between gap-2 pt-1">
           <div className="flex items-center gap-2">
-            <Badge variant="outline" size="sm" className={cn("text-xs font-normal", COMPLEXITY_COLORS[demo.complexity])}>
-              {demo.complexity}
-            </Badge>
+            <StatusBadge status={COMPLEXITY_STATUS[demo.complexity]} label={demo.complexity} />
             <Badge variant="outline" size="sm" className="text-xs font-normal text-muted-foreground">
               Demo mode
             </Badge>

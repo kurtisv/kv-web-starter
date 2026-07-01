@@ -22,6 +22,7 @@ function fmt(n: number) {
 }
 
 interface SliderRowProps {
+  id: string;
   label: string;
   min: number;
   max: number;
@@ -30,18 +31,22 @@ interface SliderRowProps {
   onChange: (v: number) => void;
 }
 
-function SliderRow({ label, min, max, step, value, onChange }: SliderRowProps) {
+function SliderRow({ id, label, min, max, step, value, onChange }: SliderRowProps) {
   return (
     <div className="grid gap-1">
       <div className="flex justify-between text-xs">
-        <span className="text-muted-foreground">{label}</span>
+        <label htmlFor={id} className="text-muted-foreground">{label}</label>
       </div>
       <input
+        id={id}
         type="range"
         min={min}
         max={max}
         step={step}
         value={value}
+        aria-valuenow={value}
+        aria-valuemin={min}
+        aria-valuemax={max}
         onChange={(e) => onChange(Number(e.target.value))}
         className="w-full accent-primary"
       />
@@ -79,6 +84,7 @@ export function MortgageCalculator({
       <CardContent className="grid gap-4">
         <div className="grid gap-3">
           <SliderRow
+            id="mc-price"
             label={`Prix du bien : ${fmt(price)}`}
             min={50000}
             max={2000000}
@@ -87,6 +93,7 @@ export function MortgageCalculator({
             onChange={setPrice}
           />
           <SliderRow
+            id="mc-down"
             label={`Apport : ${downPct}%`}
             min={0}
             max={50}
@@ -95,6 +102,7 @@ export function MortgageCalculator({
             onChange={setDownPct}
           />
           <SliderRow
+            id="mc-rate"
             label={`Taux : ${rate.toFixed(1)}%`}
             min={0.5}
             max={8}
@@ -103,6 +111,7 @@ export function MortgageCalculator({
             onChange={(v) => setRate(Math.round(v * 10) / 10)}
           />
           <SliderRow
+            id="mc-years"
             label={`Duree : ${years} ans`}
             min={5}
             max={30}

@@ -100,6 +100,14 @@ export default function DemoLocalBusinessPage() {
             </Button>
           </>
         }
+        trustBar={
+          <div className="flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm text-muted-foreground">
+            <span><span className="font-semibold text-foreground">4.9/5</span> note moyenne (87 avis)</span>
+            <span><span className="font-semibold text-foreground">100%</span> produits naturels</span>
+            <span><span className="font-semibold text-foreground">7 ans</span> d&apos;experience</span>
+            <span><span className="font-semibold text-foreground">-10%</span> sur la 1ere seance</span>
+          </div>
+        }
         media={
           <div className="card-glass rounded-2xl p-5">
             <p className="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
@@ -129,7 +137,7 @@ export default function DemoLocalBusinessPage() {
       <FeatureGrid
         features={features}
         columns={3}
-        variant="icon-left"
+        variant="spotlight"
         className="border-y bg-card"
       />
 
@@ -138,7 +146,7 @@ export default function DemoLocalBusinessPage() {
           <h2 className="mb-8 text-2xl font-semibold">Nos soins</h2>
           <div className="grid gap-4 sm:grid-cols-2">
             {services.map((s) => (
-              <Card key={s.name} className="overflow-hidden">
+              <Card key={s.name} variant="interactive" className="overflow-hidden">
                 <CardContent className="p-5">
                   <div className="flex items-start justify-between gap-4">
                     <div>
@@ -269,14 +277,13 @@ export default function DemoLocalBusinessPage() {
       </section>
 
       <CTASection
-        variant="default"
+        variant="gradient"
+        eyebrow="Offre de bienvenue"
         title="Premiere seance ? -10%"
-        description="Offre de bienvenue pour tout nouveau client. Valable sur tous les soins."
+        description="Pour tout nouveau client, sur tous les soins. Reservez en ligne en 2 minutes."
         actions={
-          <Button asChild size="lg" variant="default">
-            <Link href="/booking">
-              En profiter <ArrowRight className="size-4" />
-            </Link>
+          <Button asChild size="lg" rightIcon={<ArrowRight className="size-4" />}>
+            <Link href="/booking">En profiter</Link>
           </Button>
         }
       />

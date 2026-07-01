@@ -129,13 +129,21 @@ export default function DemoEcommercePage() {
         description="Pieces fabriquees a la main, matieres nobles, finitions irreprochables. Garantie 2 ans incluse."
         actions={
           <>
-            <Button size="lg" className="btn-gradient">
-              <ShoppingCart className="size-4" /> Voir la collection
+            <Button size="lg" className="btn-gradient" leftIcon={<ShoppingCart className="size-4" />}>
+              Voir la collection
             </Button>
-            <Button size="lg" variant="outline">
-              <Tag className="size-4" /> Offres du moment
+            <Button size="lg" variant="outline" leftIcon={<Tag className="size-4" />}>
+              Offres du moment
             </Button>
           </>
+        }
+        trustBar={
+          <div className="flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm text-muted-foreground">
+            <span><span className="font-semibold text-foreground">Livraison gratuite</span> des 60 EUR</span>
+            <span><span className="font-semibold text-foreground">Retours</span> 30 jours offerts</span>
+            <span><span className="font-semibold text-foreground">Paiement</span> 3D Secure Stripe</span>
+            <span><span className="font-semibold text-foreground">Garantie</span> 2 ans incluse</span>
+          </div>
         }
         media={
           <div className="card-gradient-border rounded-2xl p-px">
@@ -319,12 +327,13 @@ export default function DemoEcommercePage() {
       </section>
 
       <CTASection
-        variant="muted"
+        variant="gradient"
+        eyebrow="Livraison 48h garantie"
         title="Satisfait ou rembourse."
         description="30 jours pour changer d'avis. Retours gratuits, sans question posee."
         actions={
-          <Button size="lg" className="btn-gradient">
-            Decouvrir la boutique <ArrowRight className="size-4" />
+          <Button size="lg" className="btn-gradient" rightIcon={<ArrowRight className="size-4" />}>
+            Decouvrir la boutique
           </Button>
         }
       />

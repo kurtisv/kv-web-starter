@@ -186,13 +186,21 @@ export default function DemoPortfolioPage() {
         description="Specialise Next.js, TypeScript et APIs. Je livre des applications rapides, accessibles et maintenables. Disponible pour missions freelance."
         actions={
           <>
-            <Button asChild size="lg">
-              <Link href="#etudes">Voir mes projets <ArrowRight className="size-4" /></Link>
+            <Button asChild size="lg" rightIcon={<ArrowRight className="size-4" />}>
+              <Link href="#etudes">Voir mes projets</Link>
             </Button>
-            <Button asChild variant="outline" size="lg">
-              <Link href="#contact"><Mail className="size-4" /> Me contacter</Link>
+            <Button asChild variant="outline" size="lg" leftIcon={<Mail className="size-4" />}>
+              <Link href="#contact">Me contacter</Link>
             </Button>
           </>
+        }
+        trustBar={
+          <div className="flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm text-muted-foreground">
+            <span><span className="font-semibold text-foreground">12+</span> projets livres</span>
+            <span><span className="font-semibold text-foreground">4 ans</span> d&apos;experience</span>
+            <span><span className="font-semibold text-foreground">100%</span> remote</span>
+            <span><span className="font-semibold text-foreground text-success">Disponible</span> pour missions</span>
+          </div>
         }
         media={
           <div className="card-gradient-border rounded-2xl p-px">
@@ -410,13 +418,12 @@ export default function DemoPortfolioPage() {
 
       <CTASection
         variant="border"
+        eyebrow="Disponible pour missions freelance"
         title={<span className="text-gradient-editorial">Interesse par une collaboration ?</span>}
         description="30 minutes d'echange pour cadrer votre projet — sans engagement."
         actions={
-          <Button asChild size="lg">
-            <Link href="mailto:hello@alexmorin.dev">
-              Envoyer un email <ArrowRight className="size-4" />
-            </Link>
+          <Button asChild size="lg" rightIcon={<ArrowRight className="size-4" />}>
+            <Link href="mailto:hello@alexmorin.dev">Envoyer un email</Link>
           </Button>
         }
       />

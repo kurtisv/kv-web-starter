@@ -75,6 +75,14 @@ export default function DemoBookingPage() {
             </div>
           </>
         }
+        trustBar={
+          <div className="flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm text-muted-foreground">
+            <span><span className="font-semibold text-foreground">300+</span> clients satisfaits</span>
+            <span><span className="font-semibold text-foreground">4.9/5</span> note moyenne</span>
+            <span><span className="font-semibold text-foreground">2 min</span> pour reserver</span>
+            <span><span className="font-semibold text-foreground">-10%</span> sur la 1ere seance</span>
+          </div>
+        }
         media={
           <div className="card-glass rounded-2xl p-5">
             <p className="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
@@ -280,11 +288,12 @@ export default function DemoBookingPage() {
 
       <CTASection
         variant="muted"
+        eyebrow="300+ clients nous font confiance"
         title="Pret a vous faire du bien ?"
-        description="Plus de 300 clients nous font confiance. Premiere seance avec 10% de reduction."
+        description="Premiere seance avec 10% de reduction. Reservez en 2 minutes, annulation gratuite."
         actions={
-          <Button asChild size="lg">
-            <Link href="/booking">Prendre rendez-vous <ArrowRight className="size-4" /></Link>
+          <Button asChild size="lg" rightIcon={<ArrowRight className="size-4" />}>
+            <Link href="/booking">Prendre rendez-vous</Link>
           </Button>
         }
       />

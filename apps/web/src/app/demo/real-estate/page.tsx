@@ -211,13 +211,21 @@ export default function DemoRealEstatePage() {
         description="Biens selectionnes, scores de quartier, rendements calcules. L'immobilier rendu simple."
         actions={
           <>
-            <Button size="lg" className="theme-hero-btn-primary">
-              <Search className="size-4" /> Rechercher un bien
+            <Button size="lg" className="theme-hero-btn-primary" leftIcon={<Search className="size-4" />}>
+              Rechercher un bien
             </Button>
             <Button size="lg" variant="glass">
               Estimer mon bien
             </Button>
           </>
+        }
+        trustBar={
+          <div className="flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm text-muted-foreground">
+            <span><span className="font-semibold text-foreground">340+</span> biens disponibles</span>
+            <span><span className="font-semibold text-foreground">4.6%</span> rendement moyen</span>
+            <span><span className="font-semibold text-foreground">18j</span> delai de vente moyen</span>
+            <span><span className="font-semibold text-foreground">98%</span> clients satisfaits</span>
+          </div>
         }
         media={
           <div className="card-gradient-border rounded-2xl p-px">
@@ -312,13 +320,12 @@ export default function DemoRealEstatePage() {
 
       <CTASection
         variant="muted"
+        eyebrow="Conseillers disponibles 7j/7"
         title={<span className="text-gradient-editorial">Planifiez une visite.</span>}
-        description="Nos conseillers sont disponibles 7j/7 pour vous accompagner dans votre projet."
+        description="Nos conseillers vous accompagnent de la recherche a la signature. Sans engagement."
         actions={
-          <Button asChild size="lg">
-            <Link href="/booking">
-              Prendre rendez-vous <ArrowRight className="size-4" />
-            </Link>
+          <Button asChild size="lg" rightIcon={<ArrowRight className="size-4" />}>
+            <Link href="/booking">Prendre rendez-vous</Link>
           </Button>
         }
       />

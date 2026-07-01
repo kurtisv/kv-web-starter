@@ -115,6 +115,19 @@ export default function DemoDashboardPage() {
             />
           </MetricGrid>
 
+          {/* MetricCard loading state */}
+          <div className="mb-8 border-t pt-6">
+            <p className="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              Etat de chargement
+            </p>
+            <MetricGrid>
+              <MetricCard label="" value="" loading />
+              <MetricCard label="" value="" loading />
+              <MetricCard label="" value="" loading />
+              <MetricCard label="" value="" loading />
+            </MetricGrid>
+          </div>
+
           {/* Users table */}
           <div className="grid gap-6 lg:grid-cols-[1fr_300px]">
             <React.Suspense fallback={<div className="h-64 animate-pulse bg-muted" />}>

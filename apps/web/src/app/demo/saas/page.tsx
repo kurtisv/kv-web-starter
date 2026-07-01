@@ -115,6 +115,14 @@ export default function DemoSaaSPage() {
             </Button>
           </>
         }
+        trustBar={
+          <div className="flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm text-muted-foreground">
+            <span className="flex items-center gap-1.5"><span className="font-semibold text-foreground">12 000+</span> equipes actives</span>
+            <span className="flex items-center gap-1.5"><span className="font-semibold text-foreground">99.99%</span> uptime SLA</span>
+            <span className="flex items-center gap-1.5"><span className="font-semibold text-foreground">180ms</span> latence moyenne</span>
+            <span className="flex items-center gap-1.5"><span className="font-semibold text-foreground">4.9/5</span> note clients</span>
+          </div>
+        }
         media={
           <div className="rounded-xl p-6 text-left card-glass">
             <p className="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
@@ -220,6 +228,7 @@ export default function DemoSaaSPage() {
 
       <CTASection
         variant="dark"
+        eyebrow="12 000 equipes nous font confiance"
         title="Pret a simplifier votre workflow ?"
         description="Rejoignez 12 000 equipes qui gagnent 10h/semaine."
         actions={

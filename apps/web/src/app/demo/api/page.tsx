@@ -150,13 +150,21 @@ export default function DemoAPIPage() {
         description="REST JSON avec auth par cle API. Documentation interactive. SDKs Node, Python et Go inclus."
         actions={
           <>
-            <Button size="lg" variant="default" asChild>
-              <Link href="/login">Obtenir une cle API <Key className="size-4" /></Link>
+            <Button size="lg" variant="default" asChild rightIcon={<Key className="size-4" />}>
+              <Link href="/login">Obtenir une cle API</Link>
             </Button>
-            <Button size="lg" variant="glass" asChild>
-              <Link href="/developers">Portail developpeur <ArrowRight className="size-4" /></Link>
+            <Button size="lg" variant="glass" asChild rightIcon={<ArrowRight className="size-4" />}>
+              <Link href="/developers">Portail developpeur</Link>
             </Button>
           </>
+        }
+        trustBar={
+          <div className="flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm text-muted-foreground">
+            <span><span className="font-semibold text-foreground">99.99%</span> uptime SLA</span>
+            <span><span className="font-semibold text-foreground">200ms</span> latence p99</span>
+            <span><span className="font-semibold text-foreground">5 000+</span> developpeurs actifs</span>
+            <span><span className="font-semibold text-foreground">Gratuit</span> jusqu&apos;a 10k req/mois</span>
+          </div>
         }
         media={<CodeTabsBlock tabs={codeTabs} className="text-xs" />}
       />
@@ -317,11 +325,12 @@ export default function DemoAPIPage() {
 
       <CTASection
         variant="dark"
+        eyebrow="5 000+ developpeurs actifs"
         title="Integrez en moins de 10 minutes."
         description="Cle API generee en 30 secondes. Premiere requete en 5 minutes. Garantie."
         actions={
-          <Button size="lg" variant="glass" asChild>
-            <Link href="/login">Commencer gratuitement <ArrowRight className="size-4" /></Link>
+          <Button size="lg" variant="glass" asChild rightIcon={<ArrowRight className="size-4" />}>
+            <Link href="/login">Commencer gratuitement</Link>
           </Button>
         }
       />

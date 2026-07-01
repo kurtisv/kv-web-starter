@@ -131,13 +131,21 @@ export default function DemoAutoBlogPage() {
         description="Fiches techniques exhaustives, essais exigeants, comparatifs objectifs. Pour les vrais passionnes."
         actions={
           <>
-            <Button size="lg" className="btn-gradient">
-              Voir les fiches <ArrowRight className="size-4" />
+            <Button size="lg" className="btn-gradient" rightIcon={<ArrowRight className="size-4" />}>
+              Voir les fiches
             </Button>
             <Button size="lg" variant="glass">
               Derniers essais
             </Button>
           </>
+        }
+        trustBar={
+          <div className="flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm text-muted-foreground">
+            <span><span className="font-semibold text-foreground">420+</span> fiches voitures</span>
+            <span><span className="font-semibold text-foreground">1.2M</span> lecteurs/mois</span>
+            <span><span className="font-semibold text-foreground">150+</span> essais realises</span>
+            <span><span className="font-semibold text-foreground">8 ans</span> d&apos;expertise</span>
+          </div>
         }
       />
 
@@ -228,11 +236,12 @@ export default function DemoAutoBlogPage() {
 
       <CTASection
         variant="dark"
+        eyebrow="12 000 abonnes passionnes"
         title={<span className="text-gradient-editorial">Ne ratez aucun essai.</span>}
-        description="Newsletter hebdomadaire. 12 000 abonnes passionnes."
+        description="Newsletter hebdomadaire. Les meilleurs essais et comparatifs directement dans votre boite mail."
         actions={
-          <Button size="lg" className="btn-gradient">
-            S&apos;abonner gratuitement <ArrowRight className="size-4" />
+          <Button size="lg" className="btn-gradient" rightIcon={<ArrowRight className="size-4" />}>
+            S&apos;abonner gratuitement
           </Button>
         }
       />

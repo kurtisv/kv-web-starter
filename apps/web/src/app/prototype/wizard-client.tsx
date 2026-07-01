@@ -1,0 +1,143 @@
+"use client";
+
+import * as React from "react";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { WizardShell } from "@/components/prototype/wizard-shell";
+import { StepClientProfile } from "@/components/prototype/step-client-profile";
+import { StepVisualIdentity } from "@/components/prototype/step-visual-identity";
+import { StepFeatures } from "@/components/prototype/step-features";
+import { StepPreview } from "@/components/prototype/step-preview";
+import { type Industry, isIndustry } from "@/lib/prototype-engine/types";
+import { INDUSTRY_META } from "@/lib/prototype-engine/presets-map";
+import {
+  recommendProfile,
+  getDefaultFeatures,
+  getDefaultTagline,
+} from "@/lib/prototype-engine/recommend-preset";
+import { generateManifest } from "@/lib/prototype-engine/generate-manifest";
+
+const DEFAULT_INDUSTRY: Industry = "saas";
+const DEFAULT_COLOR = "#6366f1";
+const MAX_STEP = 4;
+
+function clampStep(n: number): number {
+  return Math.max(1, Math.min(MAX_STEP, Number.isFinite(n) ? n : 1));
+}
+
+function safeIndustry(raw: string | null): Industry {
+  if (raw && isIndustry(raw)) return raw;
+  return DEFAULT_INDUSTRY;
+}
+
+export function WizardClient() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const step = clampStep(Number(searchParams.get("step") ?? "1"));
+  const industry = safeIndustry(searchParams.get("industry"));
+  const name = searchParams.get("name") ?? "";
+  const color = searchParams.get("color") ?? DEFAULT_COLOR;
+  const profile = searchParams.get("profile") ?? recommendProfile(industry);
+  const mode = searchParams.get("mode") === "dark" ? "dark" : ("light" as const);
+  const featuresRaw = searchParams.get("features");
+  const selectedFeatures: string[] = featuresRaw
+    ? featuresRaw.split(",").filter(Boolean)
+    : getDefaultFeatures(industry);
+  const tagline = searchParams.get("tagline") ?? getDefaultTagline(industry);
+
+  // Merge updates into current URL params and push
+  function update(updates: Record<string, string>) {
+    const params = new URLSearchParams(searchParams.toString());
+    for (const [k, v] of Object.entries(updates)) {
+      if (v === "") {
+        params.delete(k);
+      } else {
+        params.set(k, v);
+      }
+    }
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  }
+
+  function handleIndustry(ind: Industry) {
+    update({
+      industry: ind,
+      profile: recommendProfile(ind),
+      tagline: tagline || getDefaultTagline(ind),
+      features: getDefaultFeatures(ind).join(","),
+    });
+  }
+
+  function handleStep(next: number) {
+    const clamped = clampStep(next);
+    const extras: Record<string, string> = { step: String(clamped) };
+    if (clamped === 3 && selectedFeatures.length === 0) {
+      extras.features = getDefaultFeatures(industry).join(",");
+    }
+    update(extras);
+  }
+
+  function handleToggleFeature(f: string) {
+    const next = selectedFeatures.includes(f)
+      ? selectedFeatures.filter((x) => x !== f)
+      : [...selectedFeatures, f];
+    update({ features: next.length > 0 ? next.join(",") : "" });
+  }
+
+  const canNext =
+    step === 1
+      ? name.trim().length > 0 && !!industry
+      : step === 2
+      ? /^#[0-9a-fA-F]{6}$/.test(color) && !!profile
+      : step === 3
+      ? selectedFeatures.length > 0
+      : false;
+
+  const manifest = generateManifest({
+    name: name.trim() || "MonEntreprise",
+    tagline: tagline || (INDUSTRY_META[industry]?.defaultTagline ?? ""),
+    industry,
+    primaryColor: /^#[0-9a-fA-F]{6}$/.test(color) ? color : DEFAULT_COLOR,
+    designProfile: profile,
+    mode,
+    selectedFeatures,
+  });
+
+  return (
+    <WizardShell
+      step={step}
+      onPrev={() => handleStep(step - 1)}
+      onNext={() => handleStep(step + 1)}
+      canNext={canNext}
+    >
+      {step === 1 && (
+        <StepClientProfile
+          name={name}
+          tagline={tagline}
+          industry={industry}
+          onName={(v) => update({ name: v })}
+          onTagline={(v) => update({ tagline: v })}
+          onIndustry={handleIndustry}
+        />
+      )}
+      {step === 2 && (
+        <StepVisualIdentity
+          color={color}
+          profile={profile}
+          mode={mode}
+          onColor={(v) => update({ color: v })}
+          onProfile={(v) => update({ profile: v })}
+          onMode={(v) => update({ mode: v })}
+        />
+      )}
+      {step === 3 && (
+        <StepFeatures
+          industry={industry}
+          selectedFeatures={selectedFeatures}
+          onToggleFeature={handleToggleFeature}
+        />
+      )}
+      {step === 4 && <StepPreview manifest={manifest} />}
+    </WizardShell>
+  );
+}

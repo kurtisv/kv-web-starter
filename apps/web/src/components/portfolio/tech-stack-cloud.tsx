@@ -21,8 +21,8 @@ function LevelDots({ level }: { level: TechLevel }) {
         <span
           key={l}
           className={cn(
-            "inline-block h-1.5 w-1.5 rounded-full",
-            l <= level ? "bg-primary" : "bg-muted-foreground/30"
+            "inline-block h-1.5 w-1.5 rounded-full transition-colors",
+            l <= level ? "bg-primary" : "bg-muted-foreground/30",
           )}
         />
       ))}
@@ -46,7 +46,10 @@ export function TechStackCloud({ items, className }: TechStackCloudProps) {
               {catItems.map((item) => (
                 <div
                   key={item.name}
-                  className="flex items-center justify-between rounded-md border border-border bg-card px-3 py-2 text-sm font-medium"
+                  className={cn(
+                    "flex items-center justify-between rounded-md border border-border bg-card px-3 py-2 text-sm font-medium",
+                    "transition-colors duration-150 hover:border-primary hover:text-primary",
+                  )}
                 >
                   <span>{item.name}</span>
                   <LevelDots level={item.level} />
@@ -58,15 +61,27 @@ export function TechStackCloud({ items, className }: TechStackCloudProps) {
       })}
       <div className="col-span-full flex items-center gap-4 text-xs text-muted-foreground">
         <span className="flex items-center gap-1">
-          <span className="flex gap-0.5"><span className="h-1.5 w-1.5 rounded-full bg-primary inline-block" /><span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/30 inline-block" /><span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/30 inline-block" /></span>
+          <span className="flex gap-0.5">
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary" />
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-muted-foreground/30" />
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-muted-foreground/30" />
+          </span>
           Confortable
         </span>
         <span className="flex items-center gap-1">
-          <span className="flex gap-0.5"><span className="h-1.5 w-1.5 rounded-full bg-primary inline-block" /><span className="h-1.5 w-1.5 rounded-full bg-primary inline-block" /><span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/30 inline-block" /></span>
+          <span className="flex gap-0.5">
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary" />
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary" />
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-muted-foreground/30" />
+          </span>
           Avance
         </span>
         <span className="flex items-center gap-1">
-          <span className="flex gap-0.5"><span className="h-1.5 w-1.5 rounded-full bg-primary inline-block" /><span className="h-1.5 w-1.5 rounded-full bg-primary inline-block" /><span className="h-1.5 w-1.5 rounded-full bg-primary inline-block" /></span>
+          <span className="flex gap-0.5">
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary" />
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary" />
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary" />
+          </span>
           Expert
         </span>
       </div>

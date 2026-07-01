@@ -195,7 +195,6 @@ export function ShowcaseClient() {
   const [colorVar,  setColorVar]  = React.useState("noir");
   const [switchOn,  setSwitchOn]  = React.useState(true);
   const [activeNav, setActiveNav] = React.useState("primitives");
-  const [activeTab, setActiveTab] = React.useState("vue");
 
   // Observe active section for nav highlight
   React.useEffect(() => {
@@ -362,21 +361,19 @@ export function ShowcaseClient() {
 
             <ComponentCard name="Tabs">
               <div className="w-[200px]">
-                <Tabs>
+                <Tabs defaultValue="vue">
                   <TabsList>
                     {["vue", "code", "docs"].map((t) => (
-                      <TabsTrigger
-                        key={t}
-                        className={activeTab === t ? "bg-background text-foreground" : ""}
-                        onClick={() => setActiveTab(t)}
-                      >
+                      <TabsTrigger key={t} value={t}>
                         {t.charAt(0).toUpperCase() + t.slice(1)}
                       </TabsTrigger>
                     ))}
                   </TabsList>
-                  <TabsContent>
-                    <p className="text-xs text-muted-foreground">Contenu : {activeTab}</p>
-                  </TabsContent>
+                  {["vue", "code", "docs"].map((t) => (
+                    <TabsContent key={t} value={t}>
+                      <p className="text-xs text-muted-foreground">Contenu : {t}</p>
+                    </TabsContent>
+                  ))}
                 </Tabs>
               </div>
             </ComponentCard>

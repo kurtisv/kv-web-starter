@@ -92,9 +92,10 @@ function LegacyFilterBar({
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder={searchPlaceholder}
+          aria-label="Rechercher"
           className={cn(
             "h-9 w-full border border-border bg-background pl-8 pr-3 text-sm outline-none",
-            "transition-colors focus:border-foreground placeholder:text-muted-foreground",
+            "transition-colors focus:border-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 placeholder:text-muted-foreground",
           )}
         />
         {search && (

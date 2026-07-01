@@ -1,5 +1,11 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@/components/ui/accordion";
 
 interface FAQItem {
   question: string;
@@ -27,14 +33,14 @@ export function FAQSection({ eyebrow, title, items, className }: FAQSectionProps
             {title && <h2 className="text-3xl font-semibold tracking-tight">{title}</h2>}
           </div>
         )}
-        <dl className="grid gap-6">
+        <Accordion>
           {items.map((item, i) => (
-            <div key={i} className="border-b pb-6 last:border-0">
-              <dt className="font-semibold">{item.question}</dt>
-              <dd className="mt-2 text-sm leading-7 text-muted-foreground">{item.answer}</dd>
-            </div>
+            <AccordionItem key={i}>
+              <AccordionTrigger>{item.question}</AccordionTrigger>
+              <AccordionContent>{item.answer}</AccordionContent>
+            </AccordionItem>
           ))}
-        </dl>
+        </Accordion>
       </div>
     </section>
   );

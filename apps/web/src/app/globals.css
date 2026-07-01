@@ -406,3 +406,217 @@ section[aria-live]:not([data-sonner-toaster]) {
   clip: rect(0, 0, 0, 0);
   pointer-events: none;
 }
+
+/* ============================================================
+   DESIGN PROFILES — Visual personality utilities (Lot 2)
+   Pure CSS, no new dependencies.
+   ============================================================ */
+
+/* --- Enhanced shadow tokens --- */
+:root {
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.15), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-glow: 0 0 24px color-mix(in srgb, var(--primary) 35%, transparent);
+  --shadow-glow-sm: 0 0 12px color-mix(in srgb, var(--primary) 25%, transparent);
+}
+
+/* --- Background: soft radial gradient overlay --- */
+.bg-profile-soft-gradient {
+  background:
+    radial-gradient(
+      ellipse 80% 50% at 50% -10%,
+      color-mix(in srgb, var(--primary) 10%, transparent),
+      transparent
+    ),
+    var(--background);
+}
+
+/* --- Background: noise texture (SVG inline, no external fetch) --- */
+.bg-profile-noise {
+  position: relative;
+}
+.bg-profile-noise::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.025;
+  z-index: 0;
+}
+
+/* --- Background: subtle dot grid --- */
+.bg-profile-grid {
+  background-image:
+    radial-gradient(circle, var(--border) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* --- Background: dark depth (layered radial gradients) --- */
+.bg-profile-dark-depth {
+  background:
+    radial-gradient(
+      ellipse 60% 40% at 20% 20%,
+      color-mix(in srgb, var(--primary) 12%, transparent),
+      transparent
+    ),
+    radial-gradient(
+      ellipse 50% 40% at 80% 80%,
+      color-mix(in srgb, var(--accent) 8%, transparent),
+      transparent
+    ),
+    var(--background);
+}
+
+/* --- Card: glass elevated (backdrop blur + semi-transparent bg) --- */
+.card-glass {
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  background: color-mix(in srgb, var(--card) 65%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 45%, transparent);
+  box-shadow: var(--shadow-md);
+}
+
+/* Fallback for browsers without backdrop-filter support */
+@supports not (backdrop-filter: blur(1px)) {
+  .card-glass {
+    background: var(--card);
+  }
+}
+
+/* --- Card: gradient border (conic gradient trick) --- */
+.card-gradient-border {
+  background:
+    linear-gradient(var(--card), var(--card)) padding-box,
+    linear-gradient(135deg, var(--primary), var(--ring, var(--primary))) border-box;
+  border: 1px solid transparent;
+}
+
+/* --- Card: dark elevated --- */
+.card-dark-elevated {
+  background: color-mix(in srgb, var(--card) 90%, #000000);
+  box-shadow: var(--shadow-lg), inset 0 1px 0 rgb(255 255 255 / 0.04);
+  border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+}
+
+/* --- Text: gradient (primary to ring) --- */
+.text-gradient-primary {
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    color-mix(in srgb, var(--primary) 70%, var(--accent)) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* --- Text: editorial gradient (stronger, with accent pop) --- */
+.text-gradient-editorial {
+  background: linear-gradient(
+    120deg,
+    var(--foreground) 0%,
+    var(--primary) 60%,
+    var(--accent) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* --- Accent: glow ring on focusable/interactive elements --- */
+.accent-glow {
+  box-shadow: var(--shadow-glow);
+}
+.accent-glow:hover {
+  box-shadow: 0 0 32px color-mix(in srgb, var(--primary) 50%, transparent);
+}
+
+/* --- Accent: gradient fill button surface --- */
+.btn-gradient {
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    color-mix(in srgb, var(--primary) 70%, var(--accent)) 100%
+  );
+  color: var(--primary-foreground);
+  border: none;
+}
+.btn-gradient:hover {
+  opacity: 0.9;
+}
+
+/* --- Image: film grain overlay --- */
+.img-film-grain {
+  position: relative;
+  overflow: hidden;
+}
+.img-film-grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23g)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+  z-index: 1;
+}
+
+/* ============================================================
+   DESIGN PROFILES — Extended animations
+   ============================================================ */
+
+/* Editorial: slow deliberate reveal (700ms) */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-up {
+  animation: fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Expressive: spring-like scale-in */
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.94); }
+  to { opacity: 1; transform: scale(1); }
+}
+.animate-scale-in {
+  animation: scale-in 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+/* Cinematic: wide sweep from left */
+@keyframes sweep-in {
+  from { opacity: 0; transform: translateX(-32px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.animate-sweep-in {
+  animation: sweep-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Glow pulse for accent elements */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: var(--shadow-glow-sm); }
+  50% { box-shadow: var(--shadow-glow); }
+}
+.animate-glow-pulse {
+  animation: glow-pulse 2.5s ease-in-out infinite;
+}
+
+/* Stagger delay helpers */
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.1s; }
+.stagger-3 { animation-delay: 0.15s; }
+.stagger-4 { animation-delay: 0.2s; }
+.stagger-5 { animation-delay: 0.25s; }
+.stagger-6 { animation-delay: 0.3s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up,
+  .animate-scale-in,
+  .animate-sweep-in,
+  .animate-glow-pulse {
+    animation: none;
+  }
+}

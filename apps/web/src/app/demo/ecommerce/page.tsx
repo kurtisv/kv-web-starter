@@ -4,11 +4,12 @@ import * as React from "react";
 import { ArrowRight, RotateCcw, Shield, ShoppingCart, Tag, Truck } from "lucide-react";
 
 import { HeroSection } from "@/components/sections/hero-section";
-import { FeatureGrid } from "@/components/sections/feature-grid";
 import { CTASection } from "@/components/sections/cta-section";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { SpotlightCard } from "@/components/ui/spotlight-card";
+import { ShimmerBadge } from "@/components/ui/shimmer-badge";
 import { ProductCard, type ProductItem } from "@/components/ecommerce/product-card";
 import { CheckoutSteps } from "@/components/ecommerce/checkout-steps";
 import { PriceDisplay } from "@/components/ecommerce/price-display";
@@ -123,12 +124,12 @@ export default function DemoEcommercePage() {
     <div data-theme="ecommerce-clean" className="bg-profile-soft-gradient">
       <HeroSection
         variant="split"
-        eyebrow="Collection printemps 2026"
+        eyebrow={<ShimmerBadge>Collection printemps 2026</ShimmerBadge>}
         title={<span className="text-gradient-primary">Artisanat cuir premium, livre chez vous.</span>}
         description="Pieces fabriquees a la main, matieres nobles, finitions irreprochables. Garantie 2 ans incluse."
         actions={
           <>
-            <Button size="lg">
+            <Button size="lg" className="btn-gradient">
               <ShoppingCart className="size-4" /> Voir la collection
             </Button>
             <Button size="lg" variant="outline">
@@ -137,22 +138,27 @@ export default function DemoEcommercePage() {
           </>
         }
         media={
-          <div className="border bg-muted/30 p-6 text-center">
-            <div className="text-4xl font-semibold text-primary">-30%</div>
-            <p className="mt-1 text-sm text-muted-foreground">sur toute la collection sacs</p>
-            <p className="mt-1 text-xs text-muted-foreground">
-              Jusqu&apos;au 31 aout — code : ETE30
-            </p>
-            <Button size="sm" className="mt-4">Profiter de l&apos;offre</Button>
+          <div className="card-gradient-border rounded-2xl p-px">
+            <div className="rounded-2xl bg-card p-6 text-center">
+              <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground mb-3">
+                Offre limitee
+              </p>
+              <div className="text-5xl font-bold text-gradient-primary mb-1">-30%</div>
+              <p className="text-sm text-muted-foreground">sur toute la collection sacs</p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Jusqu&apos;au 31 aout — code : <span className="font-mono font-semibold text-primary">ETE30</span>
+              </p>
+              <Button size="sm" className="mt-5 btn-gradient w-full">Profiter de l&apos;offre</Button>
+            </div>
           </div>
         }
       />
 
-      {/* Product grid */}
+      {/* Product grid with SpotlightCard */}
       <section className="bg-background">
         <div className="mx-auto max-w-6xl px-6 py-16">
           <div className="mb-8 flex items-center justify-between">
-            <h2 className="text-2xl font-semibold">Nos produits</h2>
+            <h2 className="text-2xl font-semibold text-gradient-primary">Nos produits</h2>
             <div className="flex gap-2">
               {["Sacs", "Montres", "Accessoires"].map((c) => (
                 <Badge key={c} variant="outline" size="sm">{c}</Badge>
@@ -161,14 +167,35 @@ export default function DemoEcommercePage() {
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {products.map((p) => (
-              <ProductCard key={p.id} product={p} />
+              <SpotlightCard key={p.id} className="rounded-xl overflow-hidden p-0">
+                <ProductCard product={p} />
+              </SpotlightCard>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Trust badges — card-glass treatment */}
+      <section className="border-y bg-card">
+        <div className="mx-auto max-w-6xl px-6 py-12">
+          <div className="grid gap-4 sm:grid-cols-3">
+            {trust.map((t) => (
+              <div key={t.title} className="card-glass rounded-xl p-5 flex items-start gap-4">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  {t.icon}
+                </div>
+                <div>
+                  <p className="font-semibold text-sm">{t.title}</p>
+                  <p className="mt-0.5 text-xs text-muted-foreground">{t.description}</p>
+                </div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* List layout */}
-      <section className="border-y bg-card">
+      <section className="border-b bg-background">
         <div className="mx-auto max-w-6xl px-6 py-14">
           <div className="mb-6 flex items-center gap-3">
             <h2 className="text-xl font-semibold">Vue liste</h2>
@@ -183,11 +210,10 @@ export default function DemoEcommercePage() {
       </section>
 
       {/* Variant + Promo composants */}
-      <section className="border-b bg-background">
+      <section className="border-b bg-card">
         <div className="mx-auto max-w-6xl px-6 py-14">
           <h2 className="mb-8 text-xl font-semibold">Composants produit</h2>
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {/* VariantSelector */}
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
@@ -210,7 +236,6 @@ export default function DemoEcommercePage() {
               </CardContent>
             </Card>
 
-            {/* PriceDisplay */}
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
@@ -227,7 +252,6 @@ export default function DemoEcommercePage() {
               </CardContent>
             </Card>
 
-            {/* RatingStars */}
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
@@ -248,7 +272,7 @@ export default function DemoEcommercePage() {
       </section>
 
       {/* PromoCodeInput */}
-      <section className="border-b bg-card">
+      <section className="border-b bg-background">
         <div className="mx-auto max-w-6xl px-6 py-12">
           <div className="grid gap-8 sm:grid-cols-2">
             <div>
@@ -278,7 +302,7 @@ export default function DemoEcommercePage() {
       </section>
 
       {/* OrderStatusTimeline + CustomerOrderTable */}
-      <section className="border-b bg-background">
+      <section className="border-b bg-card">
         <div className="mx-auto max-w-6xl px-6 py-14">
           <h2 className="mb-8 text-xl font-semibold">Suivi et historique</h2>
           <div className="grid gap-8 lg:grid-cols-2">
@@ -294,19 +318,12 @@ export default function DemoEcommercePage() {
         </div>
       </section>
 
-      <FeatureGrid
-        features={trust}
-        columns={3}
-        variant="icon-left"
-        className="border-y bg-card"
-      />
-
       <CTASection
         variant="muted"
         title="Satisfait ou rembourse."
         description="30 jours pour changer d'avis. Retours gratuits, sans question posee."
         actions={
-          <Button size="lg">
+          <Button size="lg" className="btn-gradient">
             Decouvrir la boutique <ArrowRight className="size-4" />
           </Button>
         }

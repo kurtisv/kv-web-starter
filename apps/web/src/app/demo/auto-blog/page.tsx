@@ -1,15 +1,15 @@
 import * as React from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Flame } from "lucide-react";
 import { HeroSection } from "@/components/sections/hero-section";
 import { StatsSection } from "@/components/sections/stats-section";
 import { CTASection } from "@/components/sections/cta-section";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { ShimmerBadge } from "@/components/ui/shimmer-badge";
 import { FeaturedArticleCard } from "@/components/auto-blog/featured-article-card";
 import { ArticleCard } from "@/components/auto-blog/article-card";
 import { CarSpecComparison, type CarSpec } from "@/components/auto-blog/car-spec-comparison";
 import { AutoBlogCarGrid } from "./auto-blog-client";
-
 
 const stats = [
   { value: "420+", label: "Fiches voitures" },
@@ -126,12 +126,12 @@ export default function DemoAutoBlogPage() {
       <HeroSection
         variant="dark"
         videoSrc="/videos/themes/luxury-auto-bg.mp4"
-        eyebrow="Passion automobile"
+        eyebrow={<ShimmerBadge><Flame className="size-3" /> Passion automobile</ShimmerBadge>}
         title={<span className="text-gradient-editorial">La voiture, sans compromis.</span>}
         description="Fiches techniques exhaustives, essais exigeants, comparatifs objectifs. Pour les vrais passionnes."
         actions={
           <>
-            <Button size="lg" className="bg-primary text-primary-foreground">
+            <Button size="lg" className="btn-gradient">
               Voir les fiches <ArrowRight className="size-4" />
             </Button>
             <Button size="lg" variant="glass">
@@ -145,65 +145,73 @@ export default function DemoAutoBlogPage() {
 
       {/* Essai en vedette */}
       <section className="bg-background">
-        <div className="mx-auto max-w-6xl px-6 py-16">
+        <div className="mx-auto max-w-6xl px-6 py-16 sm:py-20">
           <div className="mb-6 flex items-center gap-3">
-            <h2 className="text-2xl font-semibold">Essai de la semaine</h2>
+            <h2 className="text-2xl font-semibold text-gradient-editorial">Essai de la semaine</h2>
             <Badge variant="soft" size="sm">Exclusif</Badge>
           </div>
-          <FeaturedArticleCard
-            category="Essai"
-            title="Porsche 911 GT3 2025 : la perfection sur piste"
-            excerpt="510 chevaux atmospheriques, boite manuelle ou PDK, ailerons actifs. Apres 3 000 km dont 2 sessions circuit, notre verdict est sans appel : la GT3 reste la reference absolue des sportives routieres."
-            author="Pierre L."
-            date="14 juin 2026"
-            readMinutes={15}
-            score={9.4}
-            photo="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1200&q=80&auto=format&fit=crop"
-            photoAlt="Porsche 911 GT3 sur circuit"
-          />
+          <div className="img-film-grain overflow-hidden rounded-2xl">
+            <FeaturedArticleCard
+              category="Essai"
+              title="Porsche 911 GT3 2025 : la perfection sur piste"
+              excerpt="510 chevaux atmospheriques, boite manuelle ou PDK, ailerons actifs. Apres 3 000 km dont 2 sessions circuit, notre verdict est sans appel : la GT3 reste la reference absolue des sportives routieres."
+              author="Pierre L."
+              date="14 juin 2026"
+              readMinutes={15}
+              score={9.4}
+              photo="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1200&q=80&auto=format&fit=crop"
+              photoAlt="Porsche 911 GT3 sur circuit"
+            />
+          </div>
         </div>
       </section>
 
       {/* Derniers articles */}
-      <section className="border-y bg-card">
+      <section className="border-y border-border/40 bg-card/80">
         <div className="mx-auto max-w-6xl px-6 py-14">
           <div className="mb-6 flex items-center justify-between">
-            <h2 className="text-xl font-semibold">Derniers articles</h2>
+            <h2 className="text-xl font-semibold text-gradient-editorial">Derniers articles</h2>
             <Button variant="outline" size="sm">
               Tous les articles <ArrowRight className="h-3.5 w-3.5" />
             </Button>
           </div>
           <div className="grid gap-4 sm:grid-cols-3">
-            {recentArticles.map((a) => (
-              <ArticleCard key={a.title} {...a} />
+            {recentArticles.map((a, i) => (
+              <div key={a.title} className={`card-dark-elevated rounded-xl overflow-hidden stagger-${i + 1}`}>
+                <ArticleCard {...a} />
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* Comparatif technique */}
-      <section className="border-b bg-background">
+      <section className="border-b border-border/40 bg-background">
         <div className="mx-auto max-w-6xl px-6 py-14">
           <div className="mb-6">
-            <h2 className="text-xl font-semibold">Comparatif technique</h2>
+            <h2 className="text-xl font-semibold text-gradient-editorial">Comparatif technique</h2>
             <p className="mt-1 text-sm text-muted-foreground">
               911 GT3 vs M4 CSL vs 296 GTB — specs detaillees cote a cote.
             </p>
           </div>
-          <CarSpecComparison
-            cars={comparisonCars}
-            specLabels={specLabels}
-            winnerKey={winnerKey}
-          />
+          <div className="card-gradient-border rounded-2xl p-px">
+            <div className="rounded-2xl bg-card/90 p-4">
+              <CarSpecComparison
+                cars={comparisonCars}
+                specLabels={specLabels}
+                winnerKey={winnerKey}
+              />
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Fiches voitures — FilterBar (client) + RatingStars + formatPrice */}
-      <section className="border-b bg-card">
+      {/* Fiches voitures */}
+      <section className="border-b border-border/40 bg-card/80">
         <div className="mx-auto max-w-6xl px-6 py-16">
           <div className="mb-6">
             <div className="flex items-center gap-3 mb-1">
-              <h2 className="text-2xl font-semibold">Fiches voitures</h2>
+              <h2 className="text-2xl font-semibold text-gradient-editorial">Fiches voitures</h2>
               <Badge variant="outline" size="sm" className="font-mono text-[10px]">client</Badge>
             </div>
             <p className="text-sm text-muted-foreground">
@@ -220,10 +228,10 @@ export default function DemoAutoBlogPage() {
 
       <CTASection
         variant="dark"
-        title="Ne ratez aucun essai."
+        title={<span className="text-gradient-editorial">Ne ratez aucun essai.</span>}
         description="Newsletter hebdomadaire. 12 000 abonnes passionnes."
         actions={
-          <Button size="lg" variant="outline" className="border-background/30 text-background hover:bg-background/10 hover:text-background">
+          <Button size="lg" className="btn-gradient">
             S&apos;abonner gratuitement <ArrowRight className="size-4" />
           </Button>
         }

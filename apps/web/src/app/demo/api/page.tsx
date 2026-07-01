@@ -7,7 +7,8 @@ import { StatsSection } from "@/components/sections/stats-section";
 import { CTASection } from "@/components/sections/cta-section";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { SpotlightCard } from "@/components/ui/spotlight-card";
+import { ShimmerBadge } from "@/components/ui/shimmer-badge";
 import { EndpointList } from "@/components/api-portal/endpoint-row";
 import { CodeTabsBlock } from "@/components/api-portal/code-tabs-block";
 import { ScopePill } from "@/components/api-portal/scope-pill";
@@ -130,12 +131,21 @@ const webhookEvents: WebhookEvent[] = [
   { id: "wh-4", type: "job.failed",     url: "https://your-app.com/webhooks", status: "delivered", statusCode: 200, durationMs: 205, createdAt: "Il y a 15 min" },
 ];
 
+const portalFeatures = [
+  { label: "Cles multi-env",       description: "Production + staging separes. Rotation en un clic." },
+  { label: "Scopes granulaires",   description: "Limiter chaque cle au strict minimum requis." },
+  { label: "Logs en temps reel",   description: "Chaque requete loggee avec latence et statut HTTP." },
+  { label: "Webhooks retries",     description: "Retry exponentiel avec signature HMAC-SHA256." },
+  { label: "Usage analytics",      description: "Courbes d'appels et taux d'erreur par periode." },
+  { label: "Status public",        description: "Page de statut systeme mise a jour en temps reel." },
+];
+
 export default function DemoAPIPage() {
   return (
     <div data-theme="dark-tech-api" className="bg-profile-dark-depth">
       <HeroSection
         variant="split"
-        eyebrow="v2.4.0 — changelog"
+        eyebrow={<ShimmerBadge>v2.4.0 — changelog</ShimmerBadge>}
         title={<>Une API <span className="text-gradient-primary">robuste</span>. Une integration en minutes.</>}
         description="REST JSON avec auth par cle API. Documentation interactive. SDKs Node, Python et Go inclus."
         actions={
@@ -153,11 +163,32 @@ export default function DemoAPIPage() {
 
       <StatsSection stats={apiStats} variant="strip" />
 
+      {/* Feature grid — SpotlightCard sur fond sombre */}
+      <section className="border-y border-border/40 bg-background">
+        <div className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
+          <p className="mb-2 text-sm font-medium uppercase tracking-widest text-muted-foreground">
+            Fonctionnalites
+          </p>
+          <h2 className="mb-10 text-3xl font-bold tracking-tight sm:text-4xl">
+            <span className="text-gradient-primary">Tout inclus. Pret a integrer.</span>
+          </h2>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {portalFeatures.map((f) => (
+              <SpotlightCard key={f.label} className="flex flex-col gap-3 p-6 rounded-xl">
+                <div className="h-1.5 w-8 rounded-full bg-primary" />
+                <p className="font-semibold font-mono text-sm">{f.label}</p>
+                <p className="text-sm text-muted-foreground">{f.description}</p>
+              </SpotlightCard>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Endpoints */}
-      <section className="border-y bg-background">
+      <section className="border-b border-border/40 bg-card/60">
         <div className="mx-auto max-w-4xl px-6 py-16">
           <div className="mb-2 flex items-center gap-3">
-            <h2 className="text-2xl font-semibold">Endpoints</h2>
+            <h2 className="text-2xl font-semibold text-gradient-primary">Endpoints</h2>
             <Badge variant="outline" size="sm">REST JSON</Badge>
           </div>
           <p className="mb-8 text-sm text-muted-foreground">
@@ -166,7 +197,11 @@ export default function DemoAPIPage() {
               https://api.dataapi.io
             </code>
           </p>
-          <EndpointList endpoints={endpoints} />
+          <div className="card-gradient-border rounded-xl p-px">
+            <div className="rounded-xl bg-card p-4">
+              <EndpointList endpoints={endpoints} />
+            </div>
+          </div>
           <div className="mt-6 text-right">
             <Button variant="ghost" size="sm" asChild>
               <Link href="/developers">
@@ -177,12 +212,12 @@ export default function DemoAPIPage() {
         </div>
       </section>
 
-      {/* Developer portal preview — all API components */}
-      <section className="border-b bg-card">
+      {/* Developer portal preview */}
+      <section className="border-b border-border/40 bg-background">
         <div className="mx-auto max-w-4xl px-6 py-14">
           <div className="mb-8 flex items-center justify-between">
             <div>
-              <h3 className="text-xl font-semibold">Portail developpeur integre</h3>
+              <h3 className="text-xl font-semibold text-gradient-primary">Portail developpeur integre</h3>
               <p className="mt-1 text-sm text-muted-foreground">
                 Gestion des cles, scopes, usage et webhooks — directement dans le dashboard.
               </p>
@@ -194,13 +229,11 @@ export default function DemoAPIPage() {
 
           {/* Keys + Scopes */}
           <div className="grid gap-4 lg:grid-cols-2 mb-6">
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                  Cles d&apos;acces
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="grid gap-4">
+            <div className="card-dark-elevated rounded-xl p-5">
+              <p className="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                Cles d&apos;acces
+              </p>
+              <div className="grid gap-4">
                 <div>
                   <p className="mb-1 text-xs text-muted-foreground">Production</p>
                   <ApiKeyDisplay prefix="kvk_live_a1b2c3d4" />
@@ -209,50 +242,38 @@ export default function DemoAPIPage() {
                   <p className="mb-1 text-xs text-muted-foreground">Developpement</p>
                   <ApiKeyDisplay prefix="kvk_test_e5f6g7h8" />
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                  Permissions (scopes)
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex flex-wrap gap-2">
-                  {scopes.map((s) => (
-                    <ScopePill key={s} scope={s} />
-                  ))}
-                </div>
-                <p className="mt-4 text-xs text-muted-foreground">
-                  Chaque cle peut etre limitee a un sous-ensemble de permissions granulaires.
-                </p>
-              </CardContent>
-            </Card>
+            <div className="card-dark-elevated rounded-xl p-5">
+              <p className="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                Permissions (scopes)
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {scopes.map((s) => (
+                  <ScopePill key={s} scope={s} />
+                ))}
+              </div>
+              <p className="mt-4 text-xs text-muted-foreground">
+                Chaque cle peut etre limitee a un sous-ensemble de permissions granulaires.
+              </p>
+            </div>
           </div>
 
           {/* Rate limit + Usage chart */}
           <div className="grid gap-4 lg:grid-cols-2 mb-6">
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                  Rate limit
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <RateLimitMeter used={78} limit={100} label="Quota mensuel" />
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                  Usage mensuel
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ApiUsageChart data={usageData} />
-              </CardContent>
-            </Card>
+            <div className="card-dark-elevated rounded-xl p-5">
+              <p className="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                Rate limit
+              </p>
+              <RateLimitMeter used={78} limit={100} label="Quota mensuel" />
+            </div>
+            <div className="card-dark-elevated rounded-xl p-5">
+              <p className="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                Usage mensuel
+              </p>
+              <ApiUsageChart data={usageData} />
+            </div>
           </div>
 
           {/* Request log */}
@@ -260,7 +281,11 @@ export default function DemoAPIPage() {
             <p className="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
               Journal des requetes
             </p>
-            <RequestLogViewer entries={requestLog} />
+            <div className="card-gradient-border rounded-xl p-px">
+              <div className="rounded-xl bg-card">
+                <RequestLogViewer entries={requestLog} />
+              </div>
+            </div>
           </div>
 
           {/* Webhook tester */}
@@ -274,9 +299,9 @@ export default function DemoAPIPage() {
       </section>
 
       {/* Status + Onboarding + Webhook events */}
-      <section className="border-b bg-background">
+      <section className="border-b border-border/40 bg-card/60">
         <div className="mx-auto max-w-4xl px-6 py-14">
-          <h3 className="mb-2 text-xl font-semibold">Observabilite et onboarding</h3>
+          <h3 className="mb-2 text-xl font-semibold text-gradient-primary">Observabilite et onboarding</h3>
           <p className="mb-8 text-sm text-muted-foreground">
             Statut systeme en temps reel, historique webhook et guide de demarrage — inclus dans le portail.
           </p>

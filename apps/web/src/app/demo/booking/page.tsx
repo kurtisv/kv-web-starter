@@ -2,12 +2,12 @@ import Link from "next/link";
 import { ArrowRight, CalendarDays, CheckCircle2, Clock, History, Mail } from "lucide-react";
 
 import { HeroSection } from "@/components/sections/hero-section";
-import { FeatureGrid } from "@/components/sections/feature-grid";
 import { TestimonialSection } from "@/components/sections/testimonial-section";
 import { CTASection } from "@/components/sections/cta-section";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card } from "@/components/ui/card";
+import { SpotlightCard } from "@/components/ui/spotlight-card";
+import { ShimmerBadge } from "@/components/ui/shimmer-badge";
 import { ServicePicker, type ServiceOption } from "@/components/booking/service-picker";
 import { StaffPicker, type StaffOption } from "@/components/booking/staff-picker";
 import { BookingSummaryCard } from "@/components/booking/booking-summary-card";
@@ -37,9 +37,9 @@ const testimonials = [
 ];
 
 const steps = [
-  { icon: <CalendarDays className="h-5 w-5" />, title: "Choisissez un creneau", description: "Selectionnez le service, l'intervenant, la date et l'heure." },
-  { icon: <CheckCircle2 className="h-5 w-5" />, title: "Confirmez et payez", description: "Paiement securise par Stripe. Remboursement garanti jusqu'a 24h avant." },
-  { icon: <Clock className="h-5 w-5" />, title: "Recevez votre confirmation", description: "Email de confirmation + rappel 24h avant votre rendez-vous." },
+  { icon: <CalendarDays className="h-6 w-6" />, title: "Choisissez un creneau", description: "Selectionnez le service, l'intervenant, la date et l'heure." },
+  { icon: <CheckCircle2 className="h-6 w-6" />, title: "Confirmez et payez",    description: "Paiement securise par Stripe. Remboursement garanti jusqu'a 24h avant." },
+  { icon: <Clock className="h-6 w-6" />,        title: "Recevez votre confirmation", description: "Email de confirmation + rappel 24h avant votre rendez-vous." },
 ];
 
 const DEMO_SERVICE = SERVICES[0]!;
@@ -57,7 +57,7 @@ export default function DemoBookingPage() {
     <div data-theme="local-business" className="bg-profile-soft-gradient">
       <HeroSection
         variant="split"
-        eyebrow="Bien-etre et relaxation"
+        eyebrow={<ShimmerBadge>Bien-etre et relaxation</ShimmerBadge>}
         title="Prenez soin de vous. On s'occupe du reste."
         description="Massages, soins du visage et reflexologie. Reservez en ligne en 2 minutes. Paiement securise."
         actions={
@@ -76,7 +76,7 @@ export default function DemoBookingPage() {
           </>
         }
         media={
-          <div className="border bg-card p-5">
+          <div className="card-glass rounded-2xl p-5">
             <p className="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
               Choisir un service
             </p>
@@ -89,14 +89,29 @@ export default function DemoBookingPage() {
         }
       />
 
-      <FeatureGrid
-        eyebrow="Comment ca marche"
-        title="Simple comme bonjour."
-        features={steps}
-        columns={3}
-        variant="icon-left"
-        className="border-y bg-card"
-      />
+      {/* Steps — SpotlightCard pour rendre interactif */}
+      <section className="border-y bg-card">
+        <div className="mx-auto max-w-6xl px-6 py-16">
+          <p className="mb-2 text-sm font-medium uppercase tracking-[0.18em] text-muted-foreground text-center">
+            Comment ca marche
+          </p>
+          <h2 className="mb-10 text-2xl font-semibold text-center">Simple comme bonjour.</h2>
+          <div className="grid gap-4 sm:grid-cols-3">
+            {steps.map((step, i) => (
+              <SpotlightCard key={step.title} className="flex flex-col gap-4 p-6 rounded-xl">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                  {step.icon}
+                </div>
+                <div>
+                  <p className="text-xs font-mono text-muted-foreground mb-1">Etape {i + 1}</p>
+                  <p className="font-semibold">{step.title}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">{step.description}</p>
+                </div>
+              </SpotlightCard>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Booking components showcase */}
       <section id="services" className="border-b bg-background">
@@ -165,7 +180,7 @@ export default function DemoBookingPage() {
             />
           </div>
 
-          {/* CancelBookingDialog + RescheduleBookingDialog */}
+          {/* Actions post-booking */}
           <div className="mt-8 border-t pt-8">
             <p className="mb-4 text-sm font-medium">Actions post-reservation</p>
             <p className="mb-6 text-xs text-muted-foreground max-w-md">
@@ -178,25 +193,25 @@ export default function DemoBookingPage() {
       </section>
 
       {/* Static service cards */}
-      <section className="border-b bg-card">
+      <section className="border-b bg-profile-soft-gradient">
         <div className="mx-auto max-w-6xl px-6 py-14">
           <h2 className="mb-6 text-xl font-semibold">Nos services</h2>
           <div className="grid gap-4 sm:grid-cols-2">
             {SERVICES.map((s) => (
-              <Card key={s.id} className="flex items-center justify-between p-5">
+              <div key={s.id} className="card-glass rounded-xl flex items-center justify-between p-5">
                 <div>
                   <p className="font-semibold">{s.name}</p>
                   <p className="mt-0.5 text-sm text-muted-foreground">{s.durationMin} min</p>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="text-base font-semibold">
+                  <span className="text-base font-semibold text-primary">
                     {s.priceCents ? `${(s.priceCents / 100).toFixed(0)} €` : "Gratuit"}
                   </span>
                   <Button asChild size="sm">
                     <Link href="/booking">Reserver</Link>
                   </Button>
                 </div>
-              </Card>
+              </div>
             ))}
           </div>
         </div>
@@ -213,7 +228,6 @@ export default function DemoBookingPage() {
           </p>
 
           <div className="grid gap-8 lg:grid-cols-3">
-            {/* Status timeline */}
             <div>
               <div className="mb-3 flex items-center gap-2">
                 <History className="h-4 w-4 text-muted-foreground" />
@@ -223,7 +237,6 @@ export default function DemoBookingPage() {
               <BookingStatusTimeline status="reminded" />
             </div>
 
-            {/* Reminder email preview */}
             <div>
               <div className="mb-3 flex items-center gap-2">
                 <Mail className="h-4 w-4 text-muted-foreground" />
@@ -238,7 +251,6 @@ export default function DemoBookingPage() {
               />
             </div>
 
-            {/* Booking history */}
             <div>
               <div className="mb-3 flex items-center gap-2">
                 <CalendarDays className="h-4 w-4 text-muted-foreground" />

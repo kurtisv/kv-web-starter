@@ -7,6 +7,7 @@ import { CTASection } from "@/components/sections/cta-section";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { ShimmerBadge } from "@/components/ui/shimmer-badge";
 import { BusinessHours, type DaySchedule } from "@/components/local-business/business-hours";
 import { ServicePackageCard } from "@/components/local-business/service-package-card";
 import { LoyaltyStampCard } from "@/components/local-business/loyalty-stamp-card";
@@ -86,7 +87,7 @@ export default function DemoLocalBusinessPage() {
     <div data-theme="local-business" className="bg-profile-soft-gradient">
       <HeroSection
         variant="split"
-        eyebrow="Massotherapie & bien-etre"
+        eyebrow={<ShimmerBadge>Massotherapie & bien-etre</ShimmerBadge>}
         title="Votre oasis de detente au coeur de la ville."
         description="Soins naturels personnalises dans un espace calme et bienveillant. Prenez soin de vous — vous le meritez."
         actions={
@@ -100,7 +101,7 @@ export default function DemoLocalBusinessPage() {
           </>
         }
         media={
-          <div className="rounded-lg border bg-card p-5">
+          <div className="card-glass rounded-2xl p-5">
             <p className="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
               Prochains creneaux
             </p>
@@ -137,7 +138,7 @@ export default function DemoLocalBusinessPage() {
           <h2 className="mb-8 text-2xl font-semibold">Nos soins</h2>
           <div className="grid gap-4 sm:grid-cols-2">
             {services.map((s) => (
-              <Card key={s.name}>
+              <Card key={s.name} className="overflow-hidden">
                 <CardContent className="p-5">
                   <div className="flex items-start justify-between gap-4">
                     <div>
@@ -151,7 +152,7 @@ export default function DemoLocalBusinessPage() {
                       </div>
                     </div>
                     <div className="shrink-0 text-right">
-                      <p className="text-xl font-semibold">{s.price}</p>
+                      <p className="text-xl font-semibold text-primary">{s.price}</p>
                       <Button asChild size="sm" className="mt-2">
                         <Link href="/booking">Reserver</Link>
                       </Button>
@@ -164,7 +165,7 @@ export default function DemoLocalBusinessPage() {
         </div>
       </section>
 
-      {/* Forfaits */}
+      {/* Forfaits — featured a gradient-border prominent */}
       <section className="border-y bg-card">
         <div className="mx-auto max-w-6xl px-6 py-14">
           <div className="mb-8 text-center">
@@ -178,7 +179,15 @@ export default function DemoLocalBusinessPage() {
           </div>
           <div className="grid gap-4 sm:grid-cols-3">
             {packages.map((pkg) => (
-              <ServicePackageCard key={pkg.name} {...pkg} />
+              pkg.featured ? (
+                <div key={pkg.name} className="card-gradient-border rounded-2xl p-px">
+                  <div className="rounded-2xl h-full bg-card">
+                    <ServicePackageCard {...pkg} />
+                  </div>
+                </div>
+              ) : (
+                <ServicePackageCard key={pkg.name} {...pkg} />
+              )
             ))}
           </div>
         </div>
@@ -190,8 +199,8 @@ export default function DemoLocalBusinessPage() {
         testimonials={testimonials}
       />
 
-      {/* Carte fidelite */}
-      <section className="border-y bg-background">
+      {/* Carte fidelite — section elevated */}
+      <section className="border-y bg-profile-soft-gradient">
         <div className="mx-auto max-w-6xl px-6 py-14">
           <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
             <div>
@@ -212,13 +221,15 @@ export default function DemoLocalBusinessPage() {
                 ))}
               </ul>
             </div>
-            <LoyaltyStampCard
-              businessName="L'Oasis de Detente"
-              stampsEarned={7}
-              stampsTotal={10}
-              rewardDescription="Cadeau : 1 soin de votre choix offert (60 min, valeur 75€)"
-              expiresLabel="Valable jusqu'au 31 decembre 2026"
-            />
+            <div className="card-glass rounded-2xl overflow-hidden">
+              <LoyaltyStampCard
+                businessName="L'Oasis de Detente"
+                stampsEarned={7}
+                stampsTotal={10}
+                rewardDescription="Cadeau : 1 soin de votre choix offert (60 min, valeur 75€)"
+                expiresLabel="Valable jusqu'au 31 decembre 2026"
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -227,7 +238,6 @@ export default function DemoLocalBusinessPage() {
       <section className="border-t bg-card">
         <div className="mx-auto max-w-6xl px-6 py-12">
           <div className="grid gap-10 lg:grid-cols-2">
-            {/* Contact info */}
             <div>
               <h3 className="mb-5 text-base font-semibold">Infos pratiques</h3>
               <div className="grid gap-4">
@@ -236,7 +246,7 @@ export default function DemoLocalBusinessPage() {
                   { icon: <Phone className="h-5 w-5" />,  label: "+33 4 00 00 00 00" },
                 ].map((info) => (
                   <div key={info.label} className="flex items-center gap-3">
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border bg-card text-primary">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
                       {info.icon}
                     </div>
                     <p className="text-sm">{info.label}</p>
@@ -250,7 +260,6 @@ export default function DemoLocalBusinessPage() {
               </div>
             </div>
 
-            {/* BusinessHours */}
             <div>
               <h3 className="mb-5 text-base font-semibold">Horaires d&apos;ouverture</h3>
               <BusinessHours schedule={schedule} />

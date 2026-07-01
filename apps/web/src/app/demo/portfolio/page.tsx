@@ -8,6 +8,7 @@ import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { RevealSection } from "@/components/ui/reveal-section";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { ShimmerBadge } from "@/components/ui/shimmer-badge";
 import { Timeline, type TimelineItem } from "@/components/portfolio/timeline";
 import { TechStackCloud, type TechItem } from "@/components/portfolio/tech-stack-cloud";
 import { CaseStudyCard, type CaseStudyCardProps } from "@/components/portfolio/case-study-card";
@@ -180,7 +181,7 @@ export default function DemoPortfolioPage() {
       {/* Hero */}
       <HeroSection
         variant="split"
-        eyebrow="Developpeur Full Stack — Paris"
+        eyebrow={<ShimmerBadge>Developpeur Full Stack — Paris</ShimmerBadge>}
         title={<span className="text-gradient-editorial">Je construis des produits qui fonctionnent.</span>}
         description="Specialise Next.js, TypeScript et APIs. Je livre des applications rapides, accessibles et maintenables. Disponible pour missions freelance."
         actions={
@@ -194,62 +195,64 @@ export default function DemoPortfolioPage() {
           </>
         }
         media={
-          <div className="flex flex-col gap-5 border bg-card p-6">
-            {/* Avatar + info */}
-            <div className="flex items-center gap-4">
-              <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full border-2 border-primary/20">
-                <Image
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=128&q=80&auto=format&fit=crop&crop=face"
-                  alt="Alex Morin"
-                  fill
-                  className="object-cover"
-                  sizes="56px"
-                />
+          <div className="card-gradient-border rounded-2xl p-px">
+            <div className="flex flex-col gap-5 rounded-2xl bg-card p-6">
+              {/* Avatar + info */}
+              <div className="flex items-center gap-4">
+                <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full border-2 border-primary/30">
+                  <Image
+                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=128&q=80&auto=format&fit=crop&crop=face"
+                    alt="Alex Morin"
+                    fill
+                    className="object-cover"
+                    sizes="56px"
+                  />
+                </div>
+                <div>
+                  <p className="font-semibold">Alex Morin</p>
+                  <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <MapPin className="h-3 w-3" /> Paris, France
+                  </div>
+                </div>
+                <Badge variant="success" size="sm" className="ml-auto">
+                  Disponible
+                </Badge>
               </div>
-              <div>
-                <p className="font-semibold">Alex Morin</p>
-                <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                  <MapPin className="h-3 w-3" /> Paris, France
+
+              {/* Animated stats */}
+              <div className="grid grid-cols-3 gap-3 border-y py-4 text-center">
+                {[
+                  { value: 12, suffix: "+", label: "Projets" },
+                  { value: 4, suffix: " ans", label: "Experience" },
+                  { value: 100, suffix: "%", label: "Remote" },
+                ].map((s) => (
+                  <div key={s.label}>
+                    <p className="text-xl font-semibold text-gradient-editorial">
+                      <AnimatedCounter value={s.value} suffix={s.suffix} />
+                    </p>
+                    <p className="text-xs text-muted-foreground">{s.label}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Links */}
+              <div className="grid gap-2 text-sm">
+                <div className="flex items-center gap-2">
+                  <Globe className="h-4 w-4 text-muted-foreground" />
+                  <span className="font-mono text-xs">alexmorin.dev</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <ExternalLink className="h-4 w-4 text-muted-foreground" />
+                  <span className="font-mono text-xs">github.com/alexmorin</span>
                 </div>
               </div>
-              <Badge variant="success" size="sm" className="ml-auto">
-                Disponible
-              </Badge>
-            </div>
 
-            {/* Animated stats */}
-            <div className="grid grid-cols-3 gap-3 border-y py-4 text-center">
-              {[
-                { value: 12, suffix: "+", label: "Projets" },
-                { value: 4, suffix: " ans", label: "Experience" },
-                { value: 100, suffix: "%", label: "Remote" },
-              ].map((s) => (
-                <div key={s.label}>
-                  <p className="text-xl font-semibold">
-                    <AnimatedCounter value={s.value} suffix={s.suffix} />
-                  </p>
-                  <p className="text-xs text-muted-foreground">{s.label}</p>
-                </div>
-              ))}
-            </div>
-
-            {/* Links */}
-            <div className="grid gap-2 text-sm">
-              <div className="flex items-center gap-2">
-                <Globe className="h-4 w-4 text-muted-foreground" />
-                <span className="font-mono text-xs">alexmorin.dev</span>
+              {/* Stack badges */}
+              <div className="flex flex-wrap gap-1.5">
+                {["Next.js", "TypeScript", "Prisma", "Tailwind", "Docker"].map((t) => (
+                  <Badge key={t} variant="outline" size="sm">{t}</Badge>
+                ))}
               </div>
-              <div className="flex items-center gap-2">
-                <ExternalLink className="h-4 w-4 text-muted-foreground" />
-                <span className="font-mono text-xs">github.com/alexmorin</span>
-              </div>
-            </div>
-
-            {/* Stack badges */}
-            <div className="flex flex-wrap gap-1.5">
-              {["Next.js", "TypeScript", "Prisma", "Tailwind", "Docker"].map((t) => (
-                <Badge key={t} variant="outline" size="sm">{t}</Badge>
-              ))}
             </div>
           </div>
         }
@@ -261,7 +264,7 @@ export default function DemoPortfolioPage() {
           <div className="grid gap-8 lg:grid-cols-[1fr_360px] lg:items-center">
             <div>
               <p className="mb-2 text-sm font-medium uppercase tracking-[0.18em] text-muted-foreground">3D & Animation</p>
-              <h2 className="text-2xl font-semibold">Front-end haute fidelite.</h2>
+              <h2 className="text-2xl font-semibold text-gradient-editorial">Front-end haute fidelite.</h2>
               <p className="mt-3 text-sm text-muted-foreground">
                 Scenes Three.js integrees directement dans Next.js App Router. Rendu adaptatif :
                 haute fidelite sur desktop, mode performance sur mobile. Aucune bibliotheque externe lourde
@@ -287,29 +290,33 @@ export default function DemoPortfolioPage() {
 
       {/* Etudes de cas */}
       <section id="etudes" className="border-b bg-background">
-        <div className="mx-auto max-w-6xl px-6 py-16">
+        <div className="mx-auto max-w-6xl px-6 py-20 sm:py-28">
           <RevealSection>
-            <div className="mb-8">
+            <div className="mb-10">
               <p className="mb-2 text-sm font-medium uppercase tracking-[0.18em] text-muted-foreground">Etudes de cas</p>
-              <h2 className="text-2xl font-semibold">Projets en vedette</h2>
+              <h2 className="text-2xl font-semibold text-gradient-editorial">Projets en vedette</h2>
             </div>
           </RevealSection>
           <RevealSection delay={0.1}>
             <div className="grid gap-5 lg:grid-cols-2">
               {caseStudies.map((cs) => (
-                <CaseStudyCard key={cs.title} {...cs} />
+                <div key={cs.title} className="card-gradient-border rounded-2xl p-px">
+                  <div className="rounded-2xl bg-card h-full">
+                    <CaseStudyCard {...cs} />
+                  </div>
+                </div>
               ))}
             </div>
           </RevealSection>
         </div>
       </section>
 
-      {/* Tous les projets — filtres interactifs */}
+      {/* Tous les projets */}
       <section className="border-b bg-card">
         <div className="mx-auto max-w-6xl px-6 py-14">
           <div className="mb-6">
             <p className="mb-2 text-sm font-medium uppercase tracking-[0.18em] text-muted-foreground">Portfolio</p>
-            <h2 className="text-xl font-semibold">Tous les projets</h2>
+            <h2 className="text-xl font-semibold text-gradient-editorial">Tous les projets</h2>
             <p className="mt-1 text-sm text-muted-foreground">
               Filtrez par technologie pour trouver ce qui vous interesse.
             </p>
@@ -324,7 +331,7 @@ export default function DemoPortfolioPage() {
           <RevealSection>
             <div className="mb-8">
               <p className="mb-2 text-sm font-medium uppercase tracking-[0.18em] text-muted-foreground">Stack</p>
-              <h2 className="text-xl font-semibold">Competences techniques</h2>
+              <h2 className="text-xl font-semibold text-gradient-editorial">Competences techniques</h2>
             </div>
           </RevealSection>
           <RevealSection delay={0.1}>
@@ -337,18 +344,18 @@ export default function DemoPortfolioPage() {
       <section className="border-b bg-card">
         <div className="mx-auto max-w-3xl px-6 py-14">
           <p className="mb-2 text-sm font-medium uppercase tracking-[0.18em] text-muted-foreground">Parcours</p>
-          <h2 className="mb-10 text-xl font-semibold">Experience</h2>
+          <h2 className="mb-10 text-xl font-semibold text-gradient-editorial">Experience</h2>
           <Timeline items={experience} />
         </div>
       </section>
 
       {/* Processus */}
       <section className="border-b bg-background">
-        <div className="mx-auto max-w-6xl px-6 py-14">
+        <div className="mx-auto max-w-6xl px-6 py-20 sm:py-28">
           <RevealSection>
-            <div className="mb-8">
+            <div className="mb-10">
               <p className="mb-2 text-sm font-medium uppercase tracking-[0.18em] text-muted-foreground">Methode</p>
-              <h2 className="text-xl font-semibold">Comment je travaille</h2>
+              <h2 className="text-xl font-semibold text-gradient-editorial">Comment je travaille</h2>
             </div>
           </RevealSection>
           <RevealSection delay={0.1}>
@@ -367,12 +374,12 @@ export default function DemoPortfolioPage() {
 
       {/* Contact */}
       <section id="contact" className="border-b bg-background">
-        <div className="mx-auto max-w-6xl px-6 py-16">
+        <div className="mx-auto max-w-6xl px-6 py-20 sm:py-28">
           <div className="grid gap-12 lg:grid-cols-2 lg:items-start">
             <RevealSection>
               <div>
                 <p className="mb-2 text-sm font-medium uppercase tracking-[0.18em] text-muted-foreground">Contact</p>
-                <h2 className="text-2xl font-semibold">Parlons de votre projet.</h2>
+                <h2 className="text-2xl font-semibold text-gradient-editorial">Parlons de votre projet.</h2>
                 <p className="mt-3 text-sm text-muted-foreground">
                   Je suis disponible pour des missions freelance de 1 a 6 mois, en remote.
                   Repondez generalement sous 48 h.
@@ -393,7 +400,9 @@ export default function DemoPortfolioPage() {
               </div>
             </RevealSection>
             <RevealSection delay={0.1}>
-              <ContactForm />
+              <div className="card-glass rounded-2xl p-6">
+                <ContactForm />
+              </div>
             </RevealSection>
           </div>
         </div>
@@ -401,7 +410,7 @@ export default function DemoPortfolioPage() {
 
       <CTASection
         variant="border"
-        title="Interesse par une collaboration ?"
+        title={<span className="text-gradient-editorial">Interesse par une collaboration ?</span>}
         description="30 minutes d'echange pour cadrer votre projet — sans engagement."
         actions={
           <Button asChild size="lg">

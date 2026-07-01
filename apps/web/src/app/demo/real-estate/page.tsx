@@ -8,6 +8,7 @@ import { HeroSection } from "@/components/sections/hero-section";
 import { CTASection } from "@/components/sections/cta-section";
 import { StatsSection } from "@/components/sections/stats-section";
 import { Button } from "@/components/ui/button";
+import { ShimmerBadge } from "@/components/ui/shimmer-badge";
 import { PropertyCard, type PropertyItem } from "@/components/real-estate/property-card";
 import { MortgageCalculator } from "@/components/real-estate/mortgage-calculator";
 import { AgentProfileCard } from "@/components/real-estate/agent-profile-card";
@@ -141,7 +142,7 @@ const neighborhoods: NeighborhoodScoreCardProps[] = [
   },
 ];
 
-// ── Filtered property grid (reads URL params written by ConfigurableFilterBar) ─
+// ── Filtered property grid ────────────────────────────────────────────────────
 function PropertyGrid() {
   const searchParams = useSearchParams();
 
@@ -164,7 +165,7 @@ function PropertyGrid() {
       <div className="mx-auto max-w-6xl px-6 py-12">
         <div className="mb-8 flex items-center justify-between">
           <div>
-            <h2 className="text-2xl font-semibold">Biens disponibles</h2>
+            <h2 className="text-2xl font-semibold text-gradient-editorial">Biens disponibles</h2>
             <p className="mt-1 text-sm text-muted-foreground">
               {filtered.length} resultat{filtered.length !== 1 ? "s" : ""} — tries par score de quartier
             </p>
@@ -179,7 +180,9 @@ function PropertyGrid() {
         ) : (
           <div className="grid gap-4 sm:grid-cols-2">
             {filtered.map((p) => (
-              <PropertyCard key={p.id} property={p} />
+              <div key={p.id} className="card-glass rounded-2xl overflow-hidden">
+                <PropertyCard property={p} />
+              </div>
             ))}
           </div>
         )}
@@ -203,8 +206,8 @@ export default function DemoRealEstatePage() {
       <HeroSection
         variant="dark"
         videoSrc="/videos/themes/real-estate-bg.mp4"
-        eyebrow="Immobilier premium"
-        title="Investissez au bon endroit."
+        eyebrow={<ShimmerBadge>Immobilier premium</ShimmerBadge>}
+        title={<span className="text-gradient-editorial">Investissez au bon endroit.</span>}
         description="Biens selectionnes, scores de quartier, rendements calcules. L'immobilier rendu simple."
         actions={
           <>
@@ -217,20 +220,22 @@ export default function DemoRealEstatePage() {
           </>
         }
         media={
-          <div className="grid grid-cols-2 gap-px border border-background/10 bg-background/10">
-            {stats.map((s) => (
-              <div key={s.label} className="bg-foreground px-5 py-4">
-                <div className="text-2xl font-semibold">{s.value}</div>
-                <div className="mt-0.5 text-xs opacity-50">{s.label}</div>
-              </div>
-            ))}
+          <div className="card-gradient-border rounded-2xl p-px">
+            <div className="grid grid-cols-2 rounded-2xl overflow-hidden">
+              {stats.map((s) => (
+                <div key={s.label} className="bg-foreground px-5 py-5">
+                  <div className="text-2xl font-semibold">{s.value}</div>
+                  <div className="mt-0.5 text-xs opacity-50">{s.label}</div>
+                </div>
+              ))}
+            </div>
           </div>
         }
       />
 
       <StatsSection stats={stats} variant="strip" />
 
-      {/* Variable-driven search bar — replaces static PropertySearchBar */}
+      {/* Search bar */}
       <section className="border-b bg-background">
         <div className="mx-auto max-w-6xl px-6 py-6">
           <Suspense>
@@ -246,7 +251,9 @@ export default function DemoRealEstatePage() {
             <div className="mx-auto max-w-6xl px-6 py-12">
               <div className="grid gap-4 sm:grid-cols-2">
                 {ALL_PROPERTIES.map((p) => (
-                  <PropertyCard key={p.id} property={p} />
+                  <div key={p.id} className="card-glass rounded-2xl overflow-hidden">
+                    <PropertyCard property={p} />
+                  </div>
                 ))}
               </div>
             </div>
@@ -260,25 +267,29 @@ export default function DemoRealEstatePage() {
       <section className="border-y bg-card">
         <div className="mx-auto max-w-6xl px-6 py-14">
           <div className="mb-6">
-            <h2 className="text-xl font-semibold">Scores de quartier</h2>
+            <h2 className="text-xl font-semibold text-gradient-editorial">Scores de quartier</h2>
             <p className="mt-1 text-sm text-muted-foreground">
               Transports, commerces, ecoles, parcs et securite — notes sur 10 par secteur.
             </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {neighborhoods.map((n) => (
-              <NeighborhoodScoreCard key={n.name} {...n} />
+              <div key={n.name} className="card-glass rounded-2xl overflow-hidden">
+                <NeighborhoodScoreCard {...n} />
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* MortgageCalculator + AgentProfileCard */}
-      <section className="border-y bg-card">
+      <section className="border-b bg-background">
         <div className="mx-auto max-w-6xl px-6 py-14">
-          <h2 className="mb-8 text-xl font-semibold">Outils et conseillers</h2>
+          <h2 className="mb-8 text-xl font-semibold text-gradient-editorial">Outils et conseillers</h2>
           <div className="grid gap-6 lg:grid-cols-2">
-            <MortgageCalculator defaultPrice={425000} />
+            <div className="card-glass rounded-2xl overflow-hidden">
+              <MortgageCalculator defaultPrice={425000} />
+            </div>
 
             <div>
               <p className="mb-4 text-sm font-medium text-muted-foreground uppercase tracking-wide">
@@ -286,11 +297,12 @@ export default function DemoRealEstatePage() {
               </p>
               <div className="grid gap-3">
                 {agents.map((agent) => (
-                  <AgentProfileCard
-                    key={agent.name}
-                    agent={agent}
-                    onContact={() => {}}
-                  />
+                  <div key={agent.name} className="card-glass rounded-xl overflow-hidden">
+                    <AgentProfileCard
+                      agent={agent}
+                      onContact={() => {}}
+                    />
+                  </div>
                 ))}
               </div>
             </div>
@@ -300,7 +312,7 @@ export default function DemoRealEstatePage() {
 
       <CTASection
         variant="muted"
-        title="Planifiez une visite."
+        title={<span className="text-gradient-editorial">Planifiez une visite.</span>}
         description="Nos conseillers sont disponibles 7j/7 pour vous accompagner dans votre projet."
         actions={
           <Button asChild size="lg">

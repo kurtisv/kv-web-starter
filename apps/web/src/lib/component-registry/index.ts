@@ -8,6 +8,8 @@ export {
   getGapsForDomain,
   getRecommendedComponentsForDomain,
 } from "./recommendation-policy";
+export { AGENT_COMPONENT_RULES } from "./agent-rules";
+export type { AgentComponentRule } from "./agent-rules";
 export type {
   ComponentDomain,
   ComponentCategory,

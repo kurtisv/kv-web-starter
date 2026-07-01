@@ -11,23 +11,24 @@ function getInitials(name: string): string {
     .toUpperCase();
 }
 
+// Token-aware palette — works in light and dark modes without hardcoded color values.
 const palette = [
-  "bg-blue-500",
-  "bg-violet-500",
-  "bg-emerald-500",
-  "bg-orange-500",
-  "bg-rose-500",
-  "bg-cyan-500",
-  "bg-amber-500",
-  "bg-pink-500",
-  "bg-indigo-500",
-  "bg-teal-500",
+  "bg-primary/15 text-primary",
+  "bg-sky-500/15 text-sky-700 dark:text-sky-400",
+  "bg-violet-500/15 text-violet-700 dark:text-violet-400",
+  "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400",
+  "bg-orange-500/15 text-orange-700 dark:text-orange-400",
+  "bg-rose-500/15 text-rose-700 dark:text-rose-400",
+  "bg-cyan-500/15 text-cyan-700 dark:text-cyan-400",
+  "bg-amber-500/15 text-amber-700 dark:text-amber-400",
+  "bg-pink-500/15 text-pink-700 dark:text-pink-400",
+  "bg-indigo-500/15 text-indigo-700 dark:text-indigo-400",
 ];
 
 function colorFromName(name: string): string {
   const idx =
     name.split("").reduce((acc, c) => acc + c.charCodeAt(0), 0) % palette.length;
-  return palette[idx];
+  return palette[idx] ?? palette[0]!;
 }
 
 const sizeClasses = {
@@ -47,31 +48,27 @@ export interface AvatarProps {
 
 export function Avatar({ src, name = "", size = "md", className }: AvatarProps) {
   const initials = getInitials(name);
-  const bg = colorFromName(name || "?");
+  const colorClass = colorFromName(name || "?");
 
   return (
     <div
+      role="img"
+      aria-label={name || "Avatar"}
       className={cn(
         "relative shrink-0 overflow-hidden rounded-full",
         sizeClasses[size],
-        className
+        className,
       )}
     >
       {src ? (
-        <Image
-          src={src}
-          alt={name}
-          fill
-          className="object-cover"
-          sizes="64px"
-        />
+        <Image src={src} alt={name} fill className="object-cover" sizes="64px" />
       ) : (
         <div
           className={cn(
-            "flex h-full w-full items-center justify-center font-semibold text-white",
-            bg
+            "flex h-full w-full items-center justify-center font-semibold",
+            colorClass,
           )}
-          aria-label={name}
+          aria-hidden="true"
         >
           {initials || "?"}
         </div>
@@ -97,15 +94,16 @@ export function AvatarGroup({
   return (
     <div className={cn("flex items-center", className)}>
       {visible.map((a, i) => (
-        <div key={i} className="-ml-2 first:ml-0 ring-2 ring-background rounded-full">
+        <div key={i} className="-ml-2 rounded-full ring-2 ring-background first:ml-0">
           <Avatar {...a} size={size} />
         </div>
       ))}
       {overflow > 0 && (
         <div
+          aria-label={`${overflow} autres`}
           className={cn(
-            "-ml-2 ring-2 ring-background rounded-full flex items-center justify-center bg-muted font-medium text-muted-foreground",
-            sizeClasses[size]
+            "-ml-2 flex items-center justify-center rounded-full bg-muted font-medium text-muted-foreground ring-2 ring-background",
+            sizeClasses[size],
           )}
         >
           +{overflow}

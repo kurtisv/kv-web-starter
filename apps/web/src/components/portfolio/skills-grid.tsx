@@ -1,6 +1,5 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
 
 export interface SkillCategory {
   label: string;
@@ -22,9 +21,16 @@ export function SkillsGrid({ categories, className }: SkillsGridProps) {
           </p>
           <div className="flex flex-wrap gap-2">
             {cat.skills.map((skill) => (
-              <Badge key={skill} variant="outline">
+              <span
+                key={skill}
+                className={cn(
+                  "inline-flex items-center rounded-md border border-border px-2.5 py-0.5 text-sm",
+                  "transition-colors duration-150",
+                  "hover:border-primary hover:text-primary cursor-default",
+                )}
+              >
                 {skill}
-              </Badge>
+              </span>
             ))}
           </div>
         </div>

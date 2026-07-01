@@ -28,16 +28,16 @@ function formatDateLabel(dateStr: string) {
 
 export function BookingSummaryCard({ service, staff, date, className }: BookingSummaryCardProps) {
   return (
-    <div className={cn("border bg-muted/20 p-4 text-sm", className)}>
-      <p className="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+    <div className={cn("rounded-lg border bg-card p-5 shadow-sm text-sm", className)}>
+      <p className="mb-4 text-xs font-medium uppercase tracking-wide text-muted-foreground">
         Recapitulatif
       </p>
 
-      <div className="grid gap-2.5">
+      <div className="grid gap-3">
         {/* Service */}
-        <div className="flex items-start gap-2.5">
-          <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center bg-foreground/10">
-            <Clock3 className="h-3.5 w-3.5" />
+        <div className="flex items-start gap-3">
+          <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <Clock3 className="h-4 w-4" />
           </div>
           <div>
             <p className="font-medium">{service.name}</p>
@@ -48,20 +48,20 @@ export function BookingSummaryCard({ service, staff, date, className }: BookingS
         </div>
 
         {/* Date */}
-        <div className="flex items-start gap-2.5">
-          <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center bg-foreground/10">
-            <CalendarDays className="h-3.5 w-3.5" />
+        <div className="flex items-start gap-3">
+          <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <CalendarDays className="h-4 w-4" />
           </div>
-          <p className="capitalize">{formatDateLabel(date)}</p>
+          <p className="mt-1.5 capitalize">{formatDateLabel(date)}</p>
         </div>
 
         {/* Staff (only when multiple and named) */}
         {staff?.id && staff.name !== "Toute disponibilite" && (
-          <div className="flex items-start gap-2.5">
-            <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center bg-foreground/10">
-              <User className="h-3.5 w-3.5" />
+          <div className="flex items-start gap-3">
+            <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <User className="h-4 w-4" />
             </div>
-            <p>{staff.name}</p>
+            <p className="mt-1.5">{staff.name}</p>
           </div>
         )}
       </div>

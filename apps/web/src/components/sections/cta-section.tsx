@@ -9,7 +9,13 @@ interface CTASectionProps {
   className?: string;
 }
 
-export function CTASection({ title, description, actions, variant = "default", className }: CTASectionProps) {
+export function CTASection({
+  title,
+  description,
+  actions,
+  variant = "default",
+  className,
+}: CTASectionProps) {
   const base = "text-center";
 
   if (variant === "dark") {
@@ -26,10 +32,12 @@ export function CTASection({ title, description, actions, variant = "default", c
 
   if (variant === "muted") {
     return (
-      <section className={cn("bg-muted/40 border-y", base, className)}>
+      <section className={cn("border-y bg-muted/40", base, className)}>
         <div className="mx-auto max-w-4xl px-6 py-16 sm:py-20">
           <h2 className="text-3xl font-semibold tracking-tight">{title}</h2>
-          {description && <p className="mx-auto mt-4 max-w-xl text-muted-foreground">{description}</p>}
+          {description && (
+            <p className="mx-auto mt-4 max-w-xl text-muted-foreground">{description}</p>
+          )}
           {actions && <div className="mt-8 flex flex-wrap justify-center gap-3">{actions}</div>}
         </div>
       </section>
@@ -40,9 +48,11 @@ export function CTASection({ title, description, actions, variant = "default", c
     return (
       <section className={cn("bg-background", base, className)}>
         <div className="mx-auto max-w-6xl px-6 py-10">
-          <div className="border p-10">
+          <div className="border p-6 sm:p-10">
             <h2 className="text-3xl font-semibold tracking-tight">{title}</h2>
-            {description && <p className="mx-auto mt-4 max-w-xl text-muted-foreground">{description}</p>}
+            {description && (
+              <p className="mx-auto mt-4 max-w-xl text-muted-foreground">{description}</p>
+            )}
             {actions && <div className="mt-8 flex flex-wrap justify-center gap-3">{actions}</div>}
           </div>
         </div>
@@ -54,7 +64,9 @@ export function CTASection({ title, description, actions, variant = "default", c
     <section className={cn("bg-background", base, className)}>
       <div className="mx-auto max-w-4xl px-6 py-16 sm:py-24">
         <h2 className="text-3xl font-semibold tracking-tight">{title}</h2>
-        {description && <p className="mx-auto mt-4 max-w-xl text-muted-foreground">{description}</p>}
+        {description && (
+          <p className="mx-auto mt-4 max-w-xl text-muted-foreground">{description}</p>
+        )}
         {actions && <div className="mt-8 flex flex-wrap justify-center gap-3">{actions}</div>}
       </div>
     </section>

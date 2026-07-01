@@ -27,13 +27,15 @@ export function CheckoutSummary({
   ].filter(Boolean) as [string, number][];
 
   return (
-    <div className="grid gap-4 border bg-background p-5">
+    <div className="grid gap-4 rounded-lg border bg-card p-5 shadow-sm">
       <h3 className="text-base font-semibold">Resume de commande</h3>
       <div className="grid gap-2">
         {rows.map(([label, amount]) => (
           <div key={label} className="flex items-center justify-between text-sm">
             <span className="text-muted-foreground">{label}</span>
-            <span>{amount < 0 ? `-${formatPrice(Math.abs(amount))}` : formatPrice(amount)}</span>
+            <span className={amount < 0 ? "text-success" : undefined}>
+              {amount < 0 ? `-${formatPrice(Math.abs(amount))}` : formatPrice(amount)}
+            </span>
           </div>
         ))}
       </div>

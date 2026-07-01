@@ -26,6 +26,14 @@ export const COMPONENT_REGISTRY: ComponentCapability[] = [
     tags: ["hero", "landing", "cta", "headline"],
     visualWeight: "heavy",
     recommendedProfiles: ["premium-saas", "minimal-dashboard", "dark-technical", "creative-portfolio", "warm-local"],
+    qualityLevels: ["premium", "conversion"],
+    frontendPatterns: ["hero-trust-bar", "hero-proof-cta"],
+    requiredStates: ["default"],
+    uxNotes: [
+      "h1 heading is required — one per page",
+      "Primary CTA must be above the fold on 1024px",
+      "Pair with LogoCloud or StatsSection immediately after for conversion",
+    ],
     examples: [
       {
         label: "Basic hero",
@@ -72,6 +80,13 @@ export const COMPONENT_REGISTRY: ComponentCapability[] = [
     tags: ["features", "grid", "icons", "benefits"],
     visualWeight: "medium",
     recommendedProfiles: ["premium-saas", "dark-technical", "minimal-dashboard"],
+    qualityLevels: ["polished", "premium"],
+    frontendPatterns: ["feature-bento-metrics"],
+    requiredStates: ["default"],
+    uxNotes: [
+      "Icons must have aria-hidden — they are decorative",
+      "Keep 3-6 features to avoid cognitive overload",
+    ],
   },
   {
     id: "stats-section",
@@ -91,6 +106,13 @@ export const COMPONENT_REGISTRY: ComponentCapability[] = [
     tags: ["stats", "numbers", "counter", "animated"],
     visualWeight: "medium",
     recommendedProfiles: ["premium-saas", "dark-technical", "warm-local"],
+    qualityLevels: ["premium", "conversion"],
+    frontendPatterns: ["hero-proof-cta", "feature-bento-metrics"],
+    requiredStates: ["default"],
+    uxNotes: [
+      "Counter values must be readable without animation (SSR fallback)",
+      "Animate once on scroll into view — do not loop",
+    ],
   },
   {
     id: "pricing-section",
@@ -157,6 +179,13 @@ export const COMPONENT_REGISTRY: ComponentCapability[] = [
     maturity: "stable",
     limitations: [],
     tags: ["cta", "conversion", "action"],
+    qualityLevels: ["conversion", "polished"],
+    frontendPatterns: ["pricing-faq-guarantee", "lead-capture-contact-card"],
+    requiredStates: ["default"],
+    uxNotes: [
+      "Provide a single primary action — avoid two competing CTAs",
+      "Use at page bottom as conversion closer or between sections as upsell",
+    ],
   },
   {
     id: "logo-cloud",
@@ -221,6 +250,13 @@ export const COMPONENT_REGISTRY: ComponentCapability[] = [
     tags: ["kpi", "metric", "trend", "dashboard", "card"],
     visualWeight: "light",
     recommendedProfiles: ["minimal-dashboard", "premium-saas", "dark-technical"],
+    qualityLevels: ["dashboard", "premium"],
+    frontendPatterns: ["dashboard-metrics-activity"],
+    requiredStates: ["default"],
+    uxNotes: [
+      "Group in a 2-4 column grid for a KPI overview",
+      "Trend indicator direction must match data direction — verify sign convention",
+    ],
   },
   {
     id: "activity-feed",
@@ -235,6 +271,13 @@ export const COMPONENT_REGISTRY: ComponentCapability[] = [
     maturity: "stable",
     limitations: [],
     tags: ["activity", "feed", "timeline", "events", "dashboard"],
+    qualityLevels: ["dashboard"],
+    frontendPatterns: ["dashboard-metrics-activity"],
+    requiredStates: ["default", "empty"],
+    uxNotes: [
+      "Always render ol even when empty — put the empty message in an li",
+      "Empty text must be informative, not just blank",
+    ],
   },
   {
     id: "status-badge",
@@ -282,6 +325,13 @@ export const COMPONENT_REGISTRY: ComponentCapability[] = [
       "Variable serialize/deserialize functions must NOT cross the Next.js server/client boundary — import presets directly in client components.",
     ],
     tags: ["filter", "url-sync", "variables", "search", "reset"],
+    qualityLevels: ["dashboard", "technical"],
+    frontendPatterns: ["product-grid-filter-drawer", "real-estate-search-results"],
+    requiredStates: ["default", "empty"],
+    uxNotes: [
+      "Requires VariableProvider ancestor — never render without it",
+      "URL sync means filters survive page reload — test back/forward navigation",
+    ],
   },
   {
     id: "filter-bar",
@@ -355,6 +405,13 @@ export const COMPONENT_REGISTRY: ComponentCapability[] = [
     maturity: "stable",
     limitations: [],
     tags: ["table", "data", "empty-state", "dashboard"],
+    qualityLevels: ["dashboard", "technical"],
+    frontendPatterns: ["dashboard-metrics-activity", "api-docs-endpoint-grid"],
+    requiredStates: ["default", "empty", "loading"],
+    uxNotes: [
+      "Always provide an empty-state slot — never show a bare empty table",
+      "Use the loading prop for skeleton display during data fetch",
+    ],
   },
   {
     id: "customer-order-table",
@@ -402,6 +459,13 @@ export const COMPONENT_REGISTRY: ComponentCapability[] = [
     maturity: "stable",
     limitations: ["Requires CartProvider in ancestor layout."],
     tags: ["product", "card", "ecommerce", "grid", "list"],
+    qualityLevels: ["polished", "premium", "conversion"],
+    frontendPatterns: ["product-grid-filter-drawer"],
+    requiredStates: ["default"],
+    uxNotes: [
+      "Requires CartProvider ancestor — never render without it",
+      "Image alt text must describe the product, not just say 'product'",
+    ],
   },
   {
     id: "price-display",
@@ -512,6 +576,13 @@ export const COMPONENT_REGISTRY: ComponentCapability[] = [
     maturity: "stable",
     limitations: [],
     tags: ["service", "picker", "booking", "radio"],
+    qualityLevels: ["polished", "conversion"],
+    frontendPatterns: ["booking-flow-confirmation"],
+    requiredStates: ["default", "selected"],
+    uxNotes: [
+      "Keep options under 8 — more than that warrants a search or filter",
+      "Radio group must have visible labels accessible to screen readers",
+    ],
   },
   {
     id: "time-slot-grid",
@@ -540,6 +611,13 @@ export const COMPONENT_REGISTRY: ComponentCapability[] = [
     maturity: "stable",
     limitations: [],
     tags: ["booking", "summary", "confirmation", "card"],
+    qualityLevels: ["polished", "premium"],
+    frontendPatterns: ["booking-flow-confirmation"],
+    requiredStates: ["default"],
+    uxNotes: [
+      "Read-only — contains no form elements",
+      "Must display all confirmed details (service, staff, date, time) before submission",
+    ],
   },
 
   // ── API PORTAL ──────────────────────────────────────────────────────────────
@@ -631,6 +709,13 @@ export const COMPONENT_REGISTRY: ComponentCapability[] = [
     maturity: "stable",
     limitations: [],
     tags: ["dashboard", "layout", "sidebar", "shell"],
+    qualityLevels: ["dashboard", "technical"],
+    frontendPatterns: ["dashboard-metrics-activity"],
+    requiredStates: ["default"],
+    uxNotes: [
+      "Sidebar prop is optional — omit for full-width layouts",
+      "DashboardMobileTrigger must be in the header for mobile sidebar access",
+    ],
   },
   {
     id: "bulk-action-bar",
@@ -689,6 +774,13 @@ export const COMPONENT_REGISTRY: ComponentCapability[] = [
     maturity: "stable",
     limitations: [],
     tags: ["property", "card", "real-estate", "listing"],
+    qualityLevels: ["polished", "premium"],
+    frontendPatterns: ["real-estate-search-results"],
+    requiredStates: ["default"],
+    uxNotes: [
+      "Image alt must describe the property, not just say 'property photo'",
+      "Beds/baths/sqft specs area must use semantic markup (not just div spans)",
+    ],
   },
   {
     id: "agent-profile-card",

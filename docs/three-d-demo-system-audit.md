@@ -25,7 +25,7 @@ Le boilerplate possede deja une couche 3D non triviale sous `apps/web/src/compon
   - `scene-error-boundary.tsx` - boundary React qui swap vers `FallbackVisual`.
   - `scene-quality-provider.tsx` - contexte `{ isMobile, prefersReducedMotion, dpr, quality }`.
 - **Viewers / scenes**: `glb-scene-viewer.tsx` (GLB + Draco + boundary de chargement dedie), `smart-3d-object.tsx` (auto-selection GLB vs procedural), `product-3d-viewer.tsx`, `phone-mockup-3d.tsx`, `website-showcase-3d.tsx`, `car-3d-preview.tsx`, `portfolio-3d-visual.tsx`, `floating-model.tsx`, `particle-background.tsx`.
-- **Fallbacks procéduraux** (`3d/procedural-fallback/`): `procedural-phone.tsx`, `procedural-laptop.tsx`, `procedural-car.tsx`.
+- **Fallbacks proceduraux** (`3d/procedural-fallback/`): `procedural-phone.tsx`, `procedural-laptop.tsx`, `procedural-car.tsx`.
 - **Fallback CSS pur**: `fallback-visual.tsx` (types phone / laptop / car / abstract).
 - **Tests unitaires**: `3d-safety.test.tsx`.
 - **Compat**: `lib/three-compat.ts` (filtre console.warn des deprecations R3F/Three upstream).
@@ -82,7 +82,7 @@ Conclusion: on ne repart PAS de zero. La mission consiste a construire la couche
 
 - Aucun GLB licencie disponible pour les nouvelles demos -> geometrie procedurale Three.js/R3F exclusivement (product box premium, panneaux dashboard, formes orbitales).
 - Creer `public/models/README.md` (politique de placement, licence, budget de poids).
-- Creer `lib/three-d/asset-policy.ts` (budgets, formats, regles) et `lib/three-d/model-manifest.ts` (manifest typé incluant les GLB existants avec licence `unknown` a clarifier).
+- Creer `lib/three-d/asset-policy.ts` (budgets, formats, regles) et `lib/three-d/model-manifest.ts` (manifest type incluant les GLB existants avec licence `unknown` a clarifier).
 
 ## 10. Besoins pour tests
 

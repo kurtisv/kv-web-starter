@@ -3,7 +3,7 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Check } from "lucide-react";
 
 interface WizardStep {
   id: number;
@@ -91,7 +91,7 @@ export function WizardShell({ step, onPrev, onNext, canNext, children }: WizardS
                       )}
                       aria-hidden="true"
                     >
-                      {s.id < step ? "v" : s.id}
+                      {s.id < step ? <Check className="size-3" aria-hidden="true" /> : s.id}
                     </span>
                     {s.label}
                   </div>

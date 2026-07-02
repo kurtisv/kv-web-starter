@@ -17,7 +17,9 @@ function setup(overrides: Partial<Parameters<typeof DualRangeSlider>[0]> = {}) {
   };
   const result = render(<DualRangeSlider {...props} />);
   const sliders   = screen.getAllByRole("slider");
-  const spinners  = screen.getAllByRole("spinbutton");
+  // queryAllByRole returns [] instead of throwing when no spinbuttons exist
+  // (happens when formatValue is provided — formatted spans replace numeric inputs)
+  const spinners  = screen.queryAllByRole("spinbutton");
   return {
     ...result,
     minThumb: sliders[0],

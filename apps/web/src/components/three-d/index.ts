@@ -12,3 +12,8 @@ export * from "./floating-card-scene";
 export * from "./hotspot-marker";
 export * from "./model-placeholder";
 export * from "./performance-badge";
+export * from "./product-showroom-data";
+export * from "./product-showroom-scene";
+export * from "./product-configurator-panel";
+export * from "./product-hotspot-list";
+export * from "./product-spec-card";

@@ -245,8 +245,6 @@ test("dashboard: keyboard focus reaches a main interactive element", async ({ pa
 
 test("billing: progress bars have aria-label on usage quota card", async ({ page }) => {
   await page.goto("/demo/saas/billing");
-  const bars = page.locator('[role="progressbar"][aria-label]');
-  // Quota bars should exist on billing page (via SubscriptionStatusCard/usage)
   // At minimum there are no bars without aria-label
   const barsWithoutLabel = page.locator('[role="progressbar"]:not([aria-label])');
   const count = await barsWithoutLabel.count();

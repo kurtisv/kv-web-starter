@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { StatusBadge } from "@/components/dashboard-ui/status-badge";
 import { cn } from "@/lib/utils";
 
-export type InvoiceStatus = "paid" | "open" | "void";
+export type InvoiceStatus = "paid" | "open" | "void" | "past_due";
 
 export interface Invoice {
   id: string;
@@ -16,9 +16,10 @@ export interface Invoice {
 }
 
 const STATUS_MAP: Record<InvoiceStatus, { status: string; label: string }> = {
-  paid: { status: "active",   label: "Paye" },
-  open: { status: "pending",  label: "En attente" },
-  void: { status: "inactive", label: "Annule" },
+  paid:     { status: "active",    label: "Paye" },
+  open:     { status: "pending",   label: "En attente" },
+  void:     { status: "inactive",  label: "Annule" },
+  past_due: { status: "error",     label: "En retard" },
 };
 
 interface InvoiceListProps {

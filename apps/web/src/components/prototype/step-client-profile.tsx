@@ -6,6 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { INDUSTRIES, type Industry } from "@/lib/prototype-engine/types";
 
+const DEBOUNCE_MS = 400;
+
 interface StepClientProfileProps {
   name: string;
   tagline: string;
@@ -23,6 +25,29 @@ export function StepClientProfile({
   onTagline,
   onIndustry,
 }: StepClientProfileProps) {
+  // Local state for instant UI feedback; URL updated after DEBOUNCE_MS of inactivity.
+  const [nameValue, setNameValue] = React.useState(name);
+  const [taglineValue, setTaglineValue] = React.useState(tagline);
+
+  // Stable refs for the parent callbacks so debounce effects don't re-fire on re-renders.
+  const onNameRef = React.useRef(onName);
+  const onTaglineRef = React.useRef(onTagline);
+  React.useEffect(() => { onNameRef.current = onName; });
+  React.useEffect(() => { onTaglineRef.current = onTagline; });
+
+  // Debounced URL writes — fire only after the user pauses typing.
+  // No sync-from-URL effects needed: this component unmounts when step != 1,
+  // so useState(name) reinitialises from the URL value on each remount.
+  React.useEffect(() => {
+    const t = setTimeout(() => { onNameRef.current(nameValue); }, DEBOUNCE_MS);
+    return () => clearTimeout(t);
+  }, [nameValue]);
+
+  React.useEffect(() => {
+    const t = setTimeout(() => { onTaglineRef.current(taglineValue); }, DEBOUNCE_MS);
+    return () => clearTimeout(t);
+  }, [taglineValue]);
+
   return (
     <div className="space-y-8">
       <div>
@@ -36,12 +61,12 @@ export function StepClientProfile({
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-1.5">
           <Label htmlFor="client-name">
-            Nom du client / projet <span className="text-destructive">*</span>
+            Nom du client / projet <span className="text-destructive" aria-hidden="true">*</span>
           </Label>
           <Input
             id="client-name"
-            value={name}
-            onChange={(e) => onName(e.target.value)}
+            value={nameValue}
+            onChange={(e) => setNameValue(e.target.value)}
             placeholder="MonEntreprise"
             className="h-11"
             autoComplete="off"
@@ -51,8 +76,8 @@ export function StepClientProfile({
           <Label htmlFor="client-tagline">Accroche (tagline)</Label>
           <Input
             id="client-tagline"
-            value={tagline}
-            onChange={(e) => onTagline(e.target.value)}
+            value={taglineValue}
+            onChange={(e) => setTaglineValue(e.target.value)}
             placeholder="Le service qui change votre quotidien."
             className="h-11"
             autoComplete="off"
@@ -63,7 +88,7 @@ export function StepClientProfile({
       {/* Industry picker */}
       <div className="space-y-3">
         <Label>
-          Secteur d&apos;activite <span className="text-destructive">*</span>
+          Secteur d&apos;activite <span className="text-destructive" aria-hidden="true">*</span>
         </Label>
         <div className="grid gap-2.5 sm:grid-cols-3">
           {INDUSTRIES.map((ind) => (
@@ -85,8 +110,8 @@ export function StepClientProfile({
         </div>
       </div>
 
-      {!name.trim() && (
-        <p className="text-xs text-muted-foreground">
+      {!nameValue.trim() && (
+        <p className="text-xs text-muted-foreground" role="status">
           Renseignez un nom pour continuer.
         </p>
       )}

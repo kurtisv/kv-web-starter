@@ -15,9 +15,11 @@ import {
   getDefaultTagline,
 } from "@/lib/prototype-engine/recommend-preset";
 import { generateManifest } from "@/lib/prototype-engine/generate-manifest";
+import { DESIGN_PROFILE_IDS } from "@/design-system/design-profiles";
 
 const DEFAULT_INDUSTRY: Industry = "saas";
 const DEFAULT_COLOR = "#6366f1";
+const HEX_RE = /^#[0-9a-fA-F]{6}$/;
 const MAX_STEP = 4;
 
 function clampStep(n: number): number {
@@ -29,6 +31,16 @@ function safeIndustry(raw: string | null): Industry {
   return DEFAULT_INDUSTRY;
 }
 
+function safeProfile(raw: string | null, fallback: string): string {
+  if (raw && (DESIGN_PROFILE_IDS as string[]).includes(raw)) return raw;
+  return fallback;
+}
+
+function safeColor(raw: string | null): string {
+  if (raw && HEX_RE.test(raw)) return raw;
+  return DEFAULT_COLOR;
+}
+
 export function WizardClient() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -37,8 +49,8 @@ export function WizardClient() {
   const step = clampStep(Number(searchParams.get("step") ?? "1"));
   const industry = safeIndustry(searchParams.get("industry"));
   const name = searchParams.get("name") ?? "";
-  const color = searchParams.get("color") ?? DEFAULT_COLOR;
-  const profile = searchParams.get("profile") ?? recommendProfile(industry);
+  const color = safeColor(searchParams.get("color"));
+  const profile = safeProfile(searchParams.get("profile"), recommendProfile(industry));
   const mode = searchParams.get("mode") === "dark" ? "dark" : ("light" as const);
   const featuresRaw = searchParams.get("features");
   const selectedFeatures: string[] = featuresRaw
@@ -88,7 +100,7 @@ export function WizardClient() {
     step === 1
       ? name.trim().length > 0 && !!industry
       : step === 2
-      ? /^#[0-9a-fA-F]{6}$/.test(color) && !!profile
+      ? HEX_RE.test(color) && !!profile
       : step === 3
       ? selectedFeatures.length > 0
       : false;
@@ -97,7 +109,7 @@ export function WizardClient() {
     name: name.trim() || "MonEntreprise",
     tagline: tagline || (INDUSTRY_META[industry]?.defaultTagline ?? ""),
     industry,
-    primaryColor: /^#[0-9a-fA-F]{6}$/.test(color) ? color : DEFAULT_COLOR,
+    primaryColor: color,
     designProfile: profile,
     mode,
     selectedFeatures,

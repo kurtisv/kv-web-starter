@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft, LayoutGrid, Palette, Layers } from "lucide-react";
+import { ArrowLeft, LayoutGrid, Palette, Layers, Wand2 } from "lucide-react";
 
 export default function DemoLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -41,6 +41,13 @@ export default function DemoLayout({ children }: { children: React.ReactNode }) 
               <Layers className="h-3 w-3" />
               Composants
             </Link>
+            <Link
+              href="/prototype"
+              className="hidden sm:flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <Wand2 className="h-3 w-3" />
+              Prototype
+            </Link>
           </nav>
 
           {/* Demo badge — right-aligned */}
@@ -70,6 +77,9 @@ export default function DemoLayout({ children }: { children: React.ReactNode }) 
               </Link>
               <Link href="/demo/components" className="hover:text-foreground transition-colors">
                 Composants
+              </Link>
+              <Link href="/prototype" className="hover:text-foreground transition-colors">
+                Prototype Engine
               </Link>
               <Link href="/showcase/component-ui-polish" className="hover:text-foreground transition-colors">
                 Showcase

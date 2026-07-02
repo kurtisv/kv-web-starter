@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Layers, Rocket, Sparkles, Palette } from "lucide-react";
+import { ArrowRight, Layers, Rocket, Sparkles, Palette, Wand2 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -256,6 +256,23 @@ export default function DemoIndexPage() {
               </p>
               <div className="mt-4 flex items-center gap-1 text-sm font-medium text-primary">
                 Explorer les profils
+                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+              </div>
+            </div>
+          </Link>
+
+          {/* Prototype Engine card */}
+          <Link href="/prototype" className="group block">
+            <div className="flex h-full flex-col rounded-xl border border-dashed bg-card/50 p-6 shadow-sm transition-shadow hover:shadow-md">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <Wand2 className="h-6 w-6" />
+              </div>
+              <h3 className="text-base font-semibold">Prototype Engine</h3>
+              <p className="mt-2 text-sm text-muted-foreground flex-1">
+                Generez un prototype client en 4 etapes : secteur, couleur, profil design, fonctionnalites. Export JSON inclus.
+              </p>
+              <div className="mt-4 flex items-center gap-1 text-sm font-medium text-primary">
+                Generer un prototype
                 <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
               </div>
             </div>

@@ -7,7 +7,7 @@ import { StepClientProfile } from "@/components/prototype/step-client-profile";
 import { StepVisualIdentity } from "@/components/prototype/step-visual-identity";
 import { StepFeatures } from "@/components/prototype/step-features";
 import { StepPreview } from "@/components/prototype/step-preview";
-import { type Industry, isIndustry } from "@/lib/prototype-engine/types";
+import { type Industry } from "@/lib/prototype-engine/types";
 import { INDUSTRY_META } from "@/lib/prototype-engine/presets-map";
 import {
   recommendProfile,
@@ -15,50 +15,36 @@ import {
   getDefaultTagline,
 } from "@/lib/prototype-engine/recommend-preset";
 import { generateManifest } from "@/lib/prototype-engine/generate-manifest";
-import { DESIGN_PROFILE_IDS } from "@/design-system/design-profiles";
+import {
+  safeStep,
+  safeIndustry,
+  safeColor,
+  safeProfile,
+  safeMode,
+  safeText,
+  safeFeatures,
+} from "@/lib/prototype-engine/url-state";
 
-const DEFAULT_INDUSTRY: Industry = "saas";
-const DEFAULT_COLOR = "#6366f1";
 const HEX_RE = /^#[0-9a-fA-F]{6}$/;
-const MAX_STEP = 4;
-
-function clampStep(n: number): number {
-  return Math.max(1, Math.min(MAX_STEP, Number.isFinite(n) ? n : 1));
-}
-
-function safeIndustry(raw: string | null): Industry {
-  if (raw && isIndustry(raw)) return raw;
-  return DEFAULT_INDUSTRY;
-}
-
-function safeProfile(raw: string | null, fallback: string): string {
-  if (raw && (DESIGN_PROFILE_IDS as string[]).includes(raw)) return raw;
-  return fallback;
-}
-
-function safeColor(raw: string | null): string {
-  if (raw && HEX_RE.test(raw)) return raw;
-  return DEFAULT_COLOR;
-}
 
 export function WizardClient() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
 
-  const step = clampStep(Number(searchParams.get("step") ?? "1"));
-  const industry = safeIndustry(searchParams.get("industry"));
-  const name = searchParams.get("name") ?? "";
-  const color = safeColor(searchParams.get("color"));
-  const profile = safeProfile(searchParams.get("profile"), recommendProfile(industry));
-  const mode = searchParams.get("mode") === "dark" ? "dark" : ("light" as const);
-  const featuresRaw = searchParams.get("features");
-  const selectedFeatures: string[] = featuresRaw
-    ? featuresRaw.split(",").filter(Boolean)
-    : getDefaultFeatures(industry);
-  const tagline = searchParams.get("tagline") ?? getDefaultTagline(industry);
+  // Stable timestamp — lazy useState initializer runs once on mount, never on re-render.
+  // useState is safe to read during render; useRef.current is not (react-hooks/refs rule).
+  const [generatedAt] = React.useState(() => new Date().toISOString());
 
-  // Merge updates into current URL params and push
+  const step = safeStep(searchParams.get("step"));
+  const industry = safeIndustry(searchParams.get("industry"));
+  const name = safeText(searchParams.get("name"));
+  const color = safeColor(searchParams.get("color"));
+  const profile = safeProfile(searchParams.get("profile"), industry);
+  const mode = safeMode(searchParams.get("mode"));
+  const selectedFeatures = safeFeatures(searchParams.get("features"), industry);
+  const tagline = safeText(searchParams.get("tagline"), getDefaultTagline(industry));
+
   function update(updates: Record<string, string>) {
     const params = new URLSearchParams(searchParams.toString());
     for (const [k, v] of Object.entries(updates)) {
@@ -81,7 +67,7 @@ export function WizardClient() {
   }
 
   function handleStep(next: number) {
-    const clamped = clampStep(next);
+    const clamped = safeStep(String(next));
     const extras: Record<string, string> = { step: String(clamped) };
     if (clamped === 3 && selectedFeatures.length === 0) {
       extras.features = getDefaultFeatures(industry).join(",");
@@ -113,6 +99,7 @@ export function WizardClient() {
     designProfile: profile,
     mode,
     selectedFeatures,
+    generatedAt,
   });
 
   return (

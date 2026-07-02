@@ -1,5 +1,14 @@
 import type { Industry } from "./types";
 
+/** Optional 3D experience suggestion for an industry.
+ * Additive metadata: nothing in the engine requires it, so existing
+ * manifests and presets are untouched. */
+export interface IndustryThreeDRecommendation {
+  /** Which /demo/3d/* pattern fits this industry. */
+  demo: "product-showroom" | "immersive-landing";
+  reason: string;
+}
+
 export interface IndustryMeta {
   label: string;
   demoSlug: string;
@@ -8,6 +17,7 @@ export interface IndustryMeta {
   optionalFeatures: string[];
   defaultTagline: string;
   stats: { value: string; label: string }[];
+  threeD?: IndustryThreeDRecommendation;
 }
 
 export const INDUSTRY_META: Record<Industry, IndustryMeta> = {
@@ -29,6 +39,10 @@ export const INDUSTRY_META: Record<Industry, IndustryMeta> = {
       { value: "200ms", label: "Latence" },
       { value: "4.9/5", label: "Note" },
     ],
+    threeD: {
+      demo: "immersive-landing",
+      reason: "Hero 3D avec cards dashboard en profondeur: credibilite produit immediate (voir /demo/3d/immersive-landing).",
+    },
   },
   booking: {
     label: "Reservation / RDV",
@@ -65,6 +79,10 @@ export const INDUSTRY_META: Record<Industry, IndustryMeta> = {
       { value: "98%", label: "Satisfaction" },
       { value: "24h", label: "Livraison" },
     ],
+    threeD: {
+      demo: "product-showroom",
+      reason: "Viewer produit 360 avec configurateur couleur/matiere et hotspots (voir /demo/3d/product-showroom).",
+    },
   },
   "real-estate": {
     label: "Immobilier",
@@ -83,6 +101,10 @@ export const INDUSTRY_META: Record<Industry, IndustryMeta> = {
       { value: "150+", label: "Agents" },
       { value: "98%", label: "Satisfaction" },
     ],
+    threeD: {
+      demo: "product-showroom",
+      reason: "Le pattern viewer + hotspots s'adapte a un modele de batiment avec pieces cliquables.",
+    },
   },
   api: {
     label: "API / Dev Tools",
@@ -137,6 +159,10 @@ export const INDUSTRY_META: Record<Industry, IndustryMeta> = {
       { value: "5 ans", label: "Experience" },
       { value: "100%", label: "Clients satisfaits" },
     ],
+    threeD: {
+      demo: "immersive-landing",
+      reason: "Scene immersive scroll-reactive: identite visuelle forte pour une agence ou un portfolio.",
+    },
   },
   "local-business": {
     label: "Commerce local",

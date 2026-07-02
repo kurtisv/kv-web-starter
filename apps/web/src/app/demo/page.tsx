@@ -148,10 +148,26 @@ const DEMOS: DemoCardData[] = [
     keyComponents: ["HeroSection", "FeatureGrid", "StatsSection", "ArticleGrid", "CTASection"],
     integrations: ["Sanity CMS", "Stripe"],
   },
+  {
+    slug: "3d",
+    label: "Experiences 3D",
+    type: "Showroom produit et landing immersive",
+    tagline: "Deux demos 3D procedurales: showroom produit avec configurateur et hotspots, landing immersive scroll-reactive. Fallbacks WebGL, mobile et reduced motion inclus.",
+    result: "Ajoutez une dimension premium a vos produits et landings.",
+    accent: "#0d9488",
+    bg: "#0b1020",
+    fg: "#f8fafc",
+    heroFrom: "#042f2e",
+    dark: true,
+    layout: "standard",
+    complexity: "Advanced",
+    keyComponents: ["ThreeDCanvas", "OrbitProductViewer", "HotspotMarker", "FloatingCardScene", "ScrollSceneSection"],
+    integrations: [],
+  },
 ];
 
 const STATS = [
-  { value: "9", label: "demos preset" },
+  { value: "10", label: "demos preset" },
   { value: "60+", label: "composants UI" },
   { value: "5", label: "adapters cloud" },
   { value: "0", label: "cles requises" },
@@ -167,6 +183,7 @@ const USE_CASES = [
   { icon: "Local", label: "Commerce local", description: "Horaires, services, contact" },
   { icon: "Folio", label: "Portfolio creatif", description: "Projets, skills, contact" },
   { icon: "Mag", label: "Magazine / blog", description: "Articles, fiches, comparatifs" },
+  { icon: "3D", label: "Experience 3D", description: "Showroom produit, landing immersive" },
 ];
 
 export default function DemoIndexPage() {

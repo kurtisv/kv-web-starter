@@ -1,156 +1,245 @@
-"use client";
-
 import Link from "next/link";
-import { ArrowRight, BarChart2, Lock, Zap, Globe, Clock, Shield } from "lucide-react";
+import {
+  ArrowRight,
+  BarChart2,
+  Bell,
+  CheckCircle2,
+  Globe,
+  Lock,
+  Shield,
+  TrendingDown,
+  Users,
+  Zap,
+} from "lucide-react";
 import { HeroSection } from "@/components/sections/hero-section";
 import { PricingSection } from "@/components/sections/pricing-section";
 import { StatsSection } from "@/components/sections/stats-section";
 import { CTASection } from "@/components/sections/cta-section";
-import { Button } from "@/components/ui/button";
-import { MetricCard, MetricGrid } from "@/components/dashboard-ui/metric-card";
-import { SubscriptionStatusCard } from "@/components/saas/subscription-status-card";
-import { UsageQuotaCard } from "@/components/saas/usage-quota-card";
-import { PlanComparisonTable } from "@/components/saas/plan-comparison-table";
-import type { PlanFeature } from "@/components/saas/plan-comparison-table";
-import { InvoiceList, type Invoice } from "@/components/saas/invoice-list";
 import { TestimonialSection } from "@/components/sections/testimonial-section";
+import { FAQSection } from "@/components/sections/faq-section";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { MetricCard, MetricGrid } from "@/components/dashboard-ui/metric-card";
 import { SpotlightCard } from "@/components/ui/spotlight-card";
 import { ShimmerBadge } from "@/components/ui/shimmer-badge";
-import { SaasDemoActions } from "./saas-demo-actions";
+import { SaasDemoNav } from "@/components/saas/saas-demo-nav";
+import { IntegrationStatusList } from "@/components/saas/integration-status-list";
+import {
+  DEMO_METRICS,
+  DEMO_PLANS,
+  DEMO_STATS,
+  DEMO_TESTIMONIALS,
+  DEMO_FAQ,
+  DEMO_PRODUCT,
+} from "@/lib/demo-data/saas-demo-data";
 
-const features = [
-  { icon: <Zap className="h-5 w-5" />,     title: "Ultra rapide",        description: "Traitement en moins de 200ms. Cache intelligent sur toutes les requetes." },
-  { icon: <Lock className="h-5 w-5" />,     title: "Securite enterprise",  description: "SOC2, chiffrement AES-256, audit logs complets et SSO disponible." },
-  { icon: <BarChart2 className="h-5 w-5" />, title: "Analytics integre",  description: "Tableaux de bord en temps reel. Export CSV/JSON a tout moment." },
-  { icon: <Globe className="h-5 w-5" />,    title: "Multi-region",        description: "Deploy dans 12 regions. Failover automatique sous 30 secondes." },
-  { icon: <Clock className="h-5 w-5" />,    title: "99.99% uptime",       description: "SLA garanti. Incidents publics en temps reel sur status.votresaas.com." },
-  { icon: <Shield className="h-5 w-5" />,   title: "RGPD ready",          description: "Hebergement EU, DPA disponible, droit a l'oubli automatise." },
-];
+// ── Feature bento items ───────────────────────────────────────────────────────
 
-const plans = [
+const FEATURE_BENTO = [
   {
-    name: "Starter",
-    price: "0€",
-    period: "/mois",
-    description: "Parfait pour tester.",
-    features: ["5 000 requetes/mois", "1 utilisateur", "Support communaute", "API REST"],
-    cta: "Commencer",
-    ctaHref: "/login",
+    icon: <TrendingDown className="h-5 w-5" />,
+    title: "Churn signals",
+    description: "Detectez les clients a risque avant qu'ils ne resilient. Scores automatiques bases sur l'usage.",
+    highlight: true,
   },
   {
-    name: "Pro",
-    price: "49€",
-    period: "/mois",
-    description: "Pour les equipes en croissance.",
-    features: ["100 000 requetes/mois", "10 utilisateurs", "Support prioritaire", "API REST + Webhooks", "Analytics avances"],
-    cta: "Essai 14 jours",
-    ctaHref: "/login",
-    featured: true,
-    badge: "Populaire",
+    icon: <BarChart2 className="h-5 w-5" />,
+    title: "Revenue analytics",
+    description: "MRR, ARR, activation, ARPU — en temps reel dans un seul dashboard.",
   },
   {
-    name: "Enterprise",
-    price: "Sur mesure",
-    description: "Pour les grandes organisations.",
-    features: ["requetes illimitees", "Utilisateurs illimites", "SLA garanti", "Support dedie 24/7", "SSO + SAML", "Audit logs"],
-    cta: "Nous contacter",
-    ctaHref: "/contact",
+    icon: <Zap className="h-5 w-5" />,
+    title: "Usage-based billing",
+    description: "Quotas, metering, overages et alertes configures en quelques minutes.",
+  },
+  {
+    icon: <Bell className="h-5 w-5" />,
+    title: "Alertes intelligentes",
+    description: "Slack, email, webhook — notifie votre equipe au bon moment sur les bons evenements.",
+  },
+  {
+    icon: <Users className="h-5 w-5" />,
+    title: "Team workspace",
+    description: "Roles (admin/membre/lecteur), invitations, SSO et SCIM pour les equipes enterprise.",
+  },
+  {
+    icon: <Globe className="h-5 w-5" />,
+    title: "Integrations",
+    description: "Stripe, HubSpot, Slack, GitHub, Segment et plus. Connectez votre stack existant.",
+  },
+  {
+    icon: <Lock className="h-5 w-5" />,
+    title: "Security & audit",
+    description: "Journal d'audit complet, cles API, SSO/SAML, chiffrement AES-256.",
+  },
+  {
+    icon: <Shield className="h-5 w-5" />,
+    title: "Compliance readiness",
+    description: "Hebergement EU, DPA inclus, RGPD, checklist SOC2-ready. Non certifie — preparation fournie.",
+  },
+  {
+    icon: <CheckCircle2 className="h-5 w-5" />,
+    title: "Customer portal",
+    description: "Vos clients gerent eux-memes leur abonnement, factures et moyens de paiement.",
   },
 ];
 
-const stats = [
-  { value: "12k+",   label: "Clients actifs" },
-  { value: "99.99%", label: "Uptime SLA" },
-  { value: "180ms",  label: "Latence moyenne" },
-  { value: "4.9/5",  label: "Note clients" },
+// ── Workflow steps ─────────────────────────────────────────────────────────────
+
+const WORKFLOW_STEPS = [
+  { step: "01", title: "Connectez votre stack",  body: "Branchez Stripe, votre CRM et vos outils en moins de 10 minutes. Pas de dev requis." },
+  { step: "02", title: "Importez vos clients",   body: "Synchronisation automatique depuis Stripe ou CSV. LaunchPilot construit votre vue client en temps reel." },
+  { step: "03", title: "Recevez vos signaux",    body: "Alertes churn, quotas critiques, paiements echoues — tout remonte dans votre dashboard et vos canaux." },
+  { step: "04", title: "Scalez en confiance",    body: "Passez de 50 a 50 000 clients sans changer d'outils. Architecture pensee pour la croissance." },
 ];
 
-const comparisonFeatures: PlanFeature[] = [
-  { label: "Requetes/mois",      starter: "5 000",     pro: "100 000",   enterprise: "Illimite" },
-  { label: "Utilisateurs",       starter: "1",         pro: "10",        enterprise: "Illimite" },
-  { label: "API REST",           starter: true,        pro: true,        enterprise: true },
-  { label: "Webhooks",           starter: false,       pro: true,        enterprise: true },
-  { label: "Analytics avances",  starter: false,       pro: true,        enterprise: true },
-  { label: "Support prioritaire",starter: false,       pro: true,        enterprise: true },
-  { label: "SSO / SAML",        starter: false,       pro: false,       enterprise: true },
-  { label: "SLA garanti",        starter: false,       pro: false,       enterprise: true },
-  { label: "Audit logs",         starter: false,       pro: false,       enterprise: true },
-];
+// ── Pricing adapter ───────────────────────────────────────────────────────────
 
-const quotaItems = [
-  { label: "Requetes API",      used: 78420,  limit: 100000 },
-  { label: "Utilisateurs actifs", used: 7,    limit: 10 },
-  { label: "Stockage",          used: 3200,   limit: 5000, unit: " Mo" },
-  { label: "Webhooks envoyes",  used: 12400,  limit: 50000 },
-];
+const pricingPlans = DEMO_PLANS.map((p) => ({
+  name:        p.name,
+  price:       p.price,
+  period:      p.period,
+  description: p.description,
+  features:    p.features,
+  cta:         p.cta,
+  ctaHref:     p.ctaHref,
+  featured:    p.recommended,
+  badge:       p.badge,
+}));
 
-const invoices: Invoice[] = [
-  { id: "inv-1", number: "INV-2026-047", date: "1 juin 2026",  amountCents: 4900, status: "paid",  plan: "Pro" },
-  { id: "inv-2", number: "INV-2026-031", date: "1 mai 2026",   amountCents: 4900, status: "paid",  plan: "Pro" },
-  { id: "inv-3", number: "INV-2026-018", date: "1 avr. 2026",  amountCents: 4900, status: "paid",  plan: "Pro" },
-  { id: "inv-4", number: "INV-2026-004", date: "1 mars 2026",  amountCents: 4900, status: "void",  plan: "Pro" },
-];
+// ── FAQ adapter ───────────────────────────────────────────────────────────────
 
-const saasTestimonials = [
-  { quote: "On a deploye en 3 jours. Le dashboard et le billing etaient deja la.", author: "Julie M.", role: "CTO, Startup B2B" },
-  { quote: "Le boilerplate nous a economise 2 mois de dev sur la gestion des abonnements.", author: "Marc D.", role: "Fondateur, SaaS RH" },
-  { quote: "API, quotas, upgrade modal — tout est inclus et fonctionnel. Impressionnant.", author: "Sara K.", role: "Lead Dev, Agence" },
-];
+const faqItems = DEMO_FAQ.map((f) => ({ question: f.q, answer: f.a }));
+
+// ── Page ─────────────────────────────────────────────────────────────────────
 
 export default function DemoSaaSPage() {
   return (
     <div data-theme="premium-saas" className="bg-profile-soft-gradient">
+      <SaasDemoNav />
+
+      {/* 1. Hero */}
       <HeroSection
         variant="centered"
-        eyebrow={<ShimmerBadge>Nouveau — V3 disponible</ShimmerBadge>}
-        title={<>La plateforme qui <span className="text-gradient-primary">simplifie</span> votre workflow.</>}
-        description="Gagnez 10h/semaine. Integrez en 5 minutes. Sans carte de credit pour commencer."
+        eyebrow={<ShimmerBadge>LaunchPilot — Cockpit SaaS B2B</ShimmerBadge>}
+        title={
+          <>
+            Suivez votre croissance.{" "}
+            <span className="text-gradient-primary">Anticipez le churn.</span>
+          </>
+        }
+        description={DEMO_PRODUCT.description}
         actions={
           <>
             <Button size="xl" variant="default" asChild>
-              <Link href="/login">Essai gratuit 14 jours <ArrowRight className="size-4" /></Link>
+              <Link href="/demo/saas/dashboard">
+                Voir le dashboard <ArrowRight className="size-4" />
+              </Link>
             </Button>
             <Button size="xl" variant="soft" asChild>
-              <Link href="/demo">Voir la demo</Link>
+              <Link href="/demo/saas/billing">Voir la facturation</Link>
             </Button>
           </>
         }
         trustBar={
           <div className="flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm text-muted-foreground">
-            <span className="flex items-center gap-1.5"><span className="font-semibold text-foreground">12 000+</span> equipes actives</span>
-            <span className="flex items-center gap-1.5"><span className="font-semibold text-foreground">99.99%</span> uptime SLA</span>
-            <span className="flex items-center gap-1.5"><span className="font-semibold text-foreground">180ms</span> latence moyenne</span>
-            <span className="flex items-center gap-1.5"><span className="font-semibold text-foreground">4.9/5</span> note clients</span>
+            <span className="flex items-center gap-1.5">
+              <span className="font-semibold text-foreground">3 400+</span> equipes actives
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="font-semibold text-foreground">47 M €</span> de MRR suivi
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="font-semibold text-foreground">99.98%</span> uptime SLA
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="font-semibold text-foreground">4.8/5</span> note clients
+            </span>
           </div>
         }
         media={
-          <div className="rounded-xl p-6 text-left card-glass">
+          <div className="rounded-xl p-5 text-left card-glass">
             <p className="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-              Apercu dashboard
+              Apercu dashboard — {DEMO_PRODUCT.workspace}
             </p>
-            <MetricGrid>
-              <MetricCard label="MRR"               value="24 890 €"  trend={{ value: "+12% ce mois",      direction: "up" }} />
-              <MetricCard label="Utilisateurs actifs" value="1 247"  trend={{ value: "+8% cette semaine",  direction: "up" }} />
-              <MetricCard label="Churn rate"         value="1.2%"    trend={{ value: "-0.3%",              direction: "down" }} />
-              <MetricCard label="Uptime"             value="99.99%"  trend={{ value: "Stable",             direction: "neutral" }} />
+            <MetricGrid className="grid-cols-2">
+              <MetricCard
+                label="MRR"
+                value={DEMO_METRICS.mrr.value}
+                trend={{ value: DEMO_METRICS.mrr.trend + " ce mois", direction: DEMO_METRICS.mrr.direction }}
+              />
+              <MetricCard
+                label="Churn rate"
+                value={DEMO_METRICS.churnRate.value}
+                trend={{ value: DEMO_METRICS.churnRate.trend, direction: DEMO_METRICS.churnRate.direction }}
+              />
+              <MetricCard
+                label="Activation"
+                value={DEMO_METRICS.activationRate.value}
+                trend={{ value: DEMO_METRICS.activationRate.trend, direction: DEMO_METRICS.activationRate.direction }}
+              />
+              <MetricCard
+                label="NPS"
+                value={DEMO_METRICS.nps.value}
+                trend={{ value: "+" + DEMO_METRICS.nps.trend, direction: DEMO_METRICS.nps.direction }}
+              />
             </MetricGrid>
+            <p className="mt-3 text-center text-[10px] text-muted-foreground">
+              {DEMO_PRODUCT.demoDisclaimer}
+            </p>
           </div>
         }
       />
 
-      <StatsSection stats={stats} variant="strip" />
+      {/* 2. Stats */}
+      <StatsSection stats={DEMO_STATS} variant="strip" />
 
-      {/* Feature section with SpotlightCard — premium interactive hover effect */}
+      {/* 3. Problem / Solution */}
+      <section className="border-y bg-muted/30">
+        <div className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
+          <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+            <div>
+              <Badge variant="outline" className="mb-4">Le probleme</Badge>
+              <h2 className="mb-4 text-2xl font-bold tracking-tight sm:text-3xl">
+                Votre MRR monte. Votre churn aussi.
+              </h2>
+              <p className="text-muted-foreground">
+                La plupart des equipes SaaS deccouvrent le churn dans leur export Stripe du mois dernier.
+                Trop tard pour agir. LaunchPilot inverse cet avantage en detectant les signaux faibles
+                avant que vos clients ne resilient.
+              </p>
+            </div>
+            <div>
+              <Badge variant="outline" className="mb-4">La solution</Badge>
+              <h2 className="mb-4 text-2xl font-bold tracking-tight sm:text-3xl">
+                Un cockpit. Tous vos signaux.
+              </h2>
+              <p className="text-muted-foreground">
+                LaunchPilot connecte votre billing, votre usage produit et votre CRM pour vous donner
+                une vue unifiee de la sante de chaque client — avec des alertes actionnables, pas juste des graphiques.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. Feature bento */}
       <section className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
         <p className="mb-2 text-sm font-medium uppercase tracking-widest text-muted-foreground">
           Fonctionnalites
         </p>
         <h2 className="mb-10 text-3xl font-bold tracking-tight sm:text-4xl">
-          Tout ce dont vous avez besoin.
+          Tout ce dont une equipe SaaS B2B a besoin.
         </h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {features.map((f) => (
-            <SpotlightCard key={f.title} className="flex flex-col gap-3 p-6 rounded-xl">
+          {FEATURE_BENTO.map((f) => (
+            <SpotlightCard
+              key={f.title}
+              className={
+                "flex flex-col gap-3 rounded-xl p-6 " +
+                (f.highlight ? "border-primary/30 bg-primary/5" : "")
+              }
+            >
               <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
                 {f.icon}
               </div>
@@ -161,79 +250,168 @@ export default function DemoSaaSPage() {
         </div>
       </section>
 
-      {/* Subscription + Usage components */}
-      <section className="border-y bg-card">
-        <div className="mx-auto max-w-6xl px-6 py-16">
-          <h2 className="mb-2 text-2xl font-semibold">Composants SaaS inclus</h2>
-          <p className="mb-10 max-w-xl text-sm text-muted-foreground">
-            Gestion d&apos;abonnement, quotas d&apos;usage et comparatif de plans — prets a brancher sur votre backend.
+      {/* 5. Workflow */}
+      <section className="border-t bg-muted/20">
+        <div className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
+          <p className="mb-2 text-sm font-medium uppercase tracking-widest text-muted-foreground">
+            Workflow
           </p>
-
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 mb-10">
-            <SubscriptionStatusCard
-              plan="Pro"
-              status="active"
-              renewalDate="15 juillet 2026"
-              onUpgrade={() => {}}
-              onCancel={() => {}}
-            />
-            <SubscriptionStatusCard
-              plan="Starter"
-              status="trialing"
-              trialEndsAt="30 juin 2026"
-              onUpgrade={() => {}}
-            />
-            <SubscriptionStatusCard
-              plan="Pro"
-              status="past_due"
-              onUpgrade={() => {}}
-              onCancel={() => {}}
-            />
-          </div>
-
-          <div className="grid gap-6 lg:grid-cols-2">
-            <div className="min-w-0">
-              <p className="mb-3 text-sm font-medium">UsageQuotaCard</p>
-              <UsageQuotaCard items={quotaItems} />
-            </div>
-            <div className="min-w-0">
-              <p className="mb-3 text-sm font-medium">PlanComparisonTable</p>
-              <PlanComparisonTable
-                features={comparisonFeatures}
-                onSelect={() => {}}
-              />
-            </div>
-          </div>
-
-          {/* Billing + Actions */}
-          <div className="mt-10 grid gap-6 lg:grid-cols-2 border-t pt-10">
-            <div>
-              <p className="mb-3 text-sm font-medium">InvoiceList</p>
-              <InvoiceList invoices={invoices} />
-            </div>
-            <div>
-              <p className="mb-3 text-sm font-medium">UpgradeModal + CancelSubscriptionDialog</p>
-              <p className="mb-4 text-xs text-muted-foreground">
-                Modal de selection de plan avec paiement mock. Dialog de resiliation avec raison.
-                Aucune cle Stripe requise en demo mode.
-              </p>
-              <SaasDemoActions />
-            </div>
+          <h2 className="mb-12 text-3xl font-bold tracking-tight sm:text-4xl">
+            Operationnel en une heure.
+          </h2>
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            {WORKFLOW_STEPS.map((s) => (
+              <div key={s.step} className="flex flex-col gap-3">
+                <span className="text-4xl font-black text-primary/20">{s.step}</span>
+                <h3 className="font-semibold">{s.title}</h3>
+                <p className="text-sm text-muted-foreground">{s.body}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      <TestimonialSection eyebrow="Ils l&apos;ont lance avec ce boilerplate" title="Des equipes qui livrent plus vite." testimonials={saasTestimonials} />
-      <PricingSection eyebrow="Tarifs" title="Simple et transparent." plans={plans} />
+      {/* 6. Dashboard preview */}
+      <section className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-10">
+          <div>
+            <p className="mb-2 text-sm font-medium uppercase tracking-widest text-muted-foreground">
+              Dashboard
+            </p>
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+              Tout ce qui compte. En un coup d&apos;oeil.
+            </h2>
+          </div>
+          <Button asChild variant="outline">
+            <Link href="/demo/saas/dashboard">
+              Voir le dashboard complet <ArrowRight className="size-4" />
+            </Link>
+          </Button>
+        </div>
+        <MetricGrid className="sm:grid-cols-2 lg:grid-cols-4">
+          <MetricCard
+            label="MRR"
+            value={DEMO_METRICS.mrr.value}
+            trend={{ value: DEMO_METRICS.mrr.trend + " ce mois", direction: DEMO_METRICS.mrr.direction }}
+          />
+          <MetricCard
+            label="Utilisateurs actifs"
+            value={DEMO_METRICS.activeUsers.value}
+            trend={{ value: DEMO_METRICS.activeUsers.trend, direction: DEMO_METRICS.activeUsers.direction }}
+          />
+          <MetricCard
+            label="Churn rate"
+            value={DEMO_METRICS.churnRate.value}
+            trend={{ value: DEMO_METRICS.churnRate.trend, direction: DEMO_METRICS.churnRate.direction }}
+          />
+          <MetricCard
+            label="Activation"
+            value={DEMO_METRICS.activationRate.value}
+            trend={{ value: DEMO_METRICS.activationRate.trend, direction: DEMO_METRICS.activationRate.direction }}
+          />
+        </MetricGrid>
+      </section>
 
+      {/* 7. Integrations */}
+      <section className="border-t bg-card">
+        <div className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-10">
+            <div>
+              <p className="mb-2 text-sm font-medium uppercase tracking-widest text-muted-foreground">
+                Integrations
+              </p>
+              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+                Votre stack, conecte.
+              </h2>
+            </div>
+            <Button asChild variant="outline">
+              <Link href="/demo/saas/settings">
+                Voir toutes les integrations <ArrowRight className="size-4" />
+              </Link>
+            </Button>
+          </div>
+          <IntegrationStatusList limit={6} />
+        </div>
+      </section>
+
+      {/* 8. Security */}
+      <section className="border-t bg-muted/20">
+        <div className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
+          <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+            <div>
+              <p className="mb-2 text-sm font-medium uppercase tracking-widest text-muted-foreground">
+                Securite & Compliance
+              </p>
+              <h2 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl">
+                Enterprise-ready. Pas de compromis.
+              </h2>
+              <p className="mb-6 text-muted-foreground">
+                Chiffrement AES-256, audit logs, SSO/SAML, hebergement EU et checklist SOC2-ready.
+                LaunchPilot est concu pour passer les due diligences de vos clients enterprise.
+              </p>
+              <Button asChild variant="outline">
+                <Link href="/demo/saas/security">
+                  Voir la page security <ArrowRight className="size-4" />
+                </Link>
+              </Button>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {[
+                { icon: "🔒", label: "TLS 1.3 + AES-256" },
+                { icon: "🛡️", label: "SSO / SAML / SCIM" },
+                { icon: "📋", label: "Audit logs complets" },
+                { icon: "🇪🇺", label: "Hebergement EU (RGPD)" },
+                { icon: "✅", label: "Checklist SOC2-ready" },
+                { icon: "📄", label: "DPA inclus" },
+              ].map((item) => (
+                <div key={item.label} className="flex items-center gap-2.5 rounded-lg border bg-background p-3">
+                  <span className="text-lg" aria-hidden="true">{item.icon}</span>
+                  <span className="text-sm font-medium">{item.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <p className="mt-6 text-[11px] text-muted-foreground">
+            Demonstration fictive. LaunchPilot n&apos;est pas certifie SOC2. La checklist indique une preparation, pas une certification.
+          </p>
+        </div>
+      </section>
+
+      {/* 9. Pricing */}
+      <PricingSection
+        eyebrow="Tarifs"
+        title="Simple, transparent, sans surprise."
+        plans={pricingPlans}
+      />
+      <p className="text-center text-xs text-muted-foreground pb-8">
+        {DEMO_PRODUCT.demoDisclaimer}
+      </p>
+
+      {/* 10. Testimonials */}
+      <TestimonialSection
+        eyebrow="Ils ont adopte LaunchPilot"
+        title="Des equipes qui anticipent le churn."
+        testimonials={DEMO_TESTIMONIALS}
+      />
+
+      {/* 11. FAQ */}
+      <FAQSection
+        eyebrow="Questions frequentes"
+        title="Tout ce que vous voulez savoir."
+        items={faqItems}
+      />
+
+      {/* 12. Final CTA */}
       <CTASection
         variant="dark"
-        eyebrow="12 000 equipes nous font confiance"
-        title="Pret a simplifier votre workflow ?"
-        description="Rejoignez 12 000 equipes qui gagnent 10h/semaine."
+        eyebrow={`${DEMO_STATS[0].value} equipes nous font confiance`}
+        title="Pret a voir votre churn baisser ?"
+        description="Demarrez gratuitement. Pas de carte de credit."
         actions={
-          <Button size="lg" className="theme-hero-btn-primary">
-            Commencer maintenant <ArrowRight className="size-4" />
+          <Button size="lg" className="theme-hero-btn-primary" asChild>
+            <Link href="/demo/saas/dashboard">
+              Voir le dashboard <ArrowRight className="size-4" />
+            </Link>
           </Button>
         }
       />

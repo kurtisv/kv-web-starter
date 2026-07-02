@@ -12,6 +12,8 @@ export * from "./floating-card-scene";
 export * from "./hotspot-marker";
 export * from "./model-placeholder";
 export * from "./performance-badge";
+export * from "./orbiting-shapes";
+export * from "./immersive-landing-scene";
 export * from "./product-showroom-data";
 export * from "./product-showroom-scene";
 export * from "./product-configurator-panel";

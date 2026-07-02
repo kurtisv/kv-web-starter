@@ -13,6 +13,7 @@ import { ServicePicker } from "@/components/booking/service-picker";
 import { StaffPicker } from "@/components/booking/staff-picker";
 import { BookingSummaryCard } from "@/components/booking/booking-summary-card";
 import { BookingDemoNav } from "@/components/booking/booking-demo-nav";
+import { BookingDemoActions } from "./booking-demo-actions";
 import {
   DEMO_BOOKING_PRODUCT,
   DEMO_BOOKING_STATS,
@@ -271,6 +272,10 @@ export default function DemoBookingPage() {
                   Essayer le flux complet <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
               </Button>
+              <div className="mt-4">
+                <p className="mb-2 text-xs text-muted-foreground">Actions client (demo)</p>
+                <BookingDemoActions serviceName={DEMO_SERVICE.name} />
+              </div>
             </div>
           </div>
         </div>

@@ -162,7 +162,10 @@ export default async function BookingPage({
         {params.success === "1" && (
           <div className="mx-auto max-w-6xl px-6 pt-6">
             <Alert variant="success" title="Demande envoyee">
-              Votre demande de reservation a ete recue. Confirmation par email sous peu.
+              Votre demande de reservation a ete recue. Confirmation par email sous peu.{" "}
+              <a href="/my-bookings" className="underline">
+                Voir mes reservations
+              </a>
             </Alert>
           </div>
         )}
@@ -177,9 +180,17 @@ export default async function BookingPage({
         {/* Hero */}
         <section className="border-b theme-hero">
           <div className="mx-auto max-w-6xl px-6 py-12">
-            <Badge className="mb-4 border-background/20 bg-background/10 text-background">
-              Prise de rendez-vous
-            </Badge>
+            <div className="mb-4 flex items-center gap-3">
+              <Badge className="border-background/20 bg-background/10 text-background">
+                Prise de rendez-vous
+              </Badge>
+              <a
+                href="/demo/booking"
+                className="text-xs opacity-60 hover:opacity-100 transition-opacity underline text-background"
+              >
+                &larr; Voir la demo ZenSlot
+              </a>
+            </div>
             <h1 className="text-3xl font-semibold sm:text-4xl">
               Reservez votre creneau.
             </h1>

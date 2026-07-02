@@ -47,6 +47,7 @@ export function ProductShowroomExperience() {
       {/* Viewer */}
       <div className="relative">
         <OrbitProductViewer
+          interactive
           aria-label={`Visualisation 3D du ${PRODUCT_NAME} en ${color.label}`}
           className="h-[360px] rounded-2xl bg-[radial-gradient(circle_at_50%_25%,rgba(45,212,191,0.14),transparent_45%),linear-gradient(160deg,#0b1020,#111827_60%,#1e1b4b)] sm:h-[480px]"
           camera={{ position: [0, 0.4, 4.6], fov: 38 }}

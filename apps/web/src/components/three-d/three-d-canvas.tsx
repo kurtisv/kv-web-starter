@@ -31,6 +31,10 @@ export interface ThreeDCanvasProps {
     fov?: number;
   };
   performance?: ThreeDPerformanceTier;
+  /** Set when the scene contains focusable DOM children (e.g. HotspotMarker
+   * buttons): the wrapper is exposed as a labelled group instead of an image,
+   * since children of role="img" are presentational to assistive tech. */
+  interactive?: boolean;
   "aria-label"?: string;
   "data-testid"?: string;
 }
@@ -102,6 +106,7 @@ export function ThreeDCanvas({
   reducedMotionFallback,
   camera,
   performance = "balanced",
+  interactive = false,
   "aria-label": ariaLabel = "Scene 3D interactive",
   "data-testid": testId = "three-d-canvas",
 }: ThreeDCanvasProps) {
@@ -172,7 +177,7 @@ export function ThreeDCanvas({
     <SceneQualityContext.Provider value={quality}>
       <div
         className={frameClass}
-        role="img"
+        role={interactive ? "group" : "img"}
         aria-label={ariaLabel}
         data-testid={testId}
       >

@@ -259,37 +259,41 @@ export function DualRangeSlider({
         />
       </div>
 
-      {/* Number inputs */}
-      <div className="flex items-center gap-2">
-        <Input
-          type="number"
-          value={value.min}
-          min={min}
-          max={value.max}
-          step={step}
-          disabled={disabled}
-          aria-label={`${label} minimum`}
-          onChange={handleMinInput}
-          className="h-8 w-24 text-xs"
-        />
-        <span className="text-xs text-muted-foreground select-none">–</span>
-        <Input
-          type="number"
-          value={value.max}
-          min={value.min}
-          max={max}
-          step={step}
-          disabled={disabled}
-          aria-label={`${label} maximum`}
-          onChange={handleMaxInput}
-          className="h-8 w-24 text-xs"
-        />
-        {(value.min !== min || value.max !== max) && (
-          <span className="text-[10px] text-muted-foreground whitespace-nowrap select-none">
-            {fmt(value.min)} – {fmt(value.max)}
-          </span>
-        )}
-      </div>
+      {/* Value display: when formatValue is provided, show formatted labels pinned to
+          opposite edges — fill parent width, never affect it, no layout shift on drag.
+          Without formatValue, fall back to editable number inputs. */}
+      {formatValue ? (
+        <div className="flex items-center justify-between">
+          <span className="text-xs text-muted-foreground tabular-nums select-none">{fmt(value.min)}</span>
+          <span className="text-xs text-muted-foreground tabular-nums select-none">{fmt(value.max)}</span>
+        </div>
+      ) : (
+        <div className="flex items-center gap-2">
+          <Input
+            type="number"
+            value={value.min}
+            min={min}
+            max={value.max}
+            step={step}
+            disabled={disabled}
+            aria-label={`${label} minimum`}
+            onChange={handleMinInput}
+            className="h-8 w-24 text-xs"
+          />
+          <span className="text-xs text-muted-foreground select-none">–</span>
+          <Input
+            type="number"
+            value={value.max}
+            min={value.min}
+            max={max}
+            step={step}
+            disabled={disabled}
+            aria-label={`${label} maximum`}
+            onChange={handleMaxInput}
+            className="h-8 w-24 text-xs"
+          />
+        </div>
+      )}
 
       {error && <p className="text-xs text-destructive">{error}</p>}
     </div>
